@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drift Protocol Exploit — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F6F3;--surface2:#F1F0ED;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--orange:#D9730D;--orange-bg:#FADEC9;--orange-text:#C77D48;--purple:#9065B0;--purple-bg:#E8DEEE;--yellow:#DFAB01;--yellow-bg:#FFF3D4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:900px;margin:0 auto;padding:40px 60px 80px;line-height:1.7;font-size:16px}
+.breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text3);margin-bottom:8px}.breadcrumb span{color:var(--text2)}
+.page-icon{font-size:60px;margin-bottom:8px}
+h1{font-family:'Source Serif 4',serif;font-size:40px;font-weight:700;letter-spacing:-.5px;line-height:1.2;margin-bottom:4px}
+.subtitle{font-size:18px;color:var(--text2);margin-bottom:24px;font-style:italic}
+.properties{display:grid;grid-template-columns:140px 1fr;gap:0;border-top:1px solid var(--border);margin-bottom:32px;font-size:14px}
+.prop-label{padding:8px 0;color:var(--text2);font-family:'IBM Plex Mono',monospace;font-size:12px;border-bottom:1px solid var(--border)}
+.prop-value{padding:8px 0;border-bottom:1px solid var(--border)}
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;margin-right:4px}
+.tag-red{background:var(--red-bg);color:var(--red-text)}.tag-green{background:var(--green-bg);color:var(--green-text)}.tag-blue{background:var(--blue-bg);color:var(--blue-text)}.tag-orange{background:var(--orange-bg);color:var(--orange-text)}.tag-purple{background:var(--purple-bg);color:var(--purple)}.tag-yellow{background:var(--yellow-bg);color:var(--orange)}
+.divider{border-top:1px solid var(--border);margin:28px 0}
+.callout{display:flex;gap:12px;padding:16px 16px 16px 12px;border-radius:4px;margin:16px 0;font-size:15px;line-height:1.6}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.callout-red{background:var(--red-bg)}.callout-blue{background:var(--blue-bg)}.callout-green{background:var(--green-bg)}.callout-orange{background:var(--orange-bg)}.callout-yellow{background:var(--yellow-bg)}.callout-purple{background:var(--purple-bg)}.callout-surface{background:var(--surface)}
+h2{font-size:24px;font-weight:700;margin:32px 0 12px;letter-spacing:-.3px}h3{font-size:18px;font-weight:600;margin:24px 0 8px}
+p{margin-bottom:12px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0}
+.stat-cell{background:var(--bg);padding:16px 20px}
+.stat-val{font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;line-height:1.2}.stat-val.red{color:var(--red)}.stat-val.green{color:var(--green)}.stat-val.blue{color:var(--blue)}.stat-val.orange{color:var(--orange)}
+.stat-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.stat-explain{font-size:13px;color:var(--text2);margin-top:6px;line-height:1.5}
+.notion-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.notion-table th{text-align:left;padding:6px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:500}
+.notion-table td{padding:8px 12px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:13px}
+.notion-table tr:hover{background:var(--surface)}
+.timeline-item{display:grid;grid-template-columns:100px 1fr auto;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);align-items:baseline;font-size:15px}
+.timeline-time{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text2);font-weight:500}
+.timeline-amount{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--red);text-align:right}
+.mention{font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--surface2);padding:2px 5px;border-radius:3px;color:var(--text2)}
+.quote-block{border-left:3px solid var(--text);padding:4px 16px;margin:20px 0;font-size:18px;font-style:italic}
+.footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);display:flex;justify-content:space-between}
+.footer-brand{font-weight:600;color:var(--red)}
+.watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-family:'Source Serif 4',serif;font-size:200px;font-weight:700;color:rgba(235,87,87,0.03);pointer-events:none;z-index:0;letter-spacing:20px}
+.hop-illustration{background:var(--surface);border-radius:8px;padding:32px 24px;margin:20px 0}
+.hop-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:20px}.hop-row:last-child{margin-bottom:0}
+.hop-label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;width:80px;flex-shrink:0;padding-top:10px}
+.hop-content{display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}
+.hop-node{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hop-wallet{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.hop-desc{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text2);margin-left:12px;max-width:380px;line-height:1.6}
+.dist-row{display:grid;grid-template-columns:110px 1fr 80px 90px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px}
+.dist-row-header{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.dist-label{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text);font-weight:500}
+.dist-bar-bg{height:24px;background:var(--surface);border-radius:4px;overflow:hidden}
+.dist-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:white;font-weight:600;min-width:30px;white-space:nowrap}
+.dist-num{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;text-align:right}
+.dist-usd{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text2);text-align:right}
+
+/* Narration blocks */
+.narration{background:var(--surface);border-left:3px solid var(--orange);padding:20px 24px;border-radius:0 8px 8px 0;margin:20px 0;font-size:15px;line-height:1.7}
+.narration-title{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.narration-red{border-left-color:var(--red)}
+.narration-red .narration-title{color:var(--red)}
+.narration-blue{border-left-color:var(--blue)}
+.narration-blue .narration-title{color:var(--blue)}
+.narration-green{border-left-color:var(--green)}
+.narration-green .narration-title{color:var(--green)}
+
+/* Token mix cards */
+.mix-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0}
+.mix-cell{background:var(--bg);padding:14px 16px}
+.mix-token{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.mix-val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;margin:6px 0 4px}
+.mix-detail{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);line-height:1.5}
+
+/* Concentration cards */
+.conc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0}
+.conc-cell{background:var(--bg);padding:16px 20px}
+.conc-addr{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3)}
+.conc-val{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;margin:6px 0 4px}
+.conc-detail{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);line-height:1.5}
+
+/* Live stat grid */
+.live-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0}
+.live-cell{background:var(--bg);padding:16px 20px}
+.live-val{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;line-height:1.2}
+
+/* Flow visual */
+.flow-visual{background:var(--surface);border-radius:8px;padding:24px;margin:20px 0;text-align:center}
+.flow-step{display:inline-flex;flex-direction:column;align-items:center;padding:0 16px}
+.flow-emoji{font-size:32px;margin-bottom:4px}
+.flow-label-txt{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--text2)}
+.flow-arrow-h{font-size:24px;color:var(--text3);display:inline-block;vertical-align:middle;margin:0 4px}
+</style>
+</head>
+<body>
+<div class="watermark">PIF</div>
+<div class="breadcrumb"><span>PIF Research Labs</span> / Investigations / Drift Protocol</div>
+<div class="page-icon">🔓</div>
+<h1>The Drift Protocol Exploit</h1>
+<p class="subtitle">$240M drained in 10 seconds. 50,000+ wallets and counting. Here's what every number means.</p>
+
+<div class="properties">
+<div class="prop-label">Status</div><div class="prop-value"><span class="tag tag-red">Active — Bots Still Running</span></div>
+<div class="prop-label">Date</div><div class="prop-value">April 1, 2026 · 16:06 UTC</div>
+<div class="prop-label">Amount</div><div class="prop-value"><strong>$240,000,000+</strong> estimated extracted</div>
+<div class="prop-label">Chain</div><div class="prop-value"><span class="tag tag-purple">Solana</span> <span class="tag tag-blue">Ethereum</span></div>
+<div class="prop-label">Attacker</div><div class="prop-value"><span class="mention">HkGz4KmoZ7...pZES</span></div>
+<div class="prop-label">Tags</div><div class="prop-value"><span class="tag tag-red">Admin Key Exploit</span> <span class="tag tag-orange">Fake Oracle</span> <span class="tag tag-yellow">Fake Collateral</span> <span class="tag tag-green">Active Laundering</span></div>
+</div>
+
+<div class="divider"></div>
+
+<h2>📊 The Numbers — What They Actually Mean</h2>
+<p>Every number below was pulled directly from the Solana blockchain. We're not estimating — these are verified on-chain facts. Here's each number and why it matters:</p>
+
+<div class="stat-grid">
+<div class="stat-cell"><div class="stat-val red">$240M+</div><div class="stat-label">Total extracted</div><div class="stat-explain">The total value of all assets stolen from Drift Protocol's lending vaults. This includes USDC (stablecoins), JLP tokens (liquidity pool shares), wrapped Bitcoin, wrapped ETH, SOL derivatives, and 12 other token types. All withdrawn in a single session.</div></div>
+<div class="stat-cell"><div class="stat-val">10 sec</div><div class="stat-label">Core drain time</div><div class="stat-explain">The time between the first withdrawal (41.72M JLP at 16:06:09 UTC) and the last primary withdrawal (2,200 wETH at 16:06:19 UTC). The attacker emptied the major vaults in the time it takes to send a text message.</div></div>
+<div class="stat-cell"><div class="stat-val red">$23.3M/s</div><div class="stat-label">Drain rate</div><div class="stat-explain">$233 million divided by 10 seconds. During the core drain, the attacker was extracting twenty-three million dollars every second. For comparison, the average US household earns about $1 per second. This was 23 million times that rate.</div></div>
+</div>
+
+<div class="stat-grid">
+<div class="stat-cell"><div class="stat-val green">50,316</div><div class="stat-label">Unique wallets</div><div class="stat-explain">After stealing the money, the attacker didn't keep it in one place. Automated bots scattered the funds across 50,316 separate wallet addresses. Each wallet is a distinct location on the blockchain. More wallets = harder to trace = harder to recover. This number is still growing.</div></div>
+<div class="stat-cell"><div class="stat-val">736,538</div><div class="stat-label">Total transactions</div><div class="stat-explain">Every time stolen money moves from one wallet to another, that's one transaction permanently recorded on the blockchain. Think of each transaction as a footprint. There are now 736,538 footprints going in every direction. Every single one must be followed to fully trace where the money went. That's the point — volume is the defense.</div></div>
+<div class="stat-cell"><div class="stat-val orange">~590/min</div><div class="stat-label">Current bot rate</div><div class="stat-explain">Right now — as you read this — automated programs are executing approximately 590 money-moving transactions every minute. That's roughly 10 per second. They've been running nonstop for 22+ hours. Every minute they run, they create more wallets, more transactions, more noise — making the trail exponentially colder.</div></div>
+</div>
+
+<div class="stat-grid">
+<div class="stat-cell"><div class="stat-val blue">19,913 ETH</div><div class="stat-label">Purchased on Ethereum</div><div class="stat-explain">The attacker bridged funds from Solana to Ethereum and purchased 19,913 ETH (~$42.6M). This is deliberate: USDC is a stablecoin controlled by Circle, who can freeze it at any address. ETH is decentralized — no company, no government, no entity can freeze it. Converting stolen USDC into ETH is like converting marked bills into gold bars that no bank can seize.</div></div>
+<div class="stat-cell"><div class="stat-val orange">$66.7M</div><div class="stat-label">USDC unmoved</div><div class="stat-explain">This exact amount of USDC is sitting in wallet 8ubo4HbW... right now. It hasn't moved for 22+ hours. This is the biggest single chunk of potentially recoverable money. Circle can freeze it by blacklisting the address — but every minute they don't act is a minute the attacker could convert it to ETH or scatter it further.</div></div>
+<div class="stat-cell"><div class="stat-val red">99.9997%</div><div class="stat-label">JLP vault drained</div><div class="stat-explain">Drift's JLP vault held 41.7 million tokens before the exploit. After: 133 tokens remained. The attacker took everything — leaving 0.0003%. To put that in perspective: if the vault was a bank with $41.7 million, the attacker left $12.50 on the counter and walked out with the rest.</div></div>
+</div>
+
+<div class="divider"></div>
+
+<h2>🐇 What Are "Hops"? — Follow the Rabbit</h2>
+<p>When investigators track stolen crypto, they follow the money from wallet to wallet. Each time money moves from one wallet to the next, that's called a "hop." Think of a rabbit running from a hunter — every jump lands in a new spot, and the hunter has to find each landing before tracking the next jump. The more hops, the harder the chase. Here's how the attacker's rabbit ran:</p>
+
+<div class="hop-illustration">
+<div class="hop-row">
+<div class="hop-label" style="color:var(--red)">Origin</div>
+<div class="hop-content">
+<div class="hop-node" style="background:var(--red-bg)">🐇</div>
+<div class="hop-desc"><strong>The attacker wallet.</strong> The rabbit starts here with $240M. One wallet. One address. Easy to spot — it's the wallet that received money directly from Drift's vaults. Any investigator can find this in seconds.</div>
+</div>
+</div>
+
+<div style="margin-left:100px;width:2px;height:16px;background:var(--border)"></div>
+<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);margin-bottom:4px;font-weight:600">↓ FIRST HOP — the money leaves the attacker</div>
+
+<div class="hop-row">
+<div class="hop-label" style="color:var(--orange)">Hop-1</div>
+<div class="hop-content">
+<div class="hop-node" style="background:var(--orange-bg)">🐇</div>
+<div class="hop-node" style="background:var(--orange-bg);font-size:16px">🐇</div>
+<div class="hop-node" style="background:var(--orange-bg);font-size:14px">🐇</div>
+<div class="hop-node" style="background:var(--orange-bg);font-size:14px">🐇</div>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text3)">...×27 total</span>
+<div class="hop-desc"><strong>27 getaway wallets.</strong> The rabbit splits into 27 copies, each carrying a piece of the money. Think of 27 getaway cars leaving the same garage in different directions. Still traceable — one jump from the crime scene. An investigator can follow the direct link from attacker → each of these 27.</div>
+</div>
+</div>
+
+<div style="margin-left:100px;width:2px;height:16px;background:var(--border)"></div>
+<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green-text);margin-bottom:4px;font-weight:600">↓ SECOND HOP — this is where it explodes</div>
+
+<div class="hop-row">
+<div class="hop-label" style="color:var(--green-text)">Hop-2</div>
+<div class="hop-content">
+<div style="display:flex;gap:3px;flex-wrap:wrap;max-width:320px">
+<div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div>
+</div>
+<div class="hop-desc"><strong>50,316+ wallets and climbing.</strong> Every green square is a real wallet address. Each of the 27 rabbits split into thousands. Now investigators aren't chasing 27 — they're chasing 50,000+ addresses, each carrying a small piece. The sheer volume makes recovery nearly impossible.<br><br><span style="color:var(--red);font-weight:600">Still multiplying at ~590 new transactions per minute.</span></div>
+</div>
+</div>
+
+<div style="margin-left:100px;width:2px;height:16px;background:var(--border)"></div>
+<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue-text);margin-bottom:4px;font-weight:600">↓ CROSS-CHAIN — leaving the country</div>
+
+<div class="hop-row">
+<div class="hop-label" style="color:var(--blue-text)">Bridge</div>
+<div class="hop-content">
+<div class="hop-node" style="background:var(--blue-bg)">🌉</div>
+<div class="hop-desc"><strong>Some rabbits cross the border.</strong> Funds bridged from Solana to Ethereum via Wormhole and ChainFlip. 19,913 ETH purchased ($42.6M). Once on Ethereum, the money is on a different blockchain with different tracking — like crossing into a country with different laws. And ETH can't be frozen by anyone.</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-surface">
+<div class="callout-icon">💡</div>
+<div><strong>Why hops matter:</strong> One hop from the crime? Easy to trace. Two hops? Harder. Fifty thousand hops going in every direction? That's a forensic nightmare. The bots exist solely to generate as many hops as possible, as fast as possible. Volume is the weapon.</div>
+</div>
+
+<div class="divider"></div>
+
+<h2>🪙 The Multi-Token Mix</h2>
+
+<div class="narration">
+<div class="narration-title">What they're doing</div>
+The attacker isn't just moving USDC (dollars). They're mixing five different token types through the same wallet network simultaneously. Imagine laundering cash, gold coins, gift cards, foreign currency, and casino chips all through the same system at the same time. An investigator tracking the USDC trail might miss the Fartcoin trail running through the same wallets. Mixing token types creates overlapping trails that are harder to untangle.
+</div>
+
+<div class="mix-grid">
+<div class="mix-cell"><div class="mix-token">USDC</div><div class="mix-val" style="color:var(--red)">$202M</div><div class="mix-detail">257,730 txns<br>30,362 wallets</div></div>
+<div class="mix-cell"><div class="mix-token">Pump Tokens</div><div class="mix-val" style="color:var(--orange)">$286M*</div><div class="mix-detail">3,882 txns<br>429 wallets<br><span style="font-size:9px">*token units, not USD</span></div></div>
+<div class="mix-cell"><div class="mix-token">Fartcoin</div><div class="mix-val" style="color:var(--green)">$18.1M</div><div class="mix-detail">13,279 txns<br>2,142 wallets</div></div>
+<div class="mix-cell"><div class="mix-token">JPYC</div><div class="mix-val">$704K</div><div class="mix-detail">3,409 txns<br>119 wallets</div></div>
+<div class="mix-cell"><div class="mix-token">Unknown</div><div class="mix-val">$248K</div><div class="mix-detail">5,703 txns<br>223 wallets</div></div>
+</div>
+
+<div class="narration">
+<div class="narration-title">The intended outcome</div>
+By spreading different tokens through the same wallet network, the attacker creates a tangle. If a forensic investigator traces $5,000 USDC into a wallet, they also find Fartcoin, JPYC, and pump tokens flowing through the same address. Which tokens are stolen? Which are legitimate? The mix creates ambiguity — and ambiguity is doubt, and doubt slows down enforcement.
+</div>
+
+<div class="divider"></div>
+
+<h2>🎯 The Concentration Points</h2>
+
+<div class="narration narration-red">
+<div class="narration-title">What they're doing</div>
+After scattering the money across thousands of wallets, the bots don't just leave it there. They funnel it back to a small number of collection wallets. This is the "reconsolidation" step — like all 27 getaway cars eventually meeting at a warehouse to repack the money for the next stage. The money went from 1 wallet to 50,000 — then back to a few collection points. Why? Because scattered dust is useless. You can't spend 50,000 wallets each holding $4,000. You need to reconsolidate to actually move it to an exchange, bridge it cross-chain, or convert it to ETH.
+</div>
+
+<div class="conc-grid">
+<div class="conc-cell"><div class="conc-addr">7s1da8Dd...</div><div class="conc-val" style="color:var(--red)">$87M</div><div class="conc-detail">from 7 hop-2 wallets<br>164 transactions</div></div>
+<div class="conc-cell"><div class="conc-addr">Czfq3xZZ...</div><div class="conc-val" style="color:var(--orange)">$21.7M</div><div class="conc-detail">from 33 hop-2 wallets<br>7,977 transactions</div></div>
+<div class="conc-cell"><div class="conc-addr">8ekCy2jH... (ITSELF)</div><div class="conc-val" style="color:var(--red)">$21M</div><div class="conc-detail">from 37 hop-2 wallets<br>66,356 transactions<br><span style="color:var(--red);font-weight:600">↑ MONEY RETURNS TO SENDER</span></div></div>
+</div>
+
+<div class="narration narration-red">
+<div class="narration-title">Why this is the key finding</div>
+Look at the third box. The dispersion bot 8ekCy2 sent $202 million out to thousands of wallets. Then <strong>$21 million came back to the same bot</strong> from 37 of those wallets. The money went out, bounced through fresh addresses, and returned to the sender. Then it goes out again — to new wallets this time. This is not a tree. It's a washing machine. Each cycle adds another layer of transaction history. After three wash cycles, the same dollar has touched dozens of wallets and generated hundreds of transactions. That's what makes it exponentially harder to prove which dollar came from the theft.
+</div>
+
+<div class="divider"></div>
+
+<h2>💰 How the Money Was Divided</h2>
+
+<div class="narration narration-green">
+<div class="narration-title">What they're doing</div>
+The attacker didn't split the money evenly across 50,000 wallets. They used a deliberate pyramid structure: a small number of wallets hold the real money, while thousands of wallets hold tiny amounts. The thousands of small wallets are camouflage — they make the network look like normal crypto activity. The real payload sits in the 140 wallets at the top.
+</div>
+
+<p>Here's the actual USDC distribution from the main dispersion bot. The bar shows what percentage of the total stolen value sits in each tier:</p>
+
+<div class="dist-row"><div class="dist-row-header">Amount</div><div class="dist-row-header">% of total value</div><div class="dist-row-header" style="text-align:right">Wallets</div><div class="dist-row-header" style="text-align:right">Total USDC</div></div>
+<div class="dist-row"><div class="dist-label" style="color:var(--red);font-weight:700">$100K+</div><div class="dist-bar-bg"><div class="dist-bar" style="width:72%;background:var(--red)">72% of all stolen value</div></div><div class="dist-num">140</div><div class="dist-usd" style="color:var(--red);font-weight:600">$147.3M</div></div>
+<div class="dist-row"><div class="dist-label" style="color:var(--orange)">$10K–$100K</div><div class="dist-bar-bg"><div class="dist-bar" style="width:14.5%;background:var(--orange)">14.5%</div></div><div class="dist-num">1,140</div><div class="dist-usd">$29.8M</div></div>
+<div class="dist-row"><div class="dist-label">$1K–$10K</div><div class="dist-bar-bg"><div class="dist-bar" style="width:13%;background:var(--green)">13%</div></div><div class="dist-num" style="font-weight:700">18,136</div><div class="dist-usd">$26.8M</div></div>
+<div class="dist-row"><div class="dist-label" style="color:var(--text2)">$100–$1K</div><div class="dist-bar-bg"><div class="dist-bar" style="width:1%;background:var(--text3)"></div></div><div class="dist-num">3,625</div><div class="dist-usd">$1.3M</div></div>
+<div class="dist-row"><div class="dist-label" style="color:var(--text3)">Under $100</div><div class="dist-bar-bg"><div class="dist-bar" style="width:0.4%;background:var(--text3)"></div></div><div class="dist-num">6,312</div><div class="dist-usd">$172K</div></div>
+
+<div class="narration narration-red">
+<div class="narration-title">The intended outcome</div>
+This is a needle-in-a-haystack strategy. 140 wallets hold 72% of the value ($147 million). If Circle or investigators could identify and freeze just those 140 addresses, the majority of the money is recovered. But those 140 wallets are hiding inside a network of 29,000+ other wallets that each hold small amounts — anywhere from $1 to $10,000. From the outside, those 29,000 wallets look like normal people doing normal crypto transactions. The attacker is hiding 140 needles in a haystack of 29,000 pieces of straw. And the bots keep adding more straw every minute.
+</div>
+
+<div class="divider"></div>
+
+<h2>📡 Live Stats</h2>
+
+<div class="narration narration-blue">
+<div class="narration-title">What's happening right now</div>
+The bots haven't stopped. They've been running for 22+ hours straight — no breaks, no pauses, no downtime. Every minute they operate, approximately 590 new transactions scatter the money further. New wallets are being created. Old wallets are forwarding to new ones. The washing machine is still spinning. And $66.7 million in USDC is still sitting in one wallet, untouched, waiting to be either frozen by Circle or moved by the attacker. That's the race happening in real time.
+</div>
+
+<div class="live-grid">
+<div class="live-cell"><div class="live-val" style="color:var(--red)">50,316</div><div class="stat-label">Unique wallets</div><div class="stat-explain">Every one is a real blockchain address holding stolen funds</div></div>
+<div class="live-cell"><div class="live-val">736,538</div><div class="stat-label">Total transactions</div><div class="stat-explain">Every one is a footprint investigators must trace</div></div>
+<div class="live-cell"><div class="live-val" style="color:var(--orange)">~590</div><div class="stat-label">Txns per minute</div><div class="stat-explain">Bots firing right now, 22+ hours and counting</div></div>
+<div class="live-cell"><div class="live-val" style="color:var(--orange)">$66.7M</div><div class="stat-label">USDC still sitting</div><div class="stat-explain">In one wallet. Freezable by Circle. Clock is ticking.</div></div>
+</div>
+
+<div class="divider"></div>
+
+<h2>🔐 Why It Worked — The Two Problems</h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+<div class="callout callout-red" style="flex-direction:column;margin:0">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">🧮</span><strong style="color:var(--red-text)">The Math Problem</strong></div>
+<div>Every loop through the washing machine multiplies the number of transactions investigators must trace. Send $1M to 1,000 wallets. Each wallet forwards to 3 more wallets. That's 3,000 wallets. Run it again: 9,000 wallets. Again: 27,000. After just three loops through 50,000 wallets, the trail has millions of individual transactions. No team on earth can trace every one before the money moves again.</div>
+</div>
+<div class="callout callout-blue" style="flex-direction:column;margin:0">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">⏱️</span><strong style="color:var(--blue-text)">The Time Problem</strong></div>
+<div>Every minute the bots run = more wallets, more hops, more noise. The window to recover funds shrinks with every second. USDC can be frozen by Circle — but only if Circle acts before the attacker converts it. ETH cannot be frozen by anyone. The $42.6M already converted to ETH is effectively beyond centralized recovery. The attacker is racing to convert the remaining $66.7M USDC before a freeze. The bots are buying time.</div>
+</div>
+</div>
+
+<div class="divider"></div>
+
+<h2>🧊 What's Still Recoverable</h2>
+
+<div class="callout callout-orange">
+<div class="callout-icon">⏳</div>
+<div><strong>$66.7M USDC</strong> in wallet <span class="mention">8ubo4HbW...</span> — unmoved for 22+ hours. Circle can blacklist this address and freeze the funds permanently. This is the single largest chunk that could be recovered. Once it moves or converts to ETH, it's gone.</div>
+</div>
+
+<div class="callout callout-surface">
+<div class="callout-icon">🗑️</div>
+<div><strong>Still in the attacker wallet:</strong> 100M pump token, 49M pump token, 41M JPYC (~$273K). All illiquid — tokens too small or too thinly traded to sell without crashing their price. Everything liquid is gone. The attacker took the cash and left the furniture.</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="quote-block">The first heist stole the money. The second heist is stealing the trail. It's been running for 22 hours. It hasn't stopped.</div>
+
+<div class="footer"><div><span class="footer-brand">PIF Research Labs</span></div><div>Every number on this page was pulled from the blockchain</div></div>
+</body>
+</html>
