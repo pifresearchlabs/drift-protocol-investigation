@@ -274,11 +274,11 @@ p{margin-bottom:12px}
 <div class="stat-grid">
 <div class="stat-cell"><div class="stat-val green">57,331</div><div class="stat-label">Unique wallets</div><div class="stat-explain">Automated bots scattered the stolen funds across 57,331 separate wallet addresses to make it nearly impossible to trace and recover. This number is still growing.</div></div>
 <div class="stat-cell"><div class="stat-val">861,457</div><div class="stat-label">Total transactions</div><div class="stat-explain">Every time money moves between wallets, that's one transaction on the blockchain — one footprint investigators must follow. 861,457 footprints going in every direction. That's the defense.</div></div>
-<div class="stat-cell"><div class="stat-val orange">~590/min</div><div class="stat-label">Current bot rate</div><div class="stat-explain">Right now, automated bots are executing ~590 money-moving transactions every minute — about 10 per second. They've been running nonstop for 34+ hours, creating new wallets and burying the trail deeper every second.</div></div>
+<div class="stat-cell"><div class="stat-val orange">~590/min</div><div class="stat-label">Current bot rate</div><div class="stat-explain">Right now, automated bots are executing ~590 money-moving transactions every minute — about 10 per second. They've been running nonstop for 51+ hours, creating new wallets and burying the trail deeper every second.</div></div>
 </div>
 <div class="stat-grid">
-<div class="stat-cell"><div class="stat-val blue">129,066 ETH</div><div class="stat-label">Purchased on Ethereum</div><div class="stat-explain">The attacker bridged $463M USDC via Circle CCTP to Ethereum and accumulated 129,066 ETH (~$225M). Why? USDC can be frozen by Circle. ETH cannot be frozen by anyone. Converting to ETH puts the money beyond reach — like converting marked bills into gold no bank can seize.</div></div>
-<div class="stat-cell"><div class="stat-val orange">$66.7M</div><div class="stat-label">USDC unmoved</div><div class="stat-explain">$66.7M in USDC sitting in one wallet (8ubo4HbW...) for 34+ hours. Circle can freeze it by blacklisting the address. Every minute they don't is a minute the attacker could convert it to unfrozen ETH.</div></div>
+<div class="stat-cell"><div class="stat-val blue">130,262 ETH</div><div class="stat-label">Purchased on Ethereum</div><div class="stat-explain">The attacker bridged $463M USDC via Circle CCTP to Ethereum and accumulated 130,262 ETH (~$278M). Why? USDC can be frozen by Circle. ETH cannot be frozen by anyone. Converting to ETH puts the money beyond reach — like converting marked bills into gold no bank can seize.</div></div>
+<div class="stat-cell"><div class="stat-val orange">$66.7M</div><div class="stat-label">USDC unmoved</div><div class="stat-explain">$66.7M in USDC sitting in one wallet (8ubo4HbW...) for 51+ hours. Circle can freeze it by blacklisting the address. Every minute they don't is a minute the attacker could convert it to unfrozen ETH.</div></div>
 <div class="stat-cell"><div class="stat-val red">99.9997%</div><div class="stat-label">JLP vault drained</div><div class="stat-explain">41.7 million JLP tokens reduced to 133 remaining. If the vault was a bank with $41.7M in deposits, the attacker left $12.50 on the counter and walked out with the rest.</div></div>
 </div>
 
@@ -476,7 +476,7 @@ The JLP vault's circuit breaker was set to trip at 5 billion units. The attacker
 <div class="hop-label" style="color:var(--blue-text)">Bridge</div>
 <div class="hop-content">
 <div class="hop-node" style="background:var(--blue-bg)">🌉</div>
-<div class="hop-desc"><strong>Some rabbits cross the border.</strong> Funds bridged from Solana to Ethereum via Circle CCTP. 129,066 ETH purchased ($225M). Different blockchain = different tracking system. ETH can't be frozen by anyone.</div>
+<div class="hop-desc"><strong>Some rabbits cross the border.</strong> Funds bridged from Solana to Ethereum via Circle CCTP. 130,262 ETH purchased ($278M). Different blockchain = different tracking system. ETH can't be frozen by anyone.</div>
 </div>
 </div>
 </div>
@@ -531,13 +531,13 @@ The attacker used a pyramid distribution: 140 wallets hold 72% of the total valu
 <h2>📡 Live Stats</h2>
 <div class="narration narration-blue">
 <div class="narration-title">What's happening right now</div>
-The laundering bots have been running for 34+ hours straight — no pauses, no downtime. Every minute they run, ~590 new transactions scatter the money further. The window to recover funds shrinks with every second. The attacker is racing to convert the remaining $66.7M USDC before Circle freezes it. The bots are buying time.
+The laundering bots have been running for 51+ hours straight — no pauses, no downtime. Every minute they run, ~590 new transactions scatter the money further. The window to recover funds shrinks with every second. The attacker is racing to convert the remaining $66.7M USDC before Circle freezes it. The bots are buying time.
 </div>
 
 <div class="live-grid">
 <div class="live-cell"><div class="live-val" style="color:var(--red)">57,331</div><div class="stat-label">Unique wallets</div><div class="stat-explain">Every one holds stolen funds</div></div>
 <div class="live-cell"><div class="live-val">861,457</div><div class="stat-label">Total transactions</div><div class="stat-explain">Every one must be traced</div></div>
-<div class="live-cell"><div class="live-val" style="color:var(--orange)">~590</div><div class="stat-label">Txns per minute</div><div class="stat-explain">Bots running 34+ hours</div></div>
+<div class="live-cell"><div class="live-val" style="color:var(--orange)">~590</div><div class="stat-label">Txns per minute</div><div class="stat-explain">Bots running 51+ hours</div></div>
 <div class="live-cell"><div class="live-val" style="color:var(--orange)">$66.7M</div><div class="stat-label">USDC sitting</div><div class="stat-explain">Freezable. Clock ticking.</div></div>
 </div>
 
@@ -546,13 +546,13 @@ The laundering bots have been running for 34+ hours straight — no pauses, no d
 <h2>🔐 Why It Worked — Two Problems</h2>
 <div class="two-col-grid">
 <div class="callout callout-red" style="flex-direction:column;margin:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">🧮</span><strong style="color:var(--red-text)">The Math Problem</strong></div><div>Every loop multiplies the trail. Send $1M to 1,000 wallets. Each forwards to 3 more: 3,000 wallets. Again: 9,000. Again: 27,000. After three loops through 57,000 wallets, the trail has millions of transactions. No team can trace them all before the money moves again.</div></div>
-<div class="callout callout-blue" style="flex-direction:column;margin:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">⏱️</span><strong style="color:var(--blue-text)">The Time Problem</strong></div><div>Every minute = more wallets, more noise. USDC can be frozen by Circle — but only before the attacker converts it. ETH cannot be frozen by anyone. The $225M already in ETH is beyond centralized recovery. The bots are buying time for the rest.</div></div>
+<div class="callout callout-blue" style="flex-direction:column;margin:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">⏱️</span><strong style="color:var(--blue-text)">The Time Problem</strong></div><div>Every minute = more wallets, more noise. USDC can be frozen by Circle — but only before the attacker converts it. ETH cannot be frozen by anyone. The $278M already in ETH is beyond centralized recovery. The bots are buying time for the rest.</div></div>
 </div>
 
 <div class="divider"></div>
 
 <h2>🧊 What's Still Recoverable</h2>
-<div class="callout callout-orange"><div class="callout-icon">⏳</div><div><strong>$66.7M USDC</strong> in wallet <span class="mention">8ubo4HbW...</span> — unmoved for 34+ hours. Circle can blacklist this address and freeze the funds permanently. This is the largest recoverable chunk. Once it moves or converts to ETH, it's gone.</div></div>
+<div class="callout callout-orange"><div class="callout-icon">⏳</div><div><strong>$66.7M USDC</strong> in wallet <span class="mention">8ubo4HbW...</span> — unmoved for 51+ hours. Circle can blacklist this address and freeze the funds permanently. This is the largest recoverable chunk. Once it moves or converts to ETH, it's gone.</div></div>
 <div class="callout callout-surface"><div class="callout-icon">🗑️</div><div><strong>Still in attacker wallet:</strong> 100M pump token, 49M pump token, 41M JPYC (~$273K). All illiquid — too small to sell without crashing their price. Everything liquid is gone. The attacker took the cash and left the furniture.</div></div>
 
 <div class="divider"></div>
@@ -567,10 +567,16 @@ The laundering bots have been running for 34+ hours straight — no pauses, no d
 The attacker didn't use random bridges. They used Circle's own Cross-Chain Transfer Protocol (CCTP) — the official bridge for moving USDC between blockchains. CCTP burns USDC on Solana and mints fresh USDC on Ethereum. The first CCTP burn happened at 16:05:17 UTC — 54 seconds BEFORE the first vault withdrawal. The bridge infrastructure was running before the heist even started. This is premeditation visible on-chain.
 </div>
 
+<div class="narration narration-red">
+<div class="narration-title">The getaway car was already running</div>
+On the Ethereum side, the pipeline started even earlier. The first CCTP mint to 0xe69f hit at 14:40 UTC (10:40 AM ET) — <strong>86 minutes before the drain.</strong> Two minutes later, at 10:42 AM ET, that $10M was deposited to Binance. Three more $10M deposits followed. $40M to Binance before the exploit even started. The attacker test-drove the getaway route through Circle's own system before pulling the trigger. Circle processed every dollar. They froze $0.
+</div>
+
 <div class="stat-grid">
 <div class="stat-cell"><div class="stat-val red">$397.9M</div><div class="stat-label">Burned via primary wallet</div><div class="stat-explain">Wallet 41zCUJs burned $397.9M USDC via 23 CCTP burns between Apr 1 16:05 and Apr 2 13:33 UTC.</div></div>
 <div class="stat-cell"><div class="stat-val orange">$65.1M</div><div class="stat-label">Burned via secondary</div><div class="stat-explain">Wallet 8ubo4HbW burned $65.1M via 19 CCTP burns. Same pipeline, parallel path.</div></div>
-<div class="stat-cell"><div class="stat-val">16:05:17</div><div class="stat-label">First CCTP burn</div><div class="stat-explain">54 seconds before the first vault withdrawal. The exit route was live before the money was stolen.</div></div>
+<div class="stat-cell"><div class="stat-val red">10:40 AM ET</div><div class="stat-label">First CCTP mint on Ethereum</div><div class="stat-explain">86 minutes before the drain. $10M minted, deposited to Binance 2 minutes later. The pipeline was tested before the heist.</div></div>
+<div class="stat-cell"><div class="stat-val">16:05:17</div><div class="stat-label">First CCTP burn on Solana</div><div class="stat-explain">54 seconds before the first vault withdrawal. The exit route was live before the money was stolen.</div></div>
 </div>
 
 <div class="divider"></div>
@@ -579,7 +585,7 @@ The attacker didn't use random bridges. They used Circle's own Cross-Chain Trans
 
 <div class="narration narration-blue">
 <div class="narration-title">The other side of the bridge</div>
-Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The attacker had 7 Ethereum wallets waiting to receive. Once the USDC arrived, it was immediately swapped to ETH on DEXes. Three concentration wallets now hold 105,380 ETH (~$225M) with zero outbound transactions. The money is sitting. Waiting.
+Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The attacker had 7 Ethereum wallets waiting to receive. Once the USDC arrived, it was immediately swapped to ETH on DEXes. Four concentration wallets now hold 130,262 ETH (~$278M) with zero outbound transactions. The money is sitting. Waiting.
 </div>
 
 <div class="table-wrap"><table class="notion-table">
@@ -587,7 +593,7 @@ Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The 
 <tbody>
 <tr><td><span class="mention">0x55fe...2a</span></td><td>$210.6M (22 mints)</td><td>DEX swaps</td><td><span class="tag tag-red">Active</span></td></tr>
 <tr><td><span class="mention">0xfcc4...66</span></td><td>$63.1M (18 mints)</td><td>32,994 ETH</td><td><span class="tag tag-orange">Forwarded</span></td></tr>
-<tr><td><span class="mention">0xe69f...b8</span></td><td>$60.0M (6 mints)</td><td>12,000 ETH</td><td><span class="tag tag-red">Deposited to Binance</span></td></tr>
+<tr><td><span class="mention">0xe69f...b8</span></td><td>$410M (53 mints)</td><td>$515M to Binance</td><td><span class="tag tag-red">Cashing Out</span></td></tr>
 <tr><td><span class="mention">0xad38...6b</span></td><td>$58.6M (26 mints)</td><td>30,417 ETH</td><td><span class="tag tag-orange">Forwarded</span></td></tr>
 <tr><td><span class="mention">0xef43...f4</span></td><td>$51.9M (18 mints)</td><td>24,970 ETH</td><td><span class="tag tag-orange">Forwarded</span></td></tr>
 <tr><td><span class="mention">0xc106...7c</span></td><td>$21.3M</td><td>swapped</td><td><span class="tag tag-red">Active</span></td></tr>
@@ -598,19 +604,20 @@ Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The 
 <h3>ETH Concentration Wallets — Still Holding</h3>
 
 <div class="conc-grid">
-<div class="conc-cell"><div class="conc-addr">0x0fe3b690...</div><div class="conc-val" style="color:var(--red)">56,568 ETH</div><div class="conc-detail">~$121M<br>Zero outbound txns</div></div>
-<div class="conc-cell"><div class="conc-addr">0xaa843ed6...</div><div class="conc-val" style="color:var(--orange)">25,715 ETH</div><div class="conc-detail">~$55M<br>Zero outbound txns</div></div>
-<div class="conc-cell"><div class="conc-addr">0xbddae987...</div><div class="conc-val" style="color:var(--orange)">23,097 ETH</div><div class="conc-detail">~$49M<br>Zero outbound txns</div></div>
+<div class="conc-cell"><div class="conc-addr">0x0fe3b690...</div><div class="conc-val" style="color:var(--red)">56,568 ETH</div><div class="conc-detail">~$121M<br>Zero outbound txns<br>Drift messaged 05:25 UTC</div></div>
+<div class="conc-cell"><div class="conc-addr">0xaa843ed6...</div><div class="conc-val" style="color:var(--orange)">25,715 ETH</div><div class="conc-detail">~$55M<br>Zero outbound txns<br>Drift messaged 05:17 UTC</div></div>
+<div class="conc-cell"><div class="conc-addr">0xD3FEEd5D...</div><div class="conc-val" style="color:var(--orange)">24,882 ETH</div><div class="conc-detail">~$53M<br>Zero outbound txns<br>Drift messaged 05:20 UTC</div></div>
+<div class="conc-cell"><div class="conc-addr">0xbddae987...</div><div class="conc-val" style="color:var(--orange)">23,097 ETH</div><div class="conc-detail">~$49M<br>Zero outbound txns<br>Drift messaged 05:23 UTC</div></div>
 </div>
 
 <div class="callout callout-red">
 <div class="callout-icon">⚠️</div>
-<div><strong>105,380 ETH (~$225M) sitting in three wallets with zero outbound transactions.</strong> These wallets received ETH from the CCTP pipeline and haven't moved it. ETH cannot be frozen by Circle or any centralized entity. This is the attacker's endgame — convert everything to unfreeezable ETH and wait.</div>
+<div><strong>130,262 ETH (~$278M) sitting in four wallets with zero outbound transactions.</strong> These wallets received ETH from the CCTP pipeline and haven't moved it. ETH cannot be frozen by Circle or any centralized entity. This is the attacker's endgame — convert everything to unfreeezable ETH and wait.</div>
 </div>
 
 <div class="callout callout-orange">
 <div class="callout-icon">🏦</div>
-<div><strong>Confirmed CEX deposit:</strong> 12,000 ETH deposited to Binance hot wallet (<span class="mention">0x28c6c06...</span>) from wallet 0xe69f...b8 on Apr 2 at 08:39 UTC. The attacker is already cashing out through centralized exchanges.</div>
+<div><strong>$515M deposited to Binance</strong> from wallet 0xe69f...b8 across 91 transactions to two Binance hot wallets. $430M to <span class="mention">0xee7ae8...</span> (61 txns) and $85M to <span class="mention">0x28c6c0...</span> (30 txns). Latest deposit: Apr 3 at 18:41 UTC. The CCTP pipeline mints fresh USDC on Ethereum and routes it directly to Binance within minutes. $290M moved in a 4-hour overnight sprint. Still active.</div>
 </div>
 
 <div class="divider"></div>
@@ -625,11 +632,11 @@ This isn't a single-chain exploit. The attacker is operating across Solana, Ethe
 <div class="live-grid">
 <div class="live-cell"><div class="live-val" style="color:var(--red)">57,331</div><div class="stat-label">Solana wallets</div><div class="stat-explain">Hop-2 dispersion network</div></div>
 <div class="live-cell"><div class="live-val">861,457</div><div class="stat-label">Solana transactions</div><div class="stat-explain">Still growing at ~590/min</div></div>
-<div class="live-cell"><div class="live-val" style="color:var(--blue)">7</div><div class="stat-label">ETH receiving wallets</div><div class="stat-explain">$474M USDC minted via CCTP</div></div>
+<div class="live-cell"><div class="live-val" style="color:var(--blue)">9+</div><div class="stat-label">ETH receiving wallets</div><div class="stat-explain">$515M deposited to Binance</div></div>
 <div class="live-cell"><div class="live-val" style="color:var(--green)">5+</div><div class="stat-label">Chains active</div><div class="stat-explain">SOL, ETH, BSC, Base, CEXes</div></div>
 </div>
 
-<div class="quote-block">The first heist stole the money. The second heist is stealing the trail. It's been running for 34 hours. It hasn't stopped.</div>
+<div class="quote-block">The first heist stole the money. The second heist is stealing the trail. It's been running for 51+ hours. It hasn't stopped.</div>
 
 <div class="footer"><div><span class="footer-brand">PIF Research Labs</span></div><div>Every number on this page was pulled from the blockchain</div></div>
 </body>
