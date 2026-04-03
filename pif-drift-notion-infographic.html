@@ -91,6 +91,160 @@ p{margin-bottom:12px}
 .token-cloud{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
 .token-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;background:var(--surface);border:1px solid var(--border)}
 .token-dot{width:6px;height:6px;border-radius:50%}
+
+/* Hop connector classes (replacing inline styles) */
+.hop-conn-line{margin-left:100px;width:2px;height:12px;background:var(--border)}
+.hop-conn-label{margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;margin-bottom:4px;font-weight:600}
+
+/* Two-column grid */
+.two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+
+/* Notion table wrapper for horizontal scroll */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0}
+.table-wrap .notion-table{margin:0}
+
+/* ===== RESPONSIVE: TABLET (max 900px) ===== */
+@media(max-width:900px){
+  body{padding:32px 32px 60px;font-size:15px}
+  h1{font-size:32px}
+  h2{font-size:20px;margin:24px 0 10px}
+  .subtitle{font-size:16px}
+  .stat-val{font-size:22px}
+  .mix-grid{grid-template-columns:repeat(3,1fr)}
+  .cb-grid{grid-template-columns:repeat(3,1fr)}
+  .live-grid{grid-template-columns:repeat(2,1fr)}
+  .conc-grid{grid-template-columns:repeat(2,1fr)}
+  .param-grid{grid-template-columns:140px 80px 1fr}
+}
+
+/* ===== RESPONSIVE: MOBILE (max 680px) ===== */
+@media(max-width:680px){
+  body{padding:20px 16px 48px;font-size:14px;max-width:100%}
+  h1{font-size:26px;letter-spacing:-0.3px}
+  h2{font-size:18px;margin:20px 0 8px}
+  h3{font-size:15px;margin:16px 0 6px}
+  .subtitle{font-size:14px;margin-bottom:16px}
+  .breadcrumb{font-size:10px}
+  .page-icon{font-size:40px;margin-bottom:4px}
+
+  /* Properties table */
+  .properties{grid-template-columns:90px 1fr;font-size:12px;margin-bottom:20px}
+  .prop-label{font-size:10px;padding:6px 0}
+  .prop-value{padding:6px 0}
+  .tag{font-size:9px;padding:2px 6px;margin-right:2px;margin-bottom:2px}
+  .mention{font-size:10px;padding:1px 4px}
+
+  /* Stat grids — single column */
+  .stat-grid{grid-template-columns:1fr}
+  .stat-val{font-size:22px}
+  .stat-label{font-size:10px}
+  .stat-explain{font-size:11px}
+  .stat-cell{padding:12px 16px}
+
+  /* Callouts */
+  .callout{padding:10px 12px;font-size:12px;gap:8px;line-height:1.5}
+  .callout-icon{font-size:16px}
+
+  /* Narration blocks */
+  .narration{padding:12px 14px;font-size:12px;line-height:1.6;margin:12px 0}
+  .narration-title{font-size:9px;letter-spacing:1px;margin-bottom:4px}
+
+  /* Hop illustration */
+  .hop-illustration{padding:16px 14px;margin:12px 0}
+  .hop-row{flex-direction:column;gap:6px;margin-bottom:14px}
+  .hop-label{width:auto;padding-top:0;font-size:10px}
+  .hop-content{flex-direction:column;gap:4px}
+  .hop-desc{margin-left:0;max-width:100%;font-size:11px;line-height:1.5}
+  .hop-node{width:32px;height:32px;font-size:16px}
+  .hop-wallet{width:7px;height:7px}
+  .hop-conn-line{margin-left:20px;height:10px}
+  .hop-conn-label{margin-left:16px;font-size:10px}
+
+  /* Distribution rows */
+  .dist-row{grid-template-columns:70px 1fr 50px 60px;gap:6px;font-size:11px;padding:6px 0}
+  .dist-row-header{font-size:9px}
+  .dist-label{font-size:11px}
+  .dist-bar{font-size:8px;padding-left:4px;min-width:20px}
+  .dist-bar-bg{height:20px}
+  .dist-num{font-size:11px}
+  .dist-usd{font-size:10px}
+
+  /* Mix grid */
+  .mix-grid{grid-template-columns:repeat(2,1fr)}
+  .mix-val{font-size:18px}
+  .mix-token{font-size:10px}
+  .mix-detail{font-size:9px}
+  .mix-cell{padding:10px 12px}
+
+  /* Concentration grid */
+  .conc-grid{grid-template-columns:1fr}
+  .conc-val{font-size:22px}
+  .conc-detail{font-size:10px}
+  .conc-cell{padding:12px 16px}
+
+  /* Live grid */
+  .live-grid{grid-template-columns:repeat(2,1fr)}
+  .live-val{font-size:22px}
+  .live-cell{padding:12px 14px}
+
+  /* Circuit breaker grid */
+  .cb-grid{grid-template-columns:repeat(2,1fr)}
+  .cb-cell{padding:10px 8px}
+  .cb-token{font-size:12px;margin-bottom:6px}
+  .cb-before,.cb-after{font-size:11px}
+  .cb-mult{font-size:10px}
+
+  /* Param grid (weaponization) */
+  .param-grid{grid-template-columns:1fr;gap:0}
+  .param-name{border-bottom:none;padding:8px 0 2px;font-size:12px}
+  .param-val{border-bottom:none;padding:2px 0;font-size:12px}
+  .param-explain{padding:2px 0 10px;border-bottom:1px solid var(--border);font-size:11px}
+
+  /* Two problems grid */
+  .two-col-grid{grid-template-columns:1fr;gap:10px}
+
+  /* Token cloud */
+  .token-cloud{gap:4px}
+  .token-pill{font-size:10px;padding:3px 8px}
+
+  /* Timeline */
+  .timeline-item{grid-template-columns:80px 1fr auto;gap:8px;padding:6px 0;font-size:13px}
+  .timeline-time{font-size:11px}
+  .timeline-amount{font-size:12px}
+
+  /* Tables — horizontal scroll */
+  .notion-table{font-size:11px;min-width:500px}
+  .notion-table th{font-size:9px;padding:4px 8px}
+  .notion-table td{padding:6px 8px;font-size:10px}
+
+  /* Quote block */
+  .quote-block{font-size:15px;padding:4px 12px;margin:14px 0}
+
+  /* Footer */
+  .footer{flex-direction:column;gap:4px;text-align:center;font-size:10px}
+
+  /* Divider spacing */
+  .divider{margin:20px 0}
+
+  /* Watermark smaller */
+  .watermark{font-size:120px;letter-spacing:10px}
+}
+
+/* ===== RESPONSIVE: SMALL PHONE (max 400px) ===== */
+@media(max-width:400px){
+  body{padding:14px 12px 40px;font-size:13px}
+  h1{font-size:22px}
+  h2{font-size:16px}
+  .properties{grid-template-columns:70px 1fr;font-size:11px}
+  .stat-val{font-size:20px}
+  .mix-grid{grid-template-columns:1fr}
+  .live-grid{grid-template-columns:1fr}
+  .cb-grid{grid-template-columns:1fr}
+  .dist-row{grid-template-columns:60px 1fr 40px 50px;gap:4px;font-size:10px}
+  .hop-node{width:28px;height:28px;font-size:14px}
+  .hop-wallet{width:6px;height:6px}
+  .origin .stat-val,.origin .o-val{font-size:18px}
+}
 </style>
 </head>
 <body>
@@ -270,8 +424,8 @@ The JLP vault's circuit breaker was set to trip at 5 billion units. The attacker
 <div class="hop-desc"><strong>The attacker wallet.</strong> One rabbit. $285M. Easy to find — it received money directly from Drift's vaults.</div>
 </div>
 </div>
-<div style="margin-left:100px;width:2px;height:12px;background:var(--border)"></div>
-<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);margin-bottom:4px;font-weight:600">↓ FIRST HOP</div>
+<div class="hop-conn-line"></div>
+<div class="hop-conn-label" style="color:var(--red)">↓ FIRST HOP</div>
 <div class="hop-row">
 <div class="hop-label" style="color:var(--orange)">Hop-1</div>
 <div class="hop-content">
@@ -280,19 +434,19 @@ The JLP vault's circuit breaker was set to trip at 5 billion units. The attacker
 <div class="hop-desc"><strong>27 getaway wallets.</strong> The rabbit splits into 27 copies. Like 27 cars leaving the same garage. Still traceable — one jump from the crime.</div>
 </div>
 </div>
-<div style="margin-left:100px;width:2px;height:12px;background:var(--border)"></div>
-<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green-text);margin-bottom:4px;font-weight:600">↓ SECOND HOP — THIS IS WHERE IT EXPLODES</div>
+<div class="hop-conn-line"></div>
+<div class="hop-conn-label" style="color:var(--green-text)">↓ SECOND HOP — THIS IS WHERE IT EXPLODES</div>
 <div class="hop-row">
 <div class="hop-label" style="color:var(--green-text)">Hop-2</div>
 <div class="hop-content">
-<div style="display:flex;gap:3px;flex-wrap:wrap;max-width:320px">
+<div style="display:flex;gap:3px;flex-wrap:wrap">
 <div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div><div class="hop-wallet" style="background:var(--green)"></div>
 </div>
 <div class="hop-desc"><strong>57,331+ wallets and climbing.</strong> Each green square = a real wallet. Investigators now chase 57,000+ addresses instead of 27. The sheer volume makes recovery nearly impossible.<br><br><span style="color:var(--red);font-weight:600">Still multiplying at ~590/min right now.</span></div>
 </div>
 </div>
-<div style="margin-left:100px;width:2px;height:12px;background:var(--border)"></div>
-<div style="margin-left:80px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue-text);margin-bottom:4px;font-weight:600">↓ CROSS-CHAIN — leaving the country</div>
+<div class="hop-conn-line"></div>
+<div class="hop-conn-label" style="color:var(--blue-text)">↓ CROSS-CHAIN — leaving the country</div>
 <div class="hop-row">
 <div class="hop-label" style="color:var(--blue-text)">Bridge</div>
 <div class="hop-content">
@@ -365,7 +519,7 @@ The laundering bots have been running for 34+ hours straight — no pauses, no d
 <div class="divider"></div>
 
 <h2>🔐 Why It Worked — Two Problems</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+<div class="two-col-grid">
 <div class="callout callout-red" style="flex-direction:column;margin:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">🧮</span><strong style="color:var(--red-text)">The Math Problem</strong></div><div>Every loop multiplies the trail. Send $1M to 1,000 wallets. Each forwards to 3 more: 3,000 wallets. Again: 9,000. Again: 27,000. After three loops through 57,000 wallets, the trail has millions of transactions. No team can trace them all before the money moves again.</div></div>
 <div class="callout callout-blue" style="flex-direction:column;margin:0"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="callout-icon">⏱️</span><strong style="color:var(--blue-text)">The Time Problem</strong></div><div>Every minute = more wallets, more noise. USDC can be frozen by Circle — but only before the attacker converts it. ETH cannot be frozen by anyone. The $225M already in ETH is beyond centralized recovery. The bots are buying time for the rest.</div></div>
 </div>
@@ -403,7 +557,7 @@ The attacker didn't use random bridges. They used Circle's own Cross-Chain Trans
 Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The attacker had 7 Ethereum wallets waiting to receive. Once the USDC arrived, it was immediately swapped to ETH on DEXes. Three concentration wallets now hold 105,380 ETH (~$225M) with zero outbound transactions. The money is sitting. Waiting.
 </div>
 
-<table class="notion-table">
+<div class="table-wrap"><table class="notion-table">
 <thead><tr><th>ETH Wallet</th><th>USDC via CCTP</th><th>ETH Held</th><th>Status</th></tr></thead>
 <tbody>
 <tr><td><span class="mention">0x55fe...2a</span></td><td>$210.6M (22 mints)</td><td>DEX swaps</td><td><span class="tag tag-red">Active</span></td></tr>
@@ -414,7 +568,7 @@ Every USDC burned on Solana via CCTP gets minted as fresh USDC on Ethereum. The 
 <tr><td><span class="mention">0xc106...7c</span></td><td>$21.3M</td><td>swapped</td><td><span class="tag tag-red">Active</span></td></tr>
 <tr><td><span class="mention">0xed41...2e</span></td><td>$9.4M</td><td>swapped</td><td><span class="tag tag-red">Active</span></td></tr>
 </tbody>
-</table>
+</table></div>
 
 <h3>ETH Concentration Wallets — Still Holding</h3>
 
