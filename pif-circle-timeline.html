@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Circle Timeline — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F6F3;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--orange:#D9730D;--orange-bg:#FADEC9;--orange-text:#C77D48;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--purple:#9065B0;--purple-bg:#E8DEEE;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361;--yellow:#DFAB01;--yellow-bg:#FFF3D4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:960px;margin:0 auto;padding:40px 48px 80px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);pointer-events:none;z-index:0;text-align:center}
+.wm-1{font-family:'Source Serif 4',serif;font-size:160px;font-weight:700;color:rgba(235,87,87,0.04);letter-spacing:14px;display:block}
+.wm-2{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:600;color:rgba(235,87,87,0.04);letter-spacing:8px;text-transform:uppercase;display:block;margin-top:-8px}
+
+/* Branded divider */
+.pif-div{text-align:center;margin:28px 0;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pif-div span{font-family:'Source Serif 4',serif;font-size:18px;font-weight:700;color:rgba(235,87,87,0.12);letter-spacing:8px}
+
+.bc{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:6px}.bc em{font-style:normal;color:var(--text2)}
+h1{font-size:32px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px;line-height:1.2}
+.sub{font-size:15px;color:var(--text2);font-style:italic;margin-bottom:16px}
+h2{font-size:20px;font-weight:700;margin:24px 0 8px}
+p{margin-bottom:12px;font-size:15px}
+.div{border-top:1px solid var(--border);margin:24px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;margin-right:3px}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.4}}
+.live{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);animation:lp 1.5s infinite;vertical-align:middle;margin-right:4px}
+
+/* Narration */
+.nr{background:var(--surface);border-left:3px solid var(--orange);padding:14px 18px;border-radius:0 6px 6px 0;margin:12px 0;font-size:14px;line-height:1.7}
+.nr-t{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nrr{border-left-color:var(--red)}.nrr .nr-t{color:var(--red)}
+.nrb{border-left-color:var(--blue)}.nrb .nr-t{color:var(--blue)}
+
+/* Timeline blocks */
+.tblock{display:flex;gap:16px;margin:10px 0;align-items:flex-start}
+.tblock-time{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--text2);width:90px;flex-shrink:0;padding-top:10px;text-align:right}
+.tblock-body{flex:1;background:var(--surface);border-radius:8px;padding:12px 16px;border-left:3px solid var(--border)}
+.tblock-body.hot{background:var(--red-bg);border-left-color:var(--red)}
+.tblock-body.warm{background:var(--yellow-bg);border-left-color:var(--yellow)}
+.tblock-body.blue{background:var(--blue-bg);border-left-color:var(--blue)}
+.tblock-body.purple{background:var(--purple-bg);border-left-color:var(--purple)}
+.tblock-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.tblock-event{font-size:14px;font-weight:600}
+.tblock-amount{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700}
+.tblock-detail{font-size:12px;color:var(--text2);line-height:1.5}
+.tblock-cumulative{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:4px}
+.tblock-tag{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;display:inline-block;margin-top:4px}
+
+/* Big number */
+.big{text-align:center;margin:20px 0;padding:16px;background:var(--red-bg);border-radius:8px;border:2px solid var(--red)}
+.big-n{font-family:'IBM Plex Mono',monospace;font-size:48px;font-weight:700;color:var(--red);line-height:1}
+.big-l{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--red-text);margin-top:4px}
+
+/* Stats */
+.stats{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:12px 0}
+.st{background:var(--bg);padding:10px 14px;flex:1;text-align:center}
+.st-v{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700}
+.st-l{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* Graph section */
+.graph{background:var(--surface);border-radius:10px;padding:16px;margin:12px 0}
+.graph-label{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+
+/* Callout */
+.co{display:flex;gap:10px;padding:12px 14px;border-radius:4px;margin:10px 0;font-size:13px;line-height:1.6}
+.co-i{font-size:16px;flex-shrink:0;margin-top:2px}
+
+/* Quote */
+.qb{border-left:3px solid var(--text);padding:4px 16px;margin:20px 0;font-size:17px;font-style:italic}
+
+.ft{margin-top:28px;padding-top:12px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);display:flex;justify-content:space-between}.ft span{color:var(--red);font-weight:600}
+
+/* Proof section */
+.proof-box{margin:32px 0;padding:32px 28px;background:var(--red-bg);border:3px solid var(--red);border-radius:12px;text-align:center}
+.proof-title{font-family:'Source Serif 4',serif;font-size:42px;font-weight:700;color:var(--red);line-height:1.1;margin-bottom:20px}
+.proof-grid{display:flex;gap:1px;background:var(--red);border-radius:8px;overflow:hidden;margin:16px 0}
+.proof-cell{background:var(--bg);padding:20px 16px;flex:1;text-align:center}
+.proof-num{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--red)}
+.proof-zero{font-family:'Source Serif 4',serif;font-size:28px;font-weight:700;color:var(--red);margin:20px 0 8px}
+
+@media(max-width:900px){body{padding:32px 32px 60px}h1{font-size:26px}.big-n{font-size:36px}.wm-1{font-size:120px;letter-spacing:10px}.wm-2{font-size:18px;letter-spacing:6px}.proof-title{font-size:34px}.proof-num{font-size:26px}}
+@media(max-width:680px){body{padding:20px 16px 48px;font-size:14px}h1{font-size:22px}h2{font-size:17px}.sub{font-size:12px}.tblock{flex-direction:column;gap:4px}.tblock-time{width:auto;text-align:left;padding-top:0;font-size:11px}.tblock-body{border-left-width:2px}.tblock-event{font-size:12px}.tblock-amount{font-size:12px}.tblock-detail{font-size:11px}.nr{padding:10px 14px;font-size:12px}.co{font-size:11px}.stats{flex-wrap:wrap}.st{min-width:30%;padding:8px 10px}.st-v{font-size:13px}.big-n{font-size:28px}.qb{font-size:14px}.ft{flex-direction:column;gap:4px;text-align:center}.wm-1{font-size:80px;letter-spacing:6px}.wm-2{font-size:14px;letter-spacing:4px}.proof-box{padding:20px 16px;margin:20px 0}.proof-title{font-size:26px}.proof-grid{flex-wrap:wrap}.proof-cell{min-width:45%;padding:14px 10px}.proof-num{font-size:24px}.proof-zero{font-size:22px}}
+@media(max-width:400px){body{padding:14px 12px 40px}h1{font-size:18px}.big-n{font-size:24px}.st{min-width:45%}.st-v{font-size:11px}.tblock-event{font-size:11px}.tblock-amount{font-size:11px}.tblock-detail{font-size:10px}.co{font-size:10px;padding:8px 10px}.qb{font-size:13px}.wm-1{font-size:60px;letter-spacing:4px}.wm-2{font-size:10px;letter-spacing:3px}.proof-box{padding:16px 12px}.proof-title{font-size:22px}.proof-cell{min-width:100%;padding:12px 8px}.proof-num{font-size:20px}.proof-zero{font-size:18px}}
+</style>
+</head>
+<body>
+
+<div class="wm"><span class="wm-1">PIF</span><span class="wm-2">Circle Timeline</span></div>
+
+<div class="bc"><em>PIF Research Labs</em> / Drift Protocol / Circle CCTP Timeline</div>
+
+<div style="font-size:48px;margin-bottom:4px">⏰</div>
+<h1>The Circle Timeline</h1>
+<p class="sub">Every dollar of stolen USDC was minted through Circle's own CCTP. They didn't need to detect it externally. It was happening inside their system. For 50 hours.</p>
+
+<div style="margin-bottom:16px">
+<span class="tag" style="background:var(--red-bg);color:var(--red-text)">On-Chain Verified</span>
+<span class="tag" style="background:var(--blue-bg);color:var(--blue-text)">377 CCTP Mints</span>
+<span class="tag" style="background:var(--yellow-bg);color:var(--orange)">All Times EDT</span>
+</div>
+
+<!-- Node graph: how CCTP works -->
+<div class="graph">
+<div class="graph-label">How Circle's own system moved the stolen money</div>
+<svg viewBox="0 0 780 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+<defs>
+<marker id="a1" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#529CCA"/></marker>
+<marker id="a2" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#EB5757"/></marker>
+</defs>
+
+<circle cx="70" cy="35" r="26" fill="#E8DEEE" stroke="#9065B0" stroke-width="2"/>
+<text x="70" y="42" text-anchor="middle" font-size="20">💵</text>
+<text x="70" y="72" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#9065B0" font-weight="600">STOLEN USDC</text>
+<text x="70" y="80" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">on Solana</text>
+
+<line x1="100" y1="35" x2="190" y2="35" stroke="#529CCA" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="145" y="28" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#337EA9" font-weight="600">CCTP BURN</text>
+
+<rect x="198" y="10" width="130" height="50" rx="10" fill="#D3E5EF" stroke="#529CCA" stroke-width="2"/>
+<text x="263" y="32" text-anchor="middle" font-size="16">🏛️</text>
+<text x="263" y="48" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#337EA9" font-weight="700">CIRCLE CCTP</text>
+<text x="263" y="72" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#337EA9">Circle's own smart contract</text>
+<text x="263" y="80" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">They see every transaction</text>
+
+<line x1="332" y1="35" x2="420" y2="35" stroke="#529CCA" stroke-width="2.5" marker-end="url(#a1)"/>
+<text x="376" y="28" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#337EA9" font-weight="600">CCTP MINT</text>
+
+<circle cx="455" cy="35" r="26" fill="#D3E5EF" stroke="#529CCA" stroke-width="2"/>
+<text x="455" y="42" text-anchor="middle" font-size="20">✨</text>
+<text x="455" y="72" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#337EA9" font-weight="600">FRESH USDC</text>
+<text x="455" y="80" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">on Ethereum</text>
+
+<line x1="485" y1="28" x2="560" y2="18" stroke="#D9730D" stroke-width="1.5" marker-end="url(#a2)"/>
+<line x1="485" y1="42" x2="560" y2="52" stroke="#9065B0" stroke-width="2" marker-end="url(#a2)"/>
+
+<circle cx="590" cy="18" r="16" fill="#FADEC9" stroke="#D9730D" stroke-width="1.5"/>
+<text x="590" y="23" text-anchor="middle" font-size="11">🐄</text>
+<text x="630" y="16" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#D9730D" font-weight="600">$125M → ETH</text>
+<text x="630" y="24" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">Unfreezable</text>
+
+<rect x="570" y="40" width="44" height="24" rx="6" fill="#E8DEEE" stroke="#9065B0" stroke-width="2"/>
+<text x="592" y="55" text-anchor="middle" font-size="12">🏧</text>
+<text x="630" y="50" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#9065B0" font-weight="700">$473M → Binance</text>
+<text x="630" y="58" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">Cashout</text>
+
+<rect x="690" y="12" width="80" height="44" rx="6" fill="#FBE4E4" stroke="#EB5757" stroke-width="1.5"/>
+<text x="730" y="30" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#C4554D" font-weight="700">CIRCLE</text>
+<text x="730" y="40" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#C4554D" font-weight="700">FROZE $0</text>
+<text x="730" y="50" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">377 mints · 50 hours</text>
+</svg>
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<h2>The Timeline</h2>
+
+<div class="nr nrb">
+<div class="nr-t">How to read this</div>
+Every block below is a moment when stolen USDC was minted on Ethereum through Circle's CCTP. The cumulative total shows how much stolen USDC had passed through Circle's system by that point. Red blocks are moments where Circle clearly had time to act. Yellow blocks are active conversion windows.
+</div>
+
+<!-- ====== APRIL 1 ====== -->
+
+<div class="tblock">
+<div class="tblock-time">APR 1<br>11:01 AM</div>
+<div class="tblock-body hot">
+<div class="tblock-head"><div class="tblock-event">🔥 First CCTP mint on Ethereum</div><div class="tblock-amount" style="color:var(--red)">$30M</div></div>
+<div class="tblock-detail">$30M USDC minted to 0xe69f. <strong>This is one hour before the drain.</strong> The attacker pre-positioned funds.</div>
+<div class="tblock-cumulative">Cumulative: $30M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--red);color:white">Before the exploit</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">12:05 PM</div>
+<div class="tblock-body hot">
+<div class="tblock-head"><div class="tblock-event">🔥 First CCTP burn on Solana</div><div class="tblock-amount" style="color:var(--red)">--</div></div>
+<div class="tblock-detail">The exit pipeline activates. USDC burned on Solana, will mint on Ethereum.</div>
+<div class="tblock-tag" style="background:var(--red);color:white">54 sec before drain</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">12:06 PM</div>
+<div class="tblock-body hot">
+<div class="tblock-head"><div class="tblock-event">🏦 Drift vaults drained</div><div class="tblock-amount" style="color:var(--red)">$233M</div></div>
+<div class="tblock-detail">$233M in 10 seconds. Full sweep continues for 12 minutes. $285M total.</div>
+<div class="tblock-tag" style="background:var(--red);color:white">10 second drain</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">12:00 - 4:00 PM</div>
+<div class="tblock-body blue">
+<div class="tblock-head"><div class="tblock-event">✨ CCTP mints continue arriving</div><div class="tblock-amount" style="color:var(--blue)">+$8M</div></div>
+<div class="tblock-detail">Smaller mints ($1-5M/hour) arrive across 0x65C3, 0xf70d, 0xf4e1. Stolen USDC flowing through Circle's contracts.</div>
+<div class="tblock-cumulative">Cumulative: $38M through Circle's system</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">4:00 - 8:00 PM</div>
+<div class="tblock-body warm">
+<div class="tblock-head"><div class="tblock-event">⏰ USDC sitting on Ethereum</div><div class="tblock-amount" style="color:var(--orange)">+$26M</div></div>
+<div class="tblock-detail">$5M/hour arriving. Meanwhile $86.4M being swapped to ETH through CowSwap. <strong>Freezable money becoming unfreezable money.</strong></div>
+<div class="tblock-cumulative">Cumulative: $64M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--yellow-bg);color:var(--orange)">Circle had 4 hours at $64M</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">8:00 PM - 12:00 AM</div>
+<div class="tblock-body">
+<div class="tblock-head"><div class="tblock-event">😶 Quiet period</div><div class="tblock-amount" style="color:var(--text3)">+$6M</div></div>
+<div class="tblock-detail">Small amounts. The attacker slows down overnight. USDC sitting. Circle could act.</div>
+<div class="tblock-cumulative">Cumulative: $70M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--red-bg);color:var(--red-text)">7 hour window — circle froze $0</div>
+</div>
+</div>
+
+<!-- ====== APRIL 2 ====== -->
+
+<div class="tblock">
+<div class="tblock-time">APR 2<br>12:00 - 7:00 AM</div>
+<div class="tblock-body">
+<div class="tblock-head"><div class="tblock-event">💤 Overnight trickle</div><div class="tblock-amount" style="color:var(--text3)">+$5M</div></div>
+<div class="tblock-detail">$100K-$1M/hour. Minimal activity. Stolen USDC still sitting on Ethereum from the day before.</div>
+<div class="tblock-cumulative">Cumulative: $75M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--red-bg);color:var(--red-text)">18 hours since exploit — no freeze</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">11:00 AM - 1:00 PM</div>
+<div class="tblock-body hot">
+<div class="tblock-head"><div class="tblock-event">🚨 Floodgates open</div><div class="tblock-amount" style="color:var(--red)">+$72M</div></div>
+<div class="tblock-detail"><strong>$26M, $31M, $16M in three consecutive hours.</strong> Massive CCTP mints. Circle's contracts processing stolen money at scale. 24 hours after the exploit.</div>
+<div class="tblock-cumulative">Cumulative: $148M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--red);color:white">24 hours — $148M — no freeze</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">1:00 PM - 12:00 AM</div>
+<div class="tblock-body">
+<div class="tblock-head"><div class="tblock-event">📊 Steady flow</div><div class="tblock-amount" style="color:var(--text2)">+$22M</div></div>
+<div class="tblock-detail">$300K-$6M/hour. CCTP mints continue. Stolen USDC flowing to DEXes and exchanges.</div>
+<div class="tblock-cumulative">Cumulative: $170M through Circle's system</div>
+</div>
+</div>
+
+<!-- ====== APRIL 3 ====== -->
+
+<div class="tblock">
+<div class="tblock-time">APR 3<br>12:00 - 4:00 AM</div>
+<div class="tblock-body hot">
+<div class="tblock-head"><div class="tblock-event">🚨🚨 The overnight sprint</div><div class="tblock-amount" style="color:var(--red)">+$294M</div></div>
+<div class="tblock-detail"><strong>$80M, $51M, $93M, $70M in four consecutive hours.</strong> Circle's CCTP minting $294M in stolen USDC in a single overnight sprint. 36 hours after the exploit. This USDC went directly to Binance.</div>
+<div class="tblock-cumulative">Cumulative: $474M through Circle's system</div>
+<div class="tblock-tag" style="background:var(--red);color:white">36 hours — $474M — no freeze</div>
+</div>
+</div>
+
+<div class="tblock">
+<div class="tblock-time">4:00 AM - now</div>
+<div class="tblock-body purple">
+<div class="tblock-head"><div class="tblock-event">🏧 Deposited to Binance</div><div class="tblock-amount" style="color:var(--purple)">$473M</div></div>
+<div class="tblock-detail">89 transactions to Binance hot wallets. Latest deposit: 1:23 PM ET. <strong>Pipeline still active.</strong></div>
+<div class="tblock-cumulative">Cumulative: $505M minted through Circle's system total</div>
+<div class="tblock-tag" style="background:var(--purple);color:white"><span class="live"></span>Still going</div>
+</div>
+</div>
+
+<!-- ====== THE PROOF: CIRCLE HAD TIME ====== -->
+<div class="proof-box">
+
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;color:var(--red);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">On-Chain Proof</div>
+
+<div class="proof-title">Circle Had Time.</div>
+
+<div class="proof-grid">
+<div class="proof-cell">
+<div style="font-size:28px;margin-bottom:4px">⏰</div>
+<div class="proof-num">4 hours</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text2);margin-top:4px">at $64M cumulative</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);margin-top:2px">Apr 1 · 12:06 PM → 4:00 PM ET</div>
+</div>
+<div class="proof-cell">
+<div style="font-size:28px;margin-bottom:4px">⏰</div>
+<div class="proof-num">7 hours</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text2);margin-top:4px">USDC sitting untouched</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);margin-top:2px">Apr 1 · 12:18 PM → 7:29 PM ET</div>
+</div>
+<div class="proof-cell">
+<div style="font-size:28px;margin-bottom:4px">⏰</div>
+<div class="proof-num">24 hours</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text2);margin-top:4px">at $148M cumulative</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);margin-top:2px">Apr 2 · 12:06 PM ET</div>
+</div>
+<div class="proof-cell">
+<div style="font-size:28px;margin-bottom:4px">⏰</div>
+<div class="proof-num">50 hours</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text2);margin-top:4px">at $505M cumulative</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);margin-top:2px">Apr 3 · ongoing</div>
+</div>
+</div>
+
+<div class="proof-zero">$0 frozen.</div>
+
+<div style="font-size:15px;color:var(--red-text);line-height:1.6;max-width:700px;margin:0 auto">
+Every dollar moved through Circle's own CCTP smart contracts. They had full visibility. The exploit was public within minutes. The attacker sat in USDC for hours between moves. Circle froze nothing. Not at 4 hours. Not at 7 hours. Not at 24 hours. Not at 50 hours.
+</div>
+
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:16px">For context: Tether froze $1.26B across 4,163 addresses in 2025. Circle froze $109M across 372 addresses in all of 2023–2025.</div>
+
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<div class="big">
+<div class="big-n">$505,000,000</div>
+<div class="big-l">Total stolen USDC minted through Circle's own CCTP · 377 mints · 50+ hours · $0 frozen</div>
+</div>
+
+<div class="stats">
+<div class="st"><div class="st-v" style="color:var(--red)">$0</div><div class="st-l">Circle froze</div></div>
+<div class="st"><div class="st-v" style="color:var(--blue)">377</div><div class="st-l">CCTP mints</div></div>
+<div class="st"><div class="st-v">50+ hrs</div><div class="st-l">Duration</div></div>
+<div class="st"><div class="st-v" style="color:var(--purple)">$473M</div><div class="st-l">To Binance</div></div>
+<div class="st"><div class="st-v" style="color:var(--orange)">$125M</div><div class="st-l">→ ETH</div></div>
+</div>
+
+<div class="co" style="background:var(--yellow-bg)"><div class="co-i">💡</div><div>Circle's CCTP is their own product. Every burn and mint runs through their smart contracts. They have full visibility into every transaction. This wasn't an external exploit they had to detect. It was happening inside their system for 50+ hours.</div></div>
+
+<div class="co" style="background:var(--red-bg)"><div class="co-i">📊</div><div><strong>For context:</strong> Tether froze $1.26B across 4,163 addresses in 2025. Circle froze $109M across 372 addresses in all of 2023-2025. During an active, publicized exploit that moved $505M through their own contracts — they froze $0.</div></div>
+
+<div class="qb">The question isn't whether Circle had time. The data shows they had 50 hours. The question is why $505 million in flagged stolen USDC moved through their own system untouched.</div>
+
+<div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain · All times EDT · April 3, 2026</div></div>
+
+</body>
+</html>
