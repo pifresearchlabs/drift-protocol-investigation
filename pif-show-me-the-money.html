@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Show Me The Money — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F6F3;--surface2:#F1F0ED;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--orange:#D9730D;--orange-bg:#FADEC9;--orange-text:#C77D48;--purple:#9065B0;--purple-bg:#E8DEEE;--yellow:#DFAB01;--yellow-bg:#FFF3D4;--cyan:#0891B2;--cyan-bg:#D4F0F7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:960px;margin:0 auto;padding:40px 48px 80px;line-height:1.7;font-size:16px;overflow-wrap:break-word;word-wrap:break-word}
+
+/* Watermark */
+.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);pointer-events:none;z-index:0;text-align:center}
+.wm-line1{font-family:'Source Serif 4',serif;font-size:140px;font-weight:700;color:rgba(235,87,87,0.025);letter-spacing:12px;display:block}
+.wm-line2{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;color:rgba(235,87,87,0.025);letter-spacing:8px;text-transform:uppercase;display:block;margin-top:-10px}
+
+/* Header */
+.bc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:6px}.bc span{color:var(--text2)}
+h1{font-family:'Source Serif 4',serif;font-size:36px;font-weight:700;letter-spacing:-.5px;line-height:1.2;margin-bottom:4px}
+.sub{font-size:16px;color:var(--text2);font-style:italic;margin-bottom:20px}
+h2{font-size:22px;font-weight:700;margin:28px 0 10px;letter-spacing:-.3px}
+h3{font-size:16px;font-weight:600;margin:20px 0 8px}
+p{margin-bottom:12px;font-size:15px}
+
+/* Properties */
+.props{display:grid;grid-template-columns:120px 1fr;border-top:1px solid var(--border);margin-bottom:24px;font-size:13px}
+.pl{padding:6px 0;color:var(--text2);font-family:'IBM Plex Mono',monospace;font-size:11px;border-bottom:1px solid var(--border)}
+.pv{padding:6px 0;border-bottom:1px solid var(--border)}
+
+/* Tags */
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;margin-right:3px;margin-bottom:2px}
+.tr{background:var(--red-bg);color:var(--red-text)}.tg{background:var(--green-bg);color:var(--green-text)}.tb{background:var(--blue-bg);color:var(--blue-text)}.to{background:var(--orange-bg);color:var(--orange-text)}.tp{background:var(--purple-bg);color:var(--purple)}.tc{background:var(--cyan-bg);color:var(--cyan)}.ty{background:var(--yellow-bg);color:var(--orange)}
+.mn{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--surface2);padding:2px 5px;border-radius:3px;color:var(--text2);word-break:break-all}
+.div{border-top:1px solid var(--border);margin:24px 0}
+@keyframes lp{0%,100%{opacity:1}50%{opacity:.4}}
+.live{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);animation:lp 1.5s infinite;vertical-align:middle;margin-right:4px}
+
+/* Grids */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:8px 0}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:8px 0}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:8px 0}
+.gc{background:var(--bg);padding:16px 18px}
+.gc-t{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.gc-b{font-family:'IBM Plex Mono',monospace;font-size:24px;font-weight:700;line-height:1}
+.gc-u{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px}
+.gc-v{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;margin-top:4px}
+.gc-d{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.5}
+
+/* Narration */
+.nr{background:var(--surface);border-left:3px solid var(--orange);padding:14px 18px;border-radius:0 6px 6px 0;margin:10px 0;font-size:14px;line-height:1.7}
+.nr-t{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nrr{border-left-color:var(--red)}.nrr .nr-t{color:var(--red)}
+.nrb{border-left-color:var(--blue)}.nrb .nr-t{color:var(--blue)}
+.nrg{border-left-color:var(--green)}.nrg .nr-t{color:var(--green)}
+.nrp{border-left-color:var(--purple)}.nrp .nr-t{color:var(--purple)}
+
+/* Callout */
+.co{display:flex;gap:10px;padding:12px 14px;border-radius:4px;margin:8px 0;font-size:13px;line-height:1.6}
+.co-i{font-size:16px;flex-shrink:0;margin-top:2px}
+
+/* Phase headers */
+.ph{display:flex;align-items:center;gap:10px;margin:28px 0 12px}
+.ph-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ph-name{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+.ph-line{flex:1;height:1px;background:var(--border)}
+
+/* Connector */
+.cn{display:flex;align-items:center;gap:8px;padding:4px 0 4px 20px}
+.cn-line{width:2px;height:24px;border-radius:1px}
+.cn-text{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.5px;text-transform:uppercase}
+
+/* Table */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0}
+.nt{width:100%;border-collapse:collapse;font-size:13px}
+.nt th{text-align:left;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:500}
+.nt td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px}
+.nt tr:hover{background:var(--surface)}
+
+/* Quote */
+.qb{border-left:3px solid var(--text);padding:4px 16px;margin:16px 0;font-size:17px;font-style:italic}
+
+/* Totals */
+.totals{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:20px 0}
+.tt{background:var(--bg);padding:10px 14px;flex:1;text-align:center}
+.tt-v{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700}
+.tt-l{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* Big number */
+.big{text-align:center;margin:20px 0}
+.big-n{font-family:'IBM Plex Mono',monospace;font-size:48px;font-weight:700;line-height:1}
+.big-l{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* Footer */
+.ft{margin-top:28px;padding-top:12px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);display:flex;justify-content:space-between}
+.ft span{color:var(--red);font-weight:600}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width:900px){
+  body{padding:32px 32px 60px}
+  h1{font-size:30px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .gc-b{font-size:22px}
+  .big-n{font-size:38px}
+  .wm-line1{font-size:100px}
+  .wm-line2{font-size:20px}
+}
+@media(max-width:680px){
+  body{padding:20px 16px 48px;font-size:14px}
+  h1{font-size:24px;letter-spacing:-.3px}
+  h2{font-size:18px;margin:20px 0 8px}
+  .sub{font-size:13px;margin-bottom:14px}
+  .bc{font-size:10px}
+  .props{grid-template-columns:90px 1fr;font-size:12px}
+  .pl{font-size:10px;padding:5px 0}
+  .pv{padding:5px 0}
+  .tag{font-size:9px;padding:2px 6px}
+  .g4,.g3{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .gc{padding:12px 14px}
+  .gc-b{font-size:20px}
+  .gc-t{font-size:8px}
+  .gc-d{font-size:10px}
+  .nr{padding:10px 14px;font-size:12px;line-height:1.6}
+  .nr-t{font-size:9px}
+  .co{font-size:11px;padding:10px 12px;gap:8px}
+  .co-i{font-size:14px}
+  .ph-name{font-size:9px}
+  .cn-text{font-size:8px}
+  .nt{min-width:500px}
+  .nt td,.nt th{padding:5px 8px;font-size:10px}
+  .qb{font-size:14px;padding:4px 12px}
+  .totals{flex-wrap:wrap}
+  .tt{min-width:30%;padding:8px 10px}
+  .tt-v{font-size:12px}
+  .big-n{font-size:30px}
+  .big-l{font-size:9px}
+  .ft{flex-direction:column;gap:4px;text-align:center}
+  .wm-line1{font-size:70px;letter-spacing:6px}
+  .wm-line2{font-size:14px;letter-spacing:4px}
+  .div{margin:18px 0}
+}
+@media(max-width:400px){
+  body{padding:14px 12px 40px;font-size:13px}
+  h1{font-size:20px}
+  h2{font-size:16px}
+  .gc-b{font-size:18px}
+  .big-n{font-size:24px}
+  .props{grid-template-columns:70px 1fr;font-size:11px}
+  .tt{min-width:45%}
+  .wm-line1{font-size:50px}
+  .wm-line2{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="wm">
+<span class="wm-line1">PIF</span>
+<span class="wm-line2">Show Me The Money</span>
+</div>
+
+<div class="bc"><span>PIF Research Labs</span> / Post-Heist Forensics / Drift Protocol</div>
+
+<div style="font-size:48px;margin-bottom:6px">💰</div>
+<h1>Show Me The Money</h1>
+<p class="sub">$285M stolen 48 hours ago. This is where every dollar sits right now.</p>
+
+<div class="props">
+<div class="pl">Report</div><div class="pv"><span class="tag tr">Post-Heist Fund Location</span></div>
+<div class="pl">As of</div><div class="pv">April 3, 2026 · 16:38 UTC <span class="tag tr"><span class="live"></span>Live</span></div>
+<div class="pl">Subject</div><div class="pv">Drift Protocol Exploit — April 1, 2026</div>
+<div class="pl">Chains</div><div class="pv"><span class="tag tp">Solana</span> <span class="tag tb">Ethereum</span> <span class="tag tg">BSC</span> <span class="tag to">Binance</span> <span class="tag tc">OKX</span></div>
+<div class="pl">Status</div><div class="pv"><strong>Conversion complete. Cashout accelerating. Obfuscation ongoing.</strong></div>
+</div>
+
+<div class="div"></div>
+
+<!-- THE ANSWER -->
+<div class="nr nrr">
+<div class="nr-t">The short answer</div>
+The heist is over. The getaway is accelerating. The attacker converted $285M in mixed tokens into ETH and USDC, bridged it to Ethereum via Circle's own CCTP, swapped it on DEXes, and parked $278M in four wallets that nobody can freeze. Today, $303M USDC was deposited directly into Binance. The CCTP pipeline that we reported as slowing down yesterday has restarted. The last Solana bot that was decelerating has sped back up. This is not winding down. It's ramping up.
+</div>
+
+<div class="div"></div>
+
+<!-- ====== PHASE 1: THE VAULT ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--red)"></div><div class="ph-name" style="color:var(--red)">The ETH Vault — $278M Parked. Zero Outbound.</div><div class="ph-line"></div></div>
+
+<div class="nr nrb">
+<div class="nr-t">What this is</div>
+Four Ethereum wallets hold 130,262 ETH. Not one has sent a single outbound transaction. ETH cannot be frozen by Circle, by any exchange, or by any government. This is the attacker's vault. Drift sent on-chain messages to all four wallets on April 3 at 05:17 UTC. Three of these wallets were already in our investigation before Drift messaged them. The fourth (0xD3FE) is newly identified.
+</div>
+
+<div class="g4">
+<div class="gc" style="border-top:3px solid var(--red)">
+<div class="gc-t" style="color:var(--red)">Wallet 1</div>
+<div class="gc-b" style="color:var(--text)">56,568 ETH</div>
+<div class="gc-v" style="color:var(--red)">~$121M</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px">0x0FE3b690...</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--red);font-weight:600;margin-top:3px">ZERO OUTBOUND</div>
+<div class="gc-d">37 inbound txns. Last: Apr 3 10:35. Drift messaged at 05:25.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--orange)">
+<div class="gc-t" style="color:var(--orange)">Wallet 2</div>
+<div class="gc-b" style="color:var(--text)">25,715 ETH</div>
+<div class="gc-v" style="color:var(--orange)">~$55M</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px">0xAa843eD6...</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--red);font-weight:600;margin-top:3px">ZERO OUTBOUND</div>
+<div class="gc-d">23 inbound txns. Last: Apr 2 14:33. Drift messaged at 05:17.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--orange)">
+<div class="gc-t" style="color:var(--orange)">Wallet 3</div>
+<div class="gc-b" style="color:var(--text)">24,882 ETH</div>
+<div class="gc-v" style="color:var(--orange)">~$53M</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px">0xD3FEEd5D...</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--red);font-weight:600;margin-top:3px">ZERO OUTBOUND</div>
+<div class="gc-d">17 inbound txns. Last: Apr 2 14:13. Drift messaged at 05:20. <span style="color:var(--red);font-weight:600">NEW — not in prior reports.</span></div>
+</div>
+<div class="gc" style="border-top:3px solid var(--orange)">
+<div class="gc-t" style="color:var(--orange)">Wallet 4</div>
+<div class="gc-b" style="color:var(--text)">23,097 ETH</div>
+<div class="gc-v" style="color:var(--orange)">~$49M</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-top:6px">0xbDdAE987...</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--red);font-weight:600;margin-top:3px">ZERO OUTBOUND</div>
+<div class="gc-d">18 inbound txns. Last: Apr 2 14:28. Drift messaged at 05:23.</div>
+</div>
+</div>
+
+<div class="big"><div class="big-n" style="color:var(--red)">130,262 ETH</div><div class="big-l">~$278M · Four wallets · Unfreezable · Zero outbound</div></div>
+
+<div class="co" style="background:var(--red-bg)"><div class="co-i">⚠️</div><div><strong>Drift sent on-chain messages to all four wallets this morning.</strong> "We are ready to speak. Please reach out via Blockscan chat." Three of these four wallets were already identified in our investigation before the messages were sent.</div></div>
+
+<div class="cn"><div class="cn-line" style="background:var(--red)"></div><div class="cn-text" style="color:var(--red)">$278M parked. But the cashout is happening through other routes.</div></div>
+
+<!-- ====== PHASE 2: BINANCE CASHOUT ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--purple)"></div><div class="ph-name" style="color:var(--purple)">The Cashout — $303M to Binance Today <span class="live"></span></div><div class="ph-line"></div></div>
+
+<div class="nr nrp">
+<div class="nr-t">Breaking: CCTP pipeline restarted</div>
+The CCTP pipeline that we reported as slowing down yesterday reactivated today. Wallet 0xe69f received $300M in fresh CCTP mints this morning (30 mints, up to 07:55 UTC), then forwarded $303M USDC directly to Binance across 39 transactions. This is not a test deposit. This is a full-scale cashout operation running through a centralized exchange.
+</div>
+
+<div class="g3">
+<div class="gc" style="border-top:3px solid var(--purple)">
+<div class="gc-t" style="color:var(--purple)">Binance Deposits (today)</div>
+<div class="gc-b" style="color:var(--purple)">$303M USDC</div>
+<div class="gc-u">39 transactions to Binance hot wallet</div>
+<div class="gc-d">From 0xe69f via CCTP mints. Destination: 0xee7ae8 (labeled Binance). Active through 09:33 UTC.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--purple)">
+<div class="gc-t" style="color:var(--purple)">OKX Deposits (prior)</div>
+<div class="gc-b" style="color:var(--purple)">$34.7M USDC</div>
+<div class="gc-u">21 transactions from CCTP hub</div>
+<div class="gc-d">From 0x65C3 minting hub. Active Apr 1-2. First confirmed CEX cashout route.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--purple)">
+<div class="gc-t" style="color:var(--purple)">Binance (prior ETH deposit)</div>
+<div class="gc-b" style="color:var(--purple)">12,000 ETH</div>
+<div class="gc-u">~$25.7M · single deposit</div>
+<div class="gc-d">From 0xe69f on Apr 2 at 08:39 UTC. Same wallet now sending $303M USDC today.</div>
+</div>
+</div>
+
+<div class="co" style="background:var(--purple-bg)"><div class="co-i">🏦</div><div><strong>Total confirmed CEX deposits: $375M+</strong> across Binance and OKX. $303M of that happened today alone. Whether these exchanges freeze the accounts determines whether hundreds of millions are recovered or gone.</div></div>
+
+<div class="cn"><div class="cn-line" style="background:var(--blue)"></div><div class="cn-text" style="color:var(--blue)">CCTP mints are still active — new wallets receiving fresh USDC today</div></div>
+
+<!-- ====== PHASE 3: CCTP PIPELINE STATUS ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--blue)"></div><div class="ph-name" style="color:var(--blue-text)">CCTP Pipeline — Not Slowing Down <span class="live"></span></div><div class="ph-line"></div></div>
+
+<div class="nr nrb">
+<div class="nr-t">What changed since yesterday</div>
+Yesterday we reported the CCTP bridge pipeline was winding down. That was wrong. Today, new CCTP mints appeared across multiple wallets. 0xe69f alone received $300M in fresh mints. Our known hub 0x65C3 received another $12M. A previously unseen wallet (0xf70d) received $13.2M across 27 mints. The attacker is still actively bridging USDC from Solana to Ethereum and converting or cashing out on arrival.
+</div>
+
+<div class="tw"><table class="nt">
+<thead><tr><th>Wallet</th><th>CCTP Mints Today</th><th>Amount</th><th>Destination</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><span class="mn">0xe69f...3abb</span></td><td>30 mints</td><td style="color:var(--purple);font-weight:700">$300M USDC</td><td>Binance ($303M)</td><td><span class="tag tp">Cashing out</span></td></tr>
+<tr><td><span class="mn">0xf70d...3dbef</span></td><td>27 mints</td><td style="color:var(--blue);font-weight:600">$13.2M</td><td>Unknown</td><td><span class="tag tr"><span class="live"></span>New wallet</span></td></tr>
+<tr><td><span class="mn">0x65C3...15d8</span></td><td>14 mints</td><td style="color:var(--blue);font-weight:600">$12.0M</td><td>OKX / bridges</td><td><span class="tag to">Active</span></td></tr>
+<tr><td><span class="mn">0xf4e1...d8cf</span></td><td>6 mints</td><td style="font-weight:600">$6.7M</td><td>Unknown</td><td><span class="tag tr"><span class="live"></span>New wallet</span></td></tr>
+</tbody>
+</table></div>
+
+<div class="cn"><div class="cn-line" style="background:var(--green)"></div><div class="cn-text" style="color:var(--green-text)">Meanwhile on Solana — the last bot accelerated</div></div>
+
+<!-- ====== PHASE 4: SOLANA BOT ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--green)"></div><div class="ph-name" style="color:var(--green-text)">Solana — The Bot Accelerated <span class="live"></span></div><div class="ph-line"></div></div>
+
+<div class="nr nrg">
+<div class="nr-t">What changed since yesterday</div>
+Yesterday MfDuWe was decelerating from 6,700 txns/hour to 2,800. Today it sped back up. It hit 7,496 transactions in a single hour (12:00 UTC) and moved $11.4M USDC in that hour alone. The bot has now executed 353,408 total transactions, recycled $337M USDC through 2,536 wallets, and shows no signs of stopping. Latest confirmed activity: April 3 at 16:38 UTC.
+</div>
+
+<div class="g4">
+<div class="gc"><div class="gc-t" style="color:var(--green-text)">Bot</div><div class="gc-b" style="color:var(--green)">MfDuWe</div><div class="gc-u">Only active bot</div></div>
+<div class="gc"><div class="gc-t">Total txns</div><div class="gc-b">353,408</div><div class="gc-u">up from 263K yesterday</div></div>
+<div class="gc"><div class="gc-t">Wallets</div><div class="gc-b">2,536</div><div class="gc-u">up from 1,813 yesterday</div></div>
+<div class="gc"><div class="gc-t" style="color:var(--orange)">Peak today</div><div class="gc-b" style="color:var(--orange)">7,496</div><div class="gc-u">txns in single hour (12:00)</div></div>
+</div>
+
+<div class="co" style="background:var(--green-bg)"><div class="co-i">📈</div><div><strong>$337M USDC recycled through 2,536 wallets.</strong> This is not new value leaving the vaults. The same money is being washed through fresh addresses to add noise. But the bot is accelerating, not winding down. It moved $11.4M in a single hour today.</div></div>
+
+<div class="div"></div>
+
+<!-- ====== PHASE 5: DEX CONVERSION ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--orange)"></div><div class="ph-name" style="color:var(--orange)">The Conversion Pipeline — How Freezable Became Unfreezable</div><div class="ph-line"></div></div>
+
+<div class="g3">
+<div class="gc" style="border-top:3px solid var(--orange)">
+<div class="gc-t" style="color:var(--orange)">CowSwap</div>
+<div class="gc-b" style="color:var(--orange)">$86.4M</div>
+<div class="gc-u">USDC swapped to ETH</div>
+<div class="gc-d">From single wallet 0xad38. 39 swap transactions. No KYC required.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--orange)">
+<div class="gc-t" style="color:var(--orange)">0x Settler</div>
+<div class="gc-b" style="color:var(--orange)">$39M</div>
+<div class="gc-u">USDC swapped to ETH</div>
+<div class="gc-d">From 0xef43 and 0xc106. 62 transactions combined.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--text3)">
+<div class="gc-t" style="color:var(--text2)">Other Bridges</div>
+<div class="gc-b">$25.9M</div>
+<div class="gc-u">USDT0 + CCTP re-bridge</div>
+<div class="gc-d">$12.9M via USDT0 to other chains. $13M back through CCTP. Money is moving across chains to avoid single-chain tracing.</div>
+</div>
+</div>
+
+<div class="div"></div>
+
+<!-- ====== WHAT TO WATCH ====== -->
+<div class="ph"><div class="ph-dot" style="background:var(--text)"></div><div class="ph-name" style="color:var(--text)">What To Watch Next</div><div class="ph-line"></div></div>
+
+<div class="g3">
+<div class="gc" style="border-top:3px solid var(--red)">
+<div class="gc-t" style="color:var(--red)">Watch 1: The four ETH wallets</div>
+<div class="gc-d">Any outbound from 0x0FE3, 0xAa84, 0xD3FE, or 0xbDdA means the next phase has started. 130,262 ETH has sat motionless. When it moves, the endgame begins.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--purple)">
+<div class="gc-t" style="color:var(--purple)">Watch 2: Binance response</div>
+<div class="gc-d">$303M USDC deposited today. $12K ETH deposited yesterday. If Binance freezes, hundreds of millions are recovered. If they don't, the attacker has a working cashout at scale.</div>
+</div>
+<div class="gc" style="border-top:3px solid var(--green)">
+<div class="gc-t" style="color:var(--green-text)">Watch 3: New CCTP wallets</div>
+<div class="gc-d">0xf70d and 0xf4e1 are new wallets receiving fresh CCTP mints today. The pipeline isn't done. New endpoints are being created. The attacker is still bridging.</div>
+</div>
+</div>
+
+<div class="div"></div>
+
+<div class="qb">The vault holds $278M. The cashout has moved $375M+ through exchanges. The bot is still running. The CCTP pipeline restarted. The heist was 48 hours ago. The getaway is still in progress.</div>
+
+<div class="totals">
+<div class="tt"><div class="tt-v" style="color:var(--red)">$278M</div><div class="tt-l">ETH Vault</div></div>
+<div class="tt"><div class="tt-v" style="color:var(--purple)">$375M+</div><div class="tt-l">CEX Deposits</div></div>
+<div class="tt"><div class="tt-v" style="color:var(--orange)">$125M+</div><div class="tt-l">DEX Swapped</div></div>
+<div class="tt"><div class="tt-v" style="color:var(--green)">353K</div><div class="tt-l">Bot Txns</div></div>
+<div class="tt"><div class="tt-v" style="color:var(--blue)">$331M+</div><div class="tt-l">CCTP Today</div></div>
+<div class="tt"><div class="tt-v" style="color:var(--red)"><span class="live"></span>Active</div><div class="tt-l">Right Now</div></div>
+</div>
+
+<div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain · April 3, 2026</div></div>
+
+</body>
+</html>
