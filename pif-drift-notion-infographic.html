@@ -8,7 +8,7 @@
 <style>
 :root{--bg:#FFFFFF;--surface:#F7F6F3;--surface2:#F1F0ED;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--orange:#D9730D;--orange-bg:#FADEC9;--orange-text:#C77D48;--purple:#9065B0;--purple-bg:#E8DEEE;--yellow:#DFAB01;--yellow-bg:#FFF3D4}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:900px;margin:0 auto;padding:40px 60px 80px;line-height:1.7;font-size:16px}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:900px;margin:0 auto;padding:40px 60px 80px;line-height:1.7;font-size:16px;overflow-wrap:break-word;word-wrap:break-word}
 .breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text3);margin-bottom:8px}.breadcrumb span{color:var(--text2)}
 .page-icon{font-size:60px;margin-bottom:8px}
 h1{font-family:'Source Serif 4',serif;font-size:40px;font-weight:700;letter-spacing:-.5px;line-height:1.2;margin-bottom:4px}
@@ -76,8 +76,8 @@ p{margin-bottom:12px}
 .live-val{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:600;line-height:1.2}
 /* Param table */
 .param-grid{display:grid;grid-template-columns:180px 100px 1fr;gap:0;margin:12px 0;font-size:14px}
-.param-name{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);font-weight:500;padding:8px 0;border-bottom:1px solid var(--border)}
-.param-val{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;padding:8px 0;border-bottom:1px solid var(--border)}
+.param-name{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);font-weight:500;padding:8px 0;border-bottom:1px solid var(--border);overflow-wrap:break-word;word-break:break-word}
+.param-val{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;padding:8px 0;border-bottom:1px solid var(--border);overflow-wrap:break-word;word-break:break-word}
 .param-explain{font-size:13px;color:var(--text2);padding:8px 0;border-bottom:1px solid var(--border)}
 /* CB grid */
 .cb-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0}
@@ -105,145 +105,145 @@ p{margin-bottom:12px}
 
 /* ===== RESPONSIVE: TABLET (max 900px) ===== */
 @media(max-width:900px){
-  body{padding:32px 32px 60px;font-size:15px}
-  h1{font-size:32px}
-  h2{font-size:20px;margin:24px 0 10px}
-  .subtitle{font-size:16px}
-  .stat-val{font-size:22px}
-  .mix-grid{grid-template-columns:repeat(3,1fr)}
-  .cb-grid{grid-template-columns:repeat(3,1fr)}
-  .live-grid{grid-template-columns:repeat(2,1fr)}
-  .conc-grid{grid-template-columns:repeat(2,1fr)}
-  .param-grid{grid-template-columns:140px 80px 1fr}
+ body{padding:32px 32px 60px;font-size:15px}
+ h1{font-size:32px}
+ h2{font-size:20px;margin:24px 0 10px}
+ .subtitle{font-size:16px}
+ .stat-val{font-size:22px}
+ .mix-grid{grid-template-columns:repeat(3,1fr)}
+ .cb-grid{grid-template-columns:repeat(3,1fr)}
+ .live-grid{grid-template-columns:repeat(2,1fr)}
+ .conc-grid{grid-template-columns:repeat(2,1fr)}
+ .param-grid{grid-template-columns:140px 80px 1fr}
 }
 
 /* ===== RESPONSIVE: MOBILE (max 680px) ===== */
 @media(max-width:680px){
-  body{padding:20px 16px 48px;font-size:14px;max-width:100%}
-  h1{font-size:26px;letter-spacing:-0.3px}
-  h2{font-size:18px;margin:20px 0 8px}
-  h3{font-size:15px;margin:16px 0 6px}
-  .subtitle{font-size:14px;margin-bottom:16px}
-  .breadcrumb{font-size:10px}
-  .page-icon{font-size:40px;margin-bottom:4px}
+ body{padding:20px 16px 48px;font-size:14px;max-width:100%}
+ h1{font-size:26px;letter-spacing:-0.3px}
+ h2{font-size:18px;margin:20px 0 8px}
+ h3{font-size:15px;margin:16px 0 6px}
+ .subtitle{font-size:14px;margin-bottom:16px}
+ .breadcrumb{font-size:10px}
+ .page-icon{font-size:40px;margin-bottom:4px}
 
-  /* Properties table */
-  .properties{grid-template-columns:90px 1fr;font-size:12px;margin-bottom:20px}
-  .prop-label{font-size:10px;padding:6px 0}
-  .prop-value{padding:6px 0}
-  .tag{font-size:9px;padding:2px 6px;margin-right:2px;margin-bottom:2px}
-  .mention{font-size:10px;padding:1px 4px}
+ /* Properties table */
+ .properties{grid-template-columns:90px 1fr;font-size:12px;margin-bottom:20px}
+ .prop-label{font-size:10px;padding:6px 0}
+ .prop-value{padding:6px 0}
+ .tag{font-size:9px;padding:2px 6px;margin-right:2px;margin-bottom:2px}
+ .mention{font-size:10px;padding:1px 4px}
 
-  /* Stat grids — single column */
-  .stat-grid{grid-template-columns:1fr}
-  .stat-val{font-size:22px}
-  .stat-label{font-size:10px}
-  .stat-explain{font-size:11px}
-  .stat-cell{padding:12px 16px}
+ /* Stat grids — single column */
+ .stat-grid{grid-template-columns:1fr}
+ .stat-val{font-size:22px}
+ .stat-label{font-size:10px}
+ .stat-explain{font-size:11px}
+ .stat-cell{padding:12px 16px}
 
-  /* Callouts */
-  .callout{padding:10px 12px;font-size:12px;gap:8px;line-height:1.5}
-  .callout-icon{font-size:16px}
+ /* Callouts */
+ .callout{padding:10px 12px;font-size:12px;gap:8px;line-height:1.5}
+ .callout-icon{font-size:16px}
 
-  /* Narration blocks */
-  .narration{padding:12px 14px;font-size:12px;line-height:1.6;margin:12px 0}
-  .narration-title{font-size:9px;letter-spacing:1px;margin-bottom:4px}
+ /* Narration blocks */
+ .narration{padding:12px 14px;font-size:12px;line-height:1.6;margin:12px 0}
+ .narration-title{font-size:9px;letter-spacing:1px;margin-bottom:4px}
 
-  /* Hop illustration */
-  .hop-illustration{padding:16px 14px;margin:12px 0}
-  .hop-row{flex-direction:column;gap:6px;margin-bottom:14px}
-  .hop-label{width:auto;padding-top:0;font-size:10px}
-  .hop-content{flex-direction:column;gap:4px}
-  .hop-desc{margin-left:0;max-width:100%;font-size:11px;line-height:1.5}
-  .hop-node{width:32px;height:32px;font-size:16px}
-  .hop-wallet{width:7px;height:7px}
-  .hop-conn-line{margin-left:20px;height:10px}
-  .hop-conn-label{margin-left:16px;font-size:10px}
+ /* Hop illustration */
+ .hop-illustration{padding:16px 14px;margin:12px 0}
+ .hop-row{flex-direction:column;gap:6px;margin-bottom:14px}
+ .hop-label{width:auto;padding-top:0;font-size:10px}
+ .hop-content{flex-direction:column;gap:4px}
+ .hop-desc{margin-left:0;max-width:100%;font-size:11px;line-height:1.5}
+ .hop-node{width:32px;height:32px;font-size:16px}
+ .hop-wallet{width:7px;height:7px}
+ .hop-conn-line{margin-left:20px;height:10px}
+ .hop-conn-label{margin-left:16px;font-size:10px}
 
-  /* Distribution rows */
-  .dist-row{grid-template-columns:70px 1fr 50px 60px;gap:6px;font-size:11px;padding:6px 0}
-  .dist-row-header{font-size:9px}
-  .dist-label{font-size:11px}
-  .dist-bar{font-size:8px;padding-left:4px;min-width:20px}
-  .dist-bar-bg{height:20px}
-  .dist-num{font-size:11px}
-  .dist-usd{font-size:10px}
+ /* Distribution rows */
+ .dist-row{grid-template-columns:70px 1fr 50px 60px;gap:6px;font-size:11px;padding:6px 0}
+ .dist-row-header{font-size:9px}
+ .dist-label{font-size:11px}
+ .dist-bar{font-size:8px;padding-left:4px;min-width:20px}
+ .dist-bar-bg{height:20px}
+ .dist-num{font-size:11px}
+ .dist-usd{font-size:10px}
 
-  /* Mix grid */
-  .mix-grid{grid-template-columns:repeat(2,1fr)}
-  .mix-val{font-size:18px}
-  .mix-token{font-size:10px}
-  .mix-detail{font-size:9px}
-  .mix-cell{padding:10px 12px}
+ /* Mix grid */
+ .mix-grid{grid-template-columns:repeat(2,1fr)}
+ .mix-val{font-size:18px}
+ .mix-token{font-size:10px}
+ .mix-detail{font-size:9px}
+ .mix-cell{padding:10px 12px}
 
-  /* Concentration grid */
-  .conc-grid{grid-template-columns:1fr}
-  .conc-val{font-size:22px}
-  .conc-detail{font-size:10px}
-  .conc-cell{padding:12px 16px}
+ /* Concentration grid */
+ .conc-grid{grid-template-columns:1fr}
+ .conc-val{font-size:22px}
+ .conc-detail{font-size:10px}
+ .conc-cell{padding:12px 16px}
 
-  /* Live grid */
-  .live-grid{grid-template-columns:repeat(2,1fr)}
-  .live-val{font-size:22px}
-  .live-cell{padding:12px 14px}
+ /* Live grid */
+ .live-grid{grid-template-columns:repeat(2,1fr)}
+ .live-val{font-size:22px}
+ .live-cell{padding:12px 14px}
 
-  /* Circuit breaker grid */
-  .cb-grid{grid-template-columns:repeat(2,1fr)}
-  .cb-cell{padding:10px 8px}
-  .cb-token{font-size:12px;margin-bottom:6px}
-  .cb-before,.cb-after{font-size:11px}
-  .cb-mult{font-size:10px}
+ /* Circuit breaker grid */
+ .cb-grid{grid-template-columns:repeat(2,1fr)}
+ .cb-cell{padding:10px 8px}
+ .cb-token{font-size:12px;margin-bottom:6px}
+ .cb-before,.cb-after{font-size:11px}
+ .cb-mult{font-size:10px}
 
-  /* Param grid (weaponization) */
-  .param-grid{grid-template-columns:1fr;gap:0}
-  .param-name{border-bottom:none;padding:8px 0 2px;font-size:12px}
-  .param-val{border-bottom:none;padding:2px 0;font-size:12px}
-  .param-explain{padding:2px 0 10px;border-bottom:1px solid var(--border);font-size:11px}
+ /* Param grid (weaponization) */
+ .param-grid{grid-template-columns:1fr;gap:0}
+ .param-name{border-bottom:none;padding:10px 0 0;font-size:12px;font-weight:600;word-break:break-all}
+ .param-val{border-bottom:none;padding:2px 0;font-size:12px;word-break:break-word}
+ .param-explain{padding:2px 0 12px;border-bottom:1px solid var(--border);font-size:11px;line-height:1.5}
 
-  /* Two problems grid */
-  .two-col-grid{grid-template-columns:1fr;gap:10px}
+ /* Two problems grid */
+ .two-col-grid{grid-template-columns:1fr;gap:10px}
 
-  /* Token cloud */
-  .token-cloud{gap:4px}
-  .token-pill{font-size:10px;padding:3px 8px}
+ /* Token cloud */
+ .token-cloud{gap:4px}
+ .token-pill{font-size:10px;padding:3px 8px}
 
-  /* Timeline */
-  .timeline-item{grid-template-columns:80px 1fr auto;gap:8px;padding:6px 0;font-size:13px}
-  .timeline-time{font-size:11px}
-  .timeline-amount{font-size:12px}
+ /* Timeline */
+ .timeline-item{grid-template-columns:80px 1fr auto;gap:8px;padding:6px 0;font-size:13px}
+ .timeline-time{font-size:11px}
+ .timeline-amount{font-size:12px}
 
-  /* Tables — horizontal scroll */
-  .notion-table{font-size:11px;min-width:500px}
-  .notion-table th{font-size:9px;padding:4px 8px}
-  .notion-table td{padding:6px 8px;font-size:10px}
+ /* Tables — horizontal scroll */
+ .notion-table{font-size:11px;min-width:500px}
+ .notion-table th{font-size:9px;padding:4px 8px}
+ .notion-table td{padding:6px 8px;font-size:10px}
 
-  /* Quote block */
-  .quote-block{font-size:15px;padding:4px 12px;margin:14px 0}
+ /* Quote block */
+ .quote-block{font-size:15px;padding:4px 12px;margin:14px 0}
 
-  /* Footer */
-  .footer{flex-direction:column;gap:4px;text-align:center;font-size:10px}
+ /* Footer */
+ .footer{flex-direction:column;gap:4px;text-align:center;font-size:10px}
 
-  /* Divider spacing */
-  .divider{margin:20px 0}
+ /* Divider spacing */
+ .divider{margin:20px 0}
 
-  /* Watermark smaller */
-  .watermark{font-size:120px;letter-spacing:10px}
+ /* Watermark smaller */
+ .watermark{font-size:120px;letter-spacing:10px}
 }
 
 /* ===== RESPONSIVE: SMALL PHONE (max 400px) ===== */
 @media(max-width:400px){
-  body{padding:14px 12px 40px;font-size:13px}
-  h1{font-size:22px}
-  h2{font-size:16px}
-  .properties{grid-template-columns:70px 1fr;font-size:11px}
-  .stat-val{font-size:20px}
-  .mix-grid{grid-template-columns:1fr}
-  .live-grid{grid-template-columns:1fr}
-  .cb-grid{grid-template-columns:1fr}
-  .dist-row{grid-template-columns:60px 1fr 40px 50px;gap:4px;font-size:10px}
-  .hop-node{width:28px;height:28px;font-size:14px}
-  .hop-wallet{width:6px;height:6px}
-  .origin .stat-val,.origin .o-val{font-size:18px}
+ body{padding:14px 12px 40px;font-size:13px}
+ h1{font-size:22px}
+ h2{font-size:16px}
+ .properties{grid-template-columns:70px 1fr;font-size:11px}
+ .stat-val{font-size:20px}
+ .mix-grid{grid-template-columns:1fr}
+ .live-grid{grid-template-columns:1fr}
+ .cb-grid{grid-template-columns:1fr}
+ .dist-row{grid-template-columns:60px 1fr 40px 50px;gap:4px;font-size:10px}
+ .hop-node{width:28px;height:28px;font-size:14px}
+ .hop-wallet{width:6px;height:6px}
+ .origin .stat-val,.origin .o-val{font-size:18px}
 }
 </style>
 </head>
@@ -342,6 +342,31 @@ Drift Protocol's admin key — the master key that controls every setting in the
 <div class="narration narration-red">
 <div class="narration-title">The intended outcome</div>
 Five hours before the exploit, the carryover signer proposed transferring the admin key. One of the new signers co-signed within one second. Two signatures met the 2/5 threshold. With zero timelock, it executed instantly. No other signer was consulted. No alert was triggered. The attacker now held the admin key that controlled $550 million in user funds. The vault wasn't broken into. The keys were handed over.
+</div>
+
+<div class="divider"></div>
+
+<h2>🔫 The Durable Nonce — Pre-Loaded Bullets</h2>
+
+<div class="narration narration-purple">
+<div class="narration-title">What Drift confirmed</div>
+The attacker used "durable nonce" transactions. Normally on Solana, a transaction expires in about 90 seconds. If it doesn't get processed in that window, it dies. A durable nonce bypasses this. It creates a transaction that never expires. You can sign it today and execute it next week, next month, or at exactly 16:06 UTC on April 1.
+</div>
+
+<div class="stat-grid">
+<div class="stat-cell"><div class="stat-val">~90 sec</div><div class="stat-label">Normal tx lifespan</div><div class="stat-explain">A standard Solana transaction expires in roughly 90 seconds. If it isn't processed by then, it's dead. This is a safety feature.</div></div>
+<div class="stat-cell"><div class="stat-val red">Forever</div><div class="stat-label">Durable nonce lifespan</div><div class="stat-explain">A durable nonce transaction never expires. Sign it on March 24, fire it on April 1. The blockchain doesn't know the difference.</div></div>
+<div class="stat-cell"><div class="stat-val">8 days</div><div class="stat-label">Silence between rehearsal and exploit</div><div class="stat-explain">The attacker wasn't waiting. They were done. Every transaction was pre-signed and sitting in a queue, ready to fire.</div></div>
+</div>
+
+<div class="narration narration-red">
+<div class="narration-title">Why this matters</div>
+This is why there were eight days of silence after the rehearsal. The attacker wasn't waiting for the right moment. They were finished. During the rehearsal window (or shortly after), they pre-signed every exploit transaction: the admin key transfer, the fake market creation, the circuit breaker changes, every vault withdrawal. All of it was packaged, signed, and sitting in a queue like bullets in a magazine. When April 1 arrived, the attacker didn't manually execute each step. They triggered the sequence and the pre-signed transactions fired automatically, one after another, in perfect order. That's how you drain $233 million in 10 seconds. A human can't sign 8+ withdrawal transactions across 18 token types that fast. A pre-loaded sequence can.
+</div>
+
+<div class="callout callout-surface">
+<div class="callout-icon">⏸️</div>
+<div>The attacker didn't just plan the heist. They rehearsed it, pre-built the infrastructure, pre-signed every transaction, and waited for the perfect moment to fire. Less than $1 to build the mailboxes. Zero seconds on the timelock. Eight days of patience. Then ten seconds to drain a quarter billion dollars.</div>
 </div>
 
 <div class="divider"></div>
