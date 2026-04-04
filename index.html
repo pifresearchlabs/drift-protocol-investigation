@@ -6,76 +6,117 @@
 <title>Drift Protocol Exploit — PIF Research Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#FFFFFF;--surface:#F7F6F3;--surface2:#F1F0ED;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--orange:#D9730D;--orange-bg:#FADEC9;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--purple:#9065B0;--purple-bg:#E8DEEE;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:900px;margin:0 auto;padding:60px 48px 80px;overflow-wrap:break-word}
+html { background: #FFFFFF; }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background-color: #FFFFFF;
+  color: #37352F;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+  overflow-wrap: break-word;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);pointer-events:none;z-index:0;text-align:center}
-.wm-1{font-family:'Playfair Display',serif;font-size:180px;font-weight:900;color:rgba(235,87,87,0.025);letter-spacing:10px;display:block}
-.wm-2{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:rgba(235,87,87,0.025);letter-spacing:8px;text-transform:uppercase;display:block}
+.wm { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-25deg); pointer-events: none; z-index: 0; text-align: center; }
+.wm-1 { font-family: 'Playfair Display', serif; font-size: 180px; font-weight: 900; color: rgba(235,87,87,0.025); letter-spacing: 10px; display: block; }
+.wm-2 { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: rgba(235,87,87,0.025); letter-spacing: 8px; text-transform: uppercase; display: block; }
 
-/* Header */
-.brand{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:4px;color:var(--red);font-weight:600;text-transform:uppercase;margin-bottom:32px}
-h1{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
-.sub{font-size:18px;color:var(--text2);font-style:italic;line-height:1.6;margin-bottom:12px}
-.meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:40px}
-.tag{display:inline-block;padding:3px 10px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;margin-right:4px}
+.brand { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 4px; color: #EB5757; font-weight: 600; text-transform: uppercase; margin-bottom: 24px; }
 
-/* Cards */
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 40px}
-.card{background:var(--surface);border-radius:12px;padding:28px 24px;text-decoration:none;color:var(--text);display:block;transition:transform 0.15s,box-shadow 0.15s;position:relative;overflow:hidden;border:1px solid transparent}
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.06);border-color:var(--border)}
-.card-num-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.card-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;line-height:1.1;letter-spacing:-0.5px;margin-bottom:6px}
-.card-big{font-family:'IBM Plex Mono',monospace;font-size:36px;font-weight:700;line-height:1;margin-bottom:8px}
-.card-desc{font-size:14px;color:var(--text2);line-height:1.6}
-.card-cta{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--text3);margin-top:12px;text-transform:uppercase;letter-spacing:1px}
-.card-cta span{transition:margin-left 0.15s}
-.card:hover .card-cta span{margin-left:4px}
+h1 { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 10px; color: #37352F; }
 
-/* Summary stats */
-.summary{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:0 0 40px}
-.sm{background:var(--bg);padding:14px 16px;flex:1;text-align:center}
-.sm-v{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700}
-.sm-l{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.sub { font-size: 16px; color: #787774; font-style: italic; line-height: 1.5; margin-bottom: 10px; }
+
+.meta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #B4B4B0; margin-bottom: 32px; }
+
+.tag { display: inline-block; padding: 3px 10px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; margin-right: 4px; }
+
+/* Cards - compact 3-column grid */
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 0 0 32px;
+}
+
+.card {
+  background: #F7F6F3;
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-decoration: none;
+  color: #37352F;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: 1px solid transparent;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  border-color: #E9E8E4;
+}
+
+.card-num-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; line-height: 1.1; letter-spacing: -0.3px; margin-bottom: 4px; color: #37352F; }
+.card-big { font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: #787774; line-height: 1.5; flex-grow: 1; }
+.card-cta { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; color: #B4B4B0; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.card-cta span { transition: margin-left 0.15s; }
+.card:hover .card-cta span { margin-left: 4px; }
+
+/* Card spanning 2 columns */
+.card-span2 { grid-column: span 2; }
+
+/* New badge */
+.new-badge { display: inline-block; background: #EB5757; color: white; font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 6px; letter-spacing: 1px; vertical-align: middle; }
+
+/* Summary stats bar */
+.summary { display: flex; gap: 1px; background: #E9E8E4; border: 1px solid #E9E8E4; border-radius: 8px; overflow: hidden; margin: 0 0 32px; }
+.sm { background: #FFFFFF; padding: 12px 10px; flex: 1; text-align: center; }
+.sm-v { font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 700; }
+.sm-l { font-family: 'IBM Plex Mono', monospace; font-size: 7px; color: #B4B4B0; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
 /* Footer */
-.pif-rule{text-align:center;margin:40px 0;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.pif-rule span{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:rgba(235,87,87,0.1);letter-spacing:10px}
-.ft{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-align:center;line-height:1.8}
-.ft a{color:var(--red);text-decoration:none;font-weight:600}
+.pif-rule { text-align: center; margin: 32px 0; padding: 12px 0; border-top: 1px solid #E9E8E4; border-bottom: 1px solid #E9E8E4; }
+.pif-rule span { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: rgba(235,87,87,0.1); letter-spacing: 10px; }
 
-/* Responsive */
-@media(max-width:900px){
-  body{padding:40px 32px 60px}
-  h1{font-size:48px;letter-spacing:-1.5px}
-  .card-title{font-size:26px}
-  .card-big{font-size:28px}
-  .wm-1{font-size:120px}
+.ft { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; text-align: center; line-height: 1.8; }
+.ft a { color: #EB5757; text-decoration: none; font-weight: 600; }
+
+@media (max-width: 900px) {
+  body { padding: 36px 28px 60px; }
+  h1 { font-size: 42px; letter-spacing: -1px; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .card-span2 { grid-column: span 2; }
+  .card-title { font-size: 20px; }
+  .card-big { font-size: 22px; }
+  .wm-1 { font-size: 120px; }
 }
-@media(max-width:680px){
-  body{padding:28px 16px 48px}
-  h1{font-size:36px;letter-spacing:-1px}
-  .sub{font-size:15px}
-  .cards{grid-template-columns:1fr;gap:12px}
-  .card{padding:22px 20px}
-  .card-title{font-size:24px}
-  .card-big{font-size:26px}
-  .card-desc{font-size:13px}
-  .summary{flex-wrap:wrap}
-  .sm{min-width:30%;padding:10px 12px}
-  .sm-v{font-size:14px}
-  .wm-1{font-size:70px;letter-spacing:6px}
-  .wm-2{font-size:12px;letter-spacing:4px}
+@media (max-width: 680px) {
+  body { padding: 24px 16px 48px; }
+  h1 { font-size: 32px; }
+  .sub { font-size: 14px; }
+  .cards { grid-template-columns: 1fr; gap: 10px; }
+  .card-span2 { grid-column: span 1; }
+  .card { padding: 16px 14px; }
+  .card-title { font-size: 18px; }
+  .card-big { font-size: 20px; }
+  .card-desc { font-size: 11px; }
+  .summary { flex-wrap: wrap; }
+  .sm { min-width: 30%; padding: 8px 8px; }
+  .sm-v { font-size: 12px; }
+  .wm-1 { font-size: 70px; letter-spacing: 6px; }
+  .wm-2 { font-size: 12px; letter-spacing: 4px; }
 }
-@media(max-width:400px){
-  body{padding:20px 12px 40px}
-  h1{font-size:28px}
-  .card-title{font-size:20px}
-  .card-big{font-size:22px}
-  .sm{min-width:45%}
-  .sm-v{font-size:12px}
-  .brand{font-size:10px;letter-spacing:3px}
+@media (max-width: 400px) {
+  body { padding: 16px 12px 40px; }
+  h1 { font-size: 26px; }
+  .card-title { font-size: 16px; }
+  .card-big { font-size: 18px; }
+  .sm { min-width: 45%; }
+  .sm-v { font-size: 11px; }
+  .brand { font-size: 9px; letter-spacing: 3px; }
 }
 </style>
 </head>
@@ -87,60 +128,71 @@ h1{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;line-heig
 
 <h1>Drift Protocol<br>Exploit</h1>
 
-<p class="sub">$285M drained in 10 seconds. Four forensic breakdowns.<br>Every dollar traced on-chain. Published on GitHub.</p>
+<p class="sub">$285M drained in 10 seconds. Five forensic breakdowns.<br>Every dollar traced on-chain. Published on GitHub.</p>
 
 <div class="meta">
-<span class="tag" style="background:var(--red-bg);color:var(--red-text)">Active Investigation</span>
-<span class="tag" style="background:var(--surface);color:var(--text2)">Open Source</span>
-<span class="tag" style="background:var(--surface);color:var(--text2)">April 2026</span>
+<span class="tag" style="background:#FBE4E4;color:#C4554D">Active Investigation</span>
+<span class="tag" style="background:#F7F6F3;color:#787774;border:1px solid #E9E8E4">Open Source</span>
+<span class="tag" style="background:#F7F6F3;color:#787774;border:1px solid #E9E8E4">April 2026</span>
 </div>
 
 <div class="cards">
 
 <!-- Card 1: The Heist -->
 <a class="card" href="pif-drift-notion-infographic.html">
-<div class="card-num-label" style="color:var(--red-text)">01 — The Heist</div>
+<div class="card-num-label" style="color:#C4554D">01 — The Heist</div>
 <div class="card-title">The Heist</div>
-<div class="card-big" style="color:var(--red)">$285M</div>
-<div class="card-desc">Full exploit reconstruction. 20-day setup, $1 rehearsal, durable nonce pre-signing, 0-second timelock, circuit breakers raised 100,000x. $233M confirmed in 10 seconds across 18 token types. JLP vault 99.9997% emptied.</div>
-<div class="card-cta">Read the full breakdown <span>→</span></div>
+<div class="card-big" style="color:#EB5757">$285M</div>
+<div class="card-desc">Full exploit reconstruction. 20-day setup, $1 rehearsal, durable nonce pre-signing, 0-second timelock. 18 token types drained in 10 seconds. JLP vault 99.9997% emptied.</div>
+<div class="card-cta">Read the breakdown <span>→</span></div>
 </a>
 
 <!-- Card 2: Show Me The Money -->
 <a class="card" href="pif-show-me-the-money.html">
-<div class="card-num-label" style="color:var(--purple)">02 — Where Is The Money</div>
+<div class="card-num-label" style="color:#9065B0">02 — Where Is The Money</div>
 <div class="card-title">Show Me<br>The Money</div>
-<div class="card-big" style="color:var(--purple)">$525M</div>
-<div class="card-desc">Post-heist fund location map. 130,262 ETH parked in four wallets with zero outbound. $525M deposited to Binance across 92 transactions. Solana bot running 52+ hours. Drift messaged all four vault wallets. Cashout in progress.</div>
+<div class="card-big" style="color:#9065B0">$525M</div>
+<div class="card-desc">Post-heist fund map. 130,262 ETH in four wallets, zero outbound. $525M to Binance across 92 transactions. Bot running 52+ hours.</div>
 <div class="card-cta">Track the money <span>→</span></div>
 </a>
 
 <!-- Card 3: The Circle Timeline -->
 <a class="card" href="pif-circle-timeline.html">
-<div class="card-num-label" style="color:var(--blue-text)">03 — The Circle Timeline</div>
+<div class="card-num-label" style="color:#337EA9">03 — The Circle Timeline</div>
 <div class="card-title">The Circle<br>Timeline</div>
-<div class="card-big" style="color:var(--blue)">$0 frozen</div>
-<div class="card-desc">$515M flowed through Circle's own CCTP smart contracts. First mint 86 minutes before the drain. First Binance deposit 2 minutes later. 549 mints over 50+ hours. Circle had full visibility inside their own system. They froze nothing.</div>
+<div class="card-big" style="color:#529CCA">$0 frozen</div>
+<div class="card-desc">$515M flowed through Circle's own CCTP. First mint 86 minutes before drain. 549 mints. 50+ hours. Circle froze nothing.</div>
 <div class="card-cta">See the timeline <span>→</span></div>
 </a>
 
 <!-- Card 4: The Damage -->
 <a class="card" href="pif-the-damage.html">
-<div class="card-num-label" style="color:var(--orange-text)">04 — The Damage</div>
+<div class="card-num-label" style="color:#C77D48">04 — The Damage</div>
 <div class="card-title">The Damage</div>
-<div class="card-big" style="color:var(--orange)">-51%</div>
-<div class="card-desc">Victim-side analysis. DRIFT token crashed 51% and hasn't recovered. 13,280 panic swaps in one hour — 400x normal volume. 19 tokens drained in 12 minutes. JLP vault went from 41.7 million tokens to 133.</div>
+<div class="card-big" style="color:#D9730D">-51%</div>
+<div class="card-desc">Victim-side analysis. DRIFT crashed 51%. 13,280 panic swaps in one hour. 19 tokens drained. JLP vault emptied in one transaction.</div>
 <div class="card-cta">See the impact <span>→</span></div>
+</a>
+
+<!-- Card 5: Who's Selling DRIFT? - spans 2 columns -->
+<a class="card card-span2" href="pif-drift-selling-pipeline.html">
+<div class="card-num-label" style="color:#C4554D">05 — Who's Selling DRIFT? <span class="new-badge">NEW</span></div>
+<div class="card-title">Who's Selling DRIFT?</div>
+<div class="card-big" style="color:#EB5757">56.25M tokens</div>
+<div class="card-desc">56.25 million DRIFT tokens dumped on Bybit and Gate since the exploit. The attacker's bot is selling on DEXes. An unknown wallet activated after 18 months of dormancy — Drift says it's not theirs. Arkham's label was wrong. All transactions use durable nonces, the same technique used in the exploit. Three parallel selling pipelines traced on-chain.</div>
+<div class="card-cta">Read the investigation <span>→</span></div>
 </a>
 
 </div>
 
+<!-- Summary stats -->
 <div class="summary">
-<div class="sm"><div class="sm-v" style="color:var(--red)">$285M</div><div class="sm-l">Stolen</div></div>
-<div class="sm"><div class="sm-v" style="color:var(--purple)">$525M</div><div class="sm-l">Binance</div></div>
-<div class="sm"><div class="sm-v" style="color:var(--red)">$278M</div><div class="sm-l">ETH Vault</div></div>
-<div class="sm"><div class="sm-v" style="color:var(--blue)">$0</div><div class="sm-l">Circle Froze</div></div>
-<div class="sm"><div class="sm-v" style="color:var(--orange)">-51%</div><div class="sm-l">DRIFT Price</div></div>
+<div class="sm"><div class="sm-v" style="color:#EB5757">$285M</div><div class="sm-l">Stolen</div></div>
+<div class="sm"><div class="sm-v" style="color:#9065B0">$525M</div><div class="sm-l">Binance</div></div>
+<div class="sm"><div class="sm-v" style="color:#EB5757">$278M</div><div class="sm-l">ETH Vault</div></div>
+<div class="sm"><div class="sm-v" style="color:#529CCA">$0</div><div class="sm-l">Circle Froze</div></div>
+<div class="sm"><div class="sm-v" style="color:#D9730D">-51%</div><div class="sm-l">DRIFT</div></div>
+<div class="sm"><div class="sm-v" style="color:#EB5757">56.25M</div><div class="sm-l">Dumped</div></div>
 </div>
 
 <div class="pif-rule"><span>P I F</span></div>
@@ -148,7 +200,7 @@ h1{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;line-heig
 <div class="ft">
 <a href="https://twitter.com/PIFRESEARCHLABS">@PIFRESEARCHLABS</a><br>
 All data verified on-chain · April 2026<br>
-<span style="color:var(--text3)">Count When It's Quiet</span>
+<span style="color:#B4B4B0">Count When It's Quiet</span>
 </div>
 
 </body>
