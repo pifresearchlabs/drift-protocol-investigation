@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Blast Radius — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+html { background: #FFFFFF; }
+body { font-family: 'Source Serif 4', Georgia, serif; background-color: #FFFFFF; color: #37352F; max-width: 960px; margin: 0 auto; padding: 40px 48px 80px; line-height: 1.7; font-size: 16px; overflow-wrap: break-word; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.wm { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-25deg); pointer-events: none; z-index: 0; text-align: center; }
+.wm-1 { font-family: 'Source Serif 4', serif; font-size: 160px; font-weight: 700; color: rgba(235,87,87,0.035); letter-spacing: 14px; display: block; }
+.wm-2 { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; color: rgba(235,87,87,0.035); letter-spacing: 8px; text-transform: uppercase; display: block; margin-top: -8px; }
+
+.bc { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; margin-bottom: 6px; }
+.bc em { font-style: normal; color: #787774; }
+h1 { font-size: 34px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 4px; line-height: 1.2; }
+.sub { font-size: 15px; color: #787774; font-style: italic; margin-bottom: 16px; }
+h2 { font-size: 22px; font-weight: 700; margin: 28px 0 10px; }
+p { margin-bottom: 14px; font-size: 15px; }
+.div { border-top: 1px solid #E9E8E4; margin: 24px 0; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; margin-right: 3px; }
+
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.nr { background: #F7F6F3; border-left: 3px solid #D9730D; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 14px; line-height: 1.7; }
+.nr-t { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.nrr { border-left-color: #EB5757; }
+.nrr .nr-t { color: #C4554D; }
+
+.explain { background: #D3E5EF; border-radius: 6px; padding: 12px 16px; margin: 14px 0; font-size: 13px; line-height: 1.7; color: #337EA9; }
+.explain strong { color: #1a5276; }
+
+.graph { background: #F7F6F3; border-radius: 10px; padding: 16px; margin: 14px 0; }
+.graph-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #B4B4B0; margin-bottom: 8px; }
+
+.stats { display: flex; gap: 1px; background: #E9E8E4; border: 1px solid #E9E8E4; border-radius: 6px; overflow: hidden; margin: 14px 0; }
+.st { background: #FFFFFF; padding: 12px 16px; flex: 1; text-align: center; transition: background 0.2s; }
+.st:hover { background: #F7F6F3; }
+.st-v { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; }
+.st-l { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #B4B4B0; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.tw { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+.nt { width: 100%; border-collapse: collapse; font-size: 13px; }
+.nt th { text-align: left; padding: 6px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #E9E8E4; font-weight: 500; }
+.nt td { padding: 7px 10px; border-bottom: 1px solid #E9E8E4; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+.nt tr:hover td { background: #F7F6F3; }
+.nt tr.dead td { background: #FBE4E4; }
+.nt tr.hurt td { background: #FADEC9; }
+.nt tr.safe td { background: #DBEDDB; }
+
+.co { display: flex; gap: 10px; padding: 12px 14px; border-radius: 6px; margin: 14px 0; font-size: 13px; line-height: 1.7; }
+.co-i { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+.qb { border-left: 3px solid #37352F; padding: 4px 16px; margin: 24px 0; font-size: 17px; font-style: italic; }
+
+.big { text-align: center; margin: 24px 0; }
+.big-n { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 700; line-height: 1; }
+.big-l { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B4B4B0; margin-top: 4px; }
+
+.pif-div { text-align: center; margin: 28px 0; padding: 12px 0; border-top: 1px solid #E9E8E4; border-bottom: 1px solid #E9E8E4; }
+.pif-div span { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 700; color: rgba(235,87,87,0.12); letter-spacing: 8px; }
+
+.ft { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E9E8E4; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; display: flex; justify-content: space-between; }
+.ft span { color: #EB5757; font-weight: 600; }
+
+@media (max-width: 900px) { body { padding: 32px 32px 60px; } h1 { font-size: 28px; } .big-n { font-size: 36px; } .wm-1 { font-size: 110px; } }
+@media (max-width: 680px) { body { padding: 20px 16px 48px; font-size: 14px; } h1 { font-size: 22px; } h2 { font-size: 18px; } .sub { font-size: 12px; } .nr { padding: 10px 14px; font-size: 12px; } .explain { font-size: 12px; } .co { font-size: 11px; } .stats { flex-wrap: wrap; } .st { min-width: 30%; padding: 8px 10px; } .st-v { font-size: 14px; } .big-n { font-size: 28px; } .qb { font-size: 14px; } .nt { min-width: 700px; } .ft { flex-direction: column; gap: 4px; text-align: center; } .wm-1 { font-size: 70px; } .wm-2 { font-size: 12px; } }
+@media (max-width: 400px) { body { padding: 14px 12px 40px; } h1 { font-size: 18px; } .big-n { font-size: 22px; } .st { min-width: 45%; } .st-v { font-size: 12px; } }
+</style>
+</head>
+<body>
+
+<div class="wm"><span class="wm-1">PIF</span><span class="wm-2">Blast Radius</span></div>
+
+<div class="bc"><em>PIF Research Labs</em> / Drift Protocol / Contagion Analysis</div>
+
+<div style="font-size:48px;margin-bottom:4px">💥</div>
+<h1>The Blast Radius</h1>
+<p class="sub">$285M was stolen from Drift. But the damage didn't stop there. 20+ protocols were caught in the blast. Some paused. Some lost funds. One lost everything.</p>
+
+<div style="margin-bottom:16px">
+<span class="tag" style="background:#FBE4E4;color:#C4554D">Contagion Analysis</span>
+<span class="tag" style="background:#FADEC9;color:#C77D48">20+ Protocols Impacted</span>
+<span class="tag" style="background:#D3E5EF;color:#337EA9">Ecosystem Damage</span>
+</div>
+
+<div class="stats reveal">
+<div class="st"><div class="st-v" style="color:#EB5757">20+</div><div class="st-l">Protocols Hit</div></div>
+<div class="st"><div class="st-v" style="color:#D9730D">$700M</div><div class="st-l">Solana DeFi TVL Lost</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">-58%</div><div class="st-l">Drift TVL</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">-51%</div><div class="st-l">DRIFT Token</div></div>
+</div>
+
+<div class="div"></div>
+
+<h2 class="reveal">Why Other Protocols Got Hit</h2>
+
+<div class="explain reveal">
+<strong>What is contagion in DeFi?</strong> In traditional finance, when a bank fails, other banks that lent to it or held its assets also take losses. DeFi works the same way. Many Solana protocols had deposited user funds into Drift's vaults to earn yield — lending, staking, and running trading strategies through Drift's infrastructure. When Drift's vaults were drained, every protocol with money inside those vaults lost it too. They didn't get hacked directly. They got caught in someone else's explosion.
+</div>
+
+<p class="reveal">Think of it like an apartment building. The attacker set fire to one unit. But everyone who stored valuables in that unit — neighbors, businesses, people renting storage — lost their property too. The fire wasn't aimed at them. But their money was in the building.</p>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== CONTAGION MAP SVG ====== -->
+<h2 class="reveal">The Contagion Map</h2>
+
+<div class="graph reveal">
+<div class="graph-label">Blast radius — every protocol impacted by the Drift exploit</div>
+<svg viewBox="0 0 880 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+
+<!-- Concentric rings -->
+<circle cx="440" cy="260" r="240" fill="none" stroke="#E9E8E4" stroke-width="0.5" stroke-dasharray="4,4"/>
+<circle cx="440" cy="260" r="170" fill="none" stroke="#E9E8E4" stroke-width="0.5" stroke-dasharray="4,4"/>
+<circle cx="440" cy="260" r="100" fill="none" stroke="#E9E8E4" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+<!-- Ring labels -->
+<text x="440" y="30" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">OUTER RING — PAUSED OPERATIONS / LIMITED EXPOSURE</text>
+<text x="440" y="100" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C77D48">MIDDLE RING — SIGNIFICANT LOSSES</text>
+<text x="440" y="170" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">INNER RING — SEVERE DAMAGE</text>
+
+<!-- ====== CENTER: DRIFT ====== -->
+<circle cx="440" cy="260" r="40" fill="#FBE4E4" stroke="#EB5757" stroke-width="3"/>
+<text x="440" y="255" text-anchor="middle" font-size="18">💀</text>
+<text x="440" y="272" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#C4554D" font-weight="700">DRIFT</text>
+<text x="440" y="284" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">$285M stolen</text>
+<text x="440" y="294" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C4554D">TVL: $550M → $232M</text>
+
+<!-- ====== INNER RING: SEVERE ====== -->
+
+<!-- Pyra - lost everything -->
+<circle cx="440" cy="150" r="28" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="440" y="146" text-anchor="middle" font-size="12">☠️</text>
+<text x="440" y="160" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="700">Pyra</text>
+<text x="440" y="170" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C4554D">ALL FUNDS LOST</text>
+<line x1="440" y1="178" x2="440" y2="220" stroke="#EB5757" stroke-width="1.5"/>
+
+<!-- Carrot - 50% TVL -->
+<circle cx="350" cy="190" r="28" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="350" y="186" text-anchor="middle" font-size="12">🥕</text>
+<text x="350" y="200" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="700">Carrot</text>
+<text x="350" y="210" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C4554D">50% TVL affected</text>
+<line x1="372" y1="208" x2="408" y2="240" stroke="#EB5757" stroke-width="1.5"/>
+
+<!-- Prime Numbers - millions -->
+<circle cx="530" cy="190" r="28" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="530" y="186" text-anchor="middle" font-size="12">🔢</text>
+<text x="530" y="200" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="700">Prime Numbers</text>
+<text x="530" y="210" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C4554D">Millions lost</text>
+<line x1="508" y1="208" x2="472" y2="240" stroke="#EB5757" stroke-width="1.5"/>
+
+<!-- ====== MIDDLE RING: SIGNIFICANT ====== -->
+
+<!-- Ranger Finance -->
+<circle cx="280" cy="260" r="24" fill="#FADEC9" stroke="#D9730D" stroke-width="1.5"/>
+<text x="280" y="256" text-anchor="middle" font-size="10">🏦</text>
+<text x="280" y="268" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C77D48" font-weight="700">Ranger</text>
+<text x="280" y="278" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C77D48">$900K+</text>
+<line x1="304" y1="260" x2="400" y2="260" stroke="#D9730D" stroke-width="1"/>
+
+<!-- PiggyBank -->
+<circle cx="600" cy="260" r="24" fill="#FADEC9" stroke="#D9730D" stroke-width="1.5"/>
+<text x="600" y="256" text-anchor="middle" font-size="10">🐷</text>
+<text x="600" y="268" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C77D48" font-weight="700">PiggyBank</text>
+<text x="600" y="278" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C77D48">$106K (reimbursed)</text>
+<line x1="576" y1="260" x2="480" y2="260" stroke="#D9730D" stroke-width="1"/>
+
+<!-- Reflect Money -->
+<circle cx="330" cy="340" r="24" fill="#FADEC9" stroke="#D9730D" stroke-width="1.5"/>
+<text x="330" y="336" text-anchor="middle" font-size="10">🪞</text>
+<text x="330" y="348" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C77D48" font-weight="700">Reflect</text>
+<text x="330" y="358" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C77D48">Paused USDC+/USDT+</text>
+<line x1="348" y1="322" x2="420" y2="290" stroke="#D9730D" stroke-width="1"/>
+
+<!-- Project0 -->
+<circle cx="550" cy="340" r="24" fill="#FADEC9" stroke="#D9730D" stroke-width="1.5"/>
+<text x="550" y="336" text-anchor="middle" font-size="10">🔧</text>
+<text x="550" y="348" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C77D48" font-weight="700">Project0</text>
+<text x="550" y="358" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#C77D48">Stopped Drift loans</text>
+<line x1="532" y1="322" x2="460" y2="290" stroke="#D9730D" stroke-width="1"/>
+
+<!-- ====== OUTER RING: PAUSED / LIMITED ====== -->
+
+<!-- TradeNeutral -->
+<rect x="160" y="120" width="80" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="200" y="138" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">TradeNeutral</text>
+<text x="200" y="148" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">Paused</text>
+<line x1="236" y1="140" x2="350" y2="190" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- GetPyra -->
+<rect x="90" y="200" width="80" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="130" y="218" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">GetPyra</text>
+<text x="130" y="228" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">Paused</text>
+<line x1="170" y1="216" x2="256" y2="254" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- xPlace -->
+<rect x="110" y="320" width="80" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="150" y="338" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">xPlace</text>
+<text x="150" y="348" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">Yield exposure</text>
+<line x1="190" y1="336" x2="310" y2="330" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- Uselulo -->
+<rect x="160" y="400" width="80" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="200" y="418" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">Uselulo</text>
+<text x="200" y="428" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">Limited exposure</text>
+<line x1="230" y1="405" x2="380" y2="295" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- Elemental -->
+<rect x="640" y="400" width="100" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="690" y="418" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">Elemental DeFi</text>
+<text x="690" y="428" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">USDC vault only</text>
+<line x1="650" y1="405" x2="480" y2="290" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- More protocols -->
+<rect x="690" y="120" width="80" height="32" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="730" y="138" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">+8 more</text>
+<text x="730" y="148" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="5" fill="#B4B4B0">Paused / checking</text>
+<line x1="694" y1="140" x2="540" y2="195" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- ====== CONFIRMED SAFE ====== -->
+<rect x="700" y="300" width="120" height="40" rx="8" fill="#DBEDDB" stroke="#4DAB9A" stroke-width="1.5"/>
+<text x="760" y="318" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#448361" font-weight="700">Jupiter (JLP)</text>
+<text x="760" y="330" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#448361">Confirmed fully backed</text>
+
+<rect x="60" y="440" width="140" height="40" rx="8" fill="#DBEDDB" stroke="#4DAB9A" stroke-width="1.5"/>
+<text x="130" y="458" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#448361" font-weight="700">DeFi Development Corp</text>
+<text x="130" y="470" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#448361">Nasdaq-listed · Zero exposure</text>
+
+<!-- Legend -->
+<rect x="300" y="510" width="12" height="12" rx="2" fill="#FBE4E4" stroke="#EB5757" stroke-width="1"/>
+<text x="318" y="520" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774">Severe (funds lost)</text>
+<rect x="430" y="510" width="12" height="12" rx="2" fill="#FADEC9" stroke="#D9730D" stroke-width="1"/>
+<text x="448" y="520" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774">Significant (paused + losses)</text>
+<rect x="600" y="510" width="12" height="12" rx="2" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="618" y="520" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774">Limited / checking</text>
+<rect x="730" y="510" width="12" height="12" rx="2" fill="#DBEDDB" stroke="#4DAB9A" stroke-width="1"/>
+<text x="748" y="520" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774">Confirmed safe</text>
+</svg>
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== FULL TABLE ====== -->
+<h2 class="reveal">Every Protocol Impacted</h2>
+
+<div class="tw reveal">
+<table class="nt">
+<thead><tr><th>Protocol</th><th>Severity</th><th>Exposure</th><th>What Happened</th><th>Status</th></tr></thead>
+<tbody>
+<tr class="dead"><td style="font-weight:700;color:#C4554D">Pyra Protocol</td><td style="color:#C4554D;font-weight:700">Critical</td><td>100%</td><td>Lost all funds deposited in Drift. All user funds inaccessible.</td><td style="color:#C4554D">Withdrawals disabled</td></tr>
+<tr class="dead"><td style="font-weight:700;color:#C4554D">Carrot Protocol</td><td style="color:#C4554D;font-weight:700">Severe</td><td>50% of TVL</td><td>Half of total value locked was in Drift vaults.</td><td style="color:#C4554D">Mint/redeem paused</td></tr>
+<tr class="dead"><td style="font-weight:700;color:#C4554D">Prime Numbers Fi</td><td style="color:#C4554D;font-weight:700">Severe</td><td>Millions</td><td>Direct vault exposure. Losses in the millions.</td><td style="color:#C4554D">Assessing damage</td></tr>
+<tr class="hurt"><td style="font-weight:700">Ranger Finance</td><td style="color:#C77D48;font-weight:700">High</td><td>$900K+</td><td>RGUSD product had Drift vault exposure.</td><td style="color:#C77D48">Deposits/withdrawals halted</td></tr>
+<tr class="hurt"><td style="font-weight:700">PiggyBank_fi</td><td style="color:#C77D48;font-weight:700">Moderate</td><td>$106K</td><td>Delta-neutral strategies exposed. Team reimbursed users from own funds.</td><td style="color:#448361">Users made whole</td></tr>
+<tr><td>Reflect Money</td><td>Moderate</td><td>Assessing</td><td>USDC+ and USDT+ products had Drift exposure.</td><td style="color:#C77D48">Minting/redemption paused</td></tr>
+<tr><td>Project0</td><td>Moderate</td><td>Assessing</td><td>Allowed borrowing against Drift positions.</td><td style="color:#C77D48">Drift loans paused</td></tr>
+<tr><td>TradeNeutral</td><td>Limited</td><td>Assessing</td><td>Some features used Drift infrastructure.</td><td style="color:#C77D48">Key features paused</td></tr>
+<tr><td>GetPyra</td><td>Limited</td><td>Assessing</td><td>Partial Drift dependency.</td><td style="color:#C77D48">Paused</td></tr>
+<tr><td>xPlace</td><td>Limited</td><td>Assessing</td><td>Used Drift primarily for yield generation.</td><td style="color:#C77D48">Paused</td></tr>
+<tr><td>Uselulo</td><td>Limited</td><td>Small</td><td>Limited exposure reported.</td><td style="color:#C77D48">Checking</td></tr>
+<tr><td>Elemental DeFi</td><td>Limited</td><td>USDC vault</td><td>Only exposed through a USDC vault on Drift.</td><td style="color:#C77D48">Checking</td></tr>
+<tr class="safe"><td style="color:#448361;font-weight:700">Jupiter Exchange</td><td style="color:#448361">None</td><td>0</td><td>JLP pool confirmed fully backed despite JLP being drained from Drift.</td><td style="color:#448361">Operational</td></tr>
+<tr class="safe"><td style="color:#448361;font-weight:700">DeFi Dev Corp</td><td style="color:#448361">None</td><td>0</td><td>Nasdaq-listed. Publicly confirmed zero Drift exposure.</td><td style="color:#448361">Unaffected</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="explain reveal">
+<strong>Why does this matter for regular users?</strong> If you deposited money into Pyra, Carrot, Ranger, or any of these protocols — your money may have been in Drift's vaults without you knowing it. You trusted Protocol A with your deposit. Protocol A trusted Drift with your deposit. Drift got drained. Your money is gone — even though you never interacted with Drift directly. This is counterparty risk. It's the same reason your bank account is insured and your DeFi deposit isn't.
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== MARKET IMPACT ====== -->
+<h2 class="reveal">The Market Damage</h2>
+
+<div class="stats reveal">
+<div class="st"><div class="st-v" style="color:#EB5757">$550M → $232M</div><div class="st-l">Drift TVL</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">-58%</div><div class="st-l">TVL Drop</div></div>
+<div class="st"><div class="st-v" style="color:#D9730D">$6.1B → $5.4B</div><div class="st-l">Solana DeFi TVL</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">-51%</div><div class="st-l">DRIFT Token</div></div>
+</div>
+
+<div class="nr nrr reveal">
+<div class="nr-t">The ripple effect</div>
+Drift's TVL collapsed from $550M to $232M — a 58% drop. But the damage extended across the entire Solana DeFi ecosystem, which lost $700M in total TVL ($6.1B → $5.4B) as users pulled funds from other protocols out of fear. SOL briefly dipped to $83.82. The DRIFT token is down 51% and hasn't recovered. 35 DeFi protocols have been exploited in 2026 so far, with approximately $453M extracted — and the year isn't even half over.
+</div>
+
+<div class="co reveal" style="background:#FBE4E4"><div class="co-i">💀</div><div><strong>Pyra Protocol is the worst case.</strong> They lost everything. All user funds are inaccessible. Withdrawals are disabled. This is a protocol that trusted Drift with 100% of its deposits. When Drift was drained, Pyra's users lost everything — and they may never get it back. Pyra didn't get hacked. They got caught in someone else's explosion.</div></div>
+
+<div class="co reveal" style="background:#DBEDDB"><div class="co-i">🐷</div><div><strong>PiggyBank did the right thing.</strong> They lost $106K through delta-neutral strategies exposed to Drift. Instead of making users eat the loss, the team reimbursed every user from their own treasury. That's the standard. It's also the exception.</div></div>
+
+<div class="qb reveal">$285 million was stolen from one protocol. 20+ protocols were caught in the blast. One lost everything. The Solana DeFi ecosystem lost $700M in TVL in a single day. And the attacker's bot is still running.</div>
+
+<div class="big reveal"><div class="big-n" style="color:#EB5757">20+</div><div class="big-l">protocols impacted · $700M Solana DeFi TVL lost · 1 protocol wiped out entirely</div></div>
+
+<div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain and from official protocol statements · April 4, 2026</div></div>
+
+<script>
+var reveals = document.querySelectorAll('.reveal');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+reveals.forEach(function(el) { observer.observe(el); });
+</script>
+
+</body>
+</html>
