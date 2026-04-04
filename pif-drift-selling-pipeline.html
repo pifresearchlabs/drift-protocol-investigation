@@ -138,11 +138,11 @@ p { margin-bottom: 14px; font-size: 15px; color: #37352F; }
 
 <div class="nr nrr reveal">
 <div class="nr-t">Important update — April 4, 2026</div>
-On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by OnchainLens and labeled by Arkham Intelligence as the "Drift Protocol Team" wallet. This label was picked up across crypto Twitter and appeared in our initial report. On April 4, an independent security firm verified the on-chain flow and the Drift team was contacted directly. <strong>Drift confirmed this wallet does not belong to them.</strong> The Arkham label is incorrect.
+On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by OnchainLens and labeled by Arkham Intelligence as the "Drift Protocol Team" wallet. This label was picked up across crypto Twitter and appeared in our initial report. An independent security firm later reported that Drift denied ownership of this wallet — however, <strong>Drift has not posted any official public statement confirming or denying this.</strong> Until they do, the attribution remains unverified. The Arkham label is unconfirmed.
 </div>
 
 <div class="explain reveal">
-<strong>What is Arkham Intelligence?</strong> Arkham is a blockchain analytics platform that labels wallet addresses — identifying which wallets belong to which companies, traders, or entities. These labels are partly algorithmic and partly community-submitted. They are <em>not</em> verified ownership records. When Arkham labels a wallet "Drift Protocol Team," it's an educated guess based on patterns, not a confirmation from Drift. In this case, that guess was wrong.
+<strong>What is Arkham Intelligence?</strong> Arkham is a blockchain analytics platform that labels wallet addresses — identifying which wallets belong to which companies, traders, or entities. These labels are partly algorithmic and partly community-submitted. They are <em>not</em> verified ownership records. When Arkham labels a wallet "Drift Protocol Team," it's an educated guess based on patterns, not a confirmation from Drift. Whether this label is accurate has not been officially addressed by the Drift team.
 </div>
 
 <p class="reveal">This means the wallet dumping 56 million DRIFT tokens across Bybit and Gate is <strong>unidentified</strong>. The DRIFT token account dates to October 2024. The transactions use durable nonces. The holder remains unknown.</p>
@@ -269,7 +269,7 @@ On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by Onchain
 <text x="741" y="48" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#448361" font-weight="700">$102,489 USDC</text>
 <text x="741" y="62" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#448361">Avg price: $0.035/DRIFT</text>
 
-<text x="440" y="108" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774">This is the same bot that dispersed $342M in stolen USDC across 2,688 wallets.</text>
+<text x="440" y="108" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774">This is the same bot that dispersed $358M in stolen USDC across 3,157 wallets.</text>
 <text x="440" y="122" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774">It's also dumping DRIFT tokens — meaning the attacker acquired DRIFT during the exploit.</text>
 </svg>
 </div>
@@ -312,7 +312,7 @@ On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by Onchain
 <!-- ====== KEY QUESTIONS ====== -->
 <h2 class="reveal">The Open Questions</h2>
 
-<div class="co reveal" style="background:#FFF3D4"><div class="co-i">1️⃣</div><div><strong>Who controls the Gu6nuuGLP wallet?</strong> The DRIFT token account dates to October 2024. The tokens trace back to a launch-era vesting distribution. This wallet held 66.67 million tokens for 18 months and activated 5 hours after the exploit. Drift says it's not theirs. The owner is unknown.</div></div>
+<div class="co reveal" style="background:#FFF3D4"><div class="co-i">1️⃣</div><div><strong>Who controls the Gu6nuuGLP wallet?</strong> The DRIFT token account dates to October 2024. The tokens trace back to a launch-era vesting distribution. This wallet held 66.67 million tokens for 18 months and activated 5 hours after the exploit. Arkham labeled the source wallet as "Drift Protocol Team" but this has not been officially confirmed or denied by Drift. The owner is unknown.</div></div>
 
 <div class="co reveal" style="background:#FBE4E4"><div class="co-i">2️⃣</div><div><strong>Why durable nonces?</strong> The intermediary wallet uses the same uncommon transaction technique that the attacker used to execute the $285M exploit. This doesn't prove they're the same person — but it's a coincidence worth investigating. Most normal users never touch durable nonces.</div></div>
 
@@ -331,8 +331,8 @@ On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by Onchain
 <p><strong>Three separate selling pipelines are operating simultaneously:</strong></p>
 
 <ul>
-<li><strong>Pipeline 1 — The CEX Dumps:</strong> An unidentified wallet moved 58.18 million DRIFT to an intermediary, which deposited 56.25 million tokens to Bybit and Gate exchanges. The total value: approximately $2.4 million. These tokens trace back to a launch-era vesting wallet from May 2024. The intermediary used durable nonces — the same technique used in the exploit itself. Arkham Intelligence initially labeled the source as a "Drift Protocol Team" wallet, but Drift has confirmed this is incorrect. The owner remains unknown.</li>
-<li><strong>Pipeline 2 — The Attacker Bot:</strong> The same bot that dispersed $342 million in stolen USDC is also dumping 2.9 million DRIFT tokens through Solana DEXes. This means the attacker acquired DRIFT during the vault drain and is selling it through the same infrastructure used to launder the other stolen funds. Total USDC extracted: $102,489.</li>
+<li><strong>Pipeline 1 — The CEX Dumps:</strong> An unidentified wallet moved 58.18 million DRIFT to an intermediary, which deposited 56.25 million tokens to Bybit and Gate exchanges. The total value: approximately $2.4 million. These tokens trace back to a launch-era vesting wallet from May 2024. The intermediary used durable nonces — the same technique used in the exploit itself. Arkham Intelligence labeled the source as a "Drift Protocol Team" wallet. This has not been officially confirmed or denied by Drift. The owner remains unknown.</li>
+<li><strong>Pipeline 2 — The Attacker Bot:</strong> The same bot that dispersed $358 million in stolen USDC is also dumping 2.9 million DRIFT tokens through Solana DEXes. This means the attacker acquired DRIFT during the vault drain and is selling it through the same infrastructure used to launder the other stolen funds. Total USDC extracted: $102,489.</li>
 <li><strong>Pipeline 3 — The Distribution Hub:</strong> A wallet called BCJtr7 has been feeding DRIFT to 15+ downstream wallets that sell on DEXes. The top seller in this network, BMnT51, dumped 2.9 million DRIFT for $140,827 — starting just 86 minutes after the exploit when the price was still relatively high. This hub has been operating since January 2026, well before the exploit.</li>
 </ul>
 
@@ -350,7 +350,7 @@ On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by Onchain
 
 <div class="big reveal"><div class="big-n" style="color:#EB5757">56.25M DRIFT</div><div class="big-l">moved to CEXes · $2.4M sold · owner unknown · durable nonces · token down 51%</div></div>
 
-<div class="qb reveal">The exploit took $285 million from the vaults. The token dump is taking the rest from the holders. The stolen money moved to Binance. The DRIFT tokens moved to Bybit and Gate. Nobody knows who's behind the second pipeline — and the label that pointed at the team was wrong.</div>
+<div class="qb reveal">The exploit took $285 million from the vaults. The token dump is taking the rest from the holders. The stolen money moved to Binance. The DRIFT tokens moved to Bybit and Gate. Nobody knows who's behind the second pipeline — and the Arkham label that pointed at the team remains unverified.</div>
 
 <div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain · April 4, 2026</div></div>
 
