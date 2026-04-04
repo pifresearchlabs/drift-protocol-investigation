@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>The Damage — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--surface:#F7F6F3;--border:#E9E8E4;--text:#37352F;--text2:#787774;--text3:#B4B4B0;--red:#EB5757;--red-bg:#FBE4E4;--red-text:#C4554D;--green:#4DAB9A;--green-bg:#DBEDDB;--green-text:#448361;--blue:#529CCA;--blue-bg:#D3E5EF;--blue-text:#337EA9;--orange:#D9730D;--orange-bg:#FADEC9;--orange-text:#C77D48;--purple:#9065B0;--purple-bg:#E8DEEE;--yellow:#DFAB01;--yellow-bg:#FFF3D4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--bg);color:var(--text);max-width:960px;margin:0 auto;padding:40px 48px 80px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+
+.wm{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);pointer-events:none;z-index:0;text-align:center}
+.wm-1{font-family:'Source Serif 4',serif;font-size:160px;font-weight:700;color:rgba(235,87,87,0.035);letter-spacing:14px;display:block}
+.wm-2{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;color:rgba(235,87,87,0.035);letter-spacing:8px;text-transform:uppercase;display:block;margin-top:-8px}
+.bc{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:6px}.bc em{font-style:normal;color:var(--text2)}
+h1{font-size:34px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px;line-height:1.2}
+.sub{font-size:15px;color:var(--text2);font-style:italic;margin-bottom:16px}
+h2{font-size:22px;font-weight:700;margin:28px 0 10px}
+p{margin-bottom:12px;font-size:15px}
+.div{border-top:1px solid var(--border);margin:24px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;margin-right:3px}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Animated counter */
+.counter{font-family:'IBM Plex Mono',monospace;font-weight:700}
+
+/* Narration */
+.nr{background:var(--surface);border-left:3px solid var(--orange);padding:14px 18px;border-radius:0 6px 6px 0;margin:12px 0;font-size:14px;line-height:1.7}
+.nr-t{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.nrr{border-left-color:var(--red)}.nrr .nr-t{color:var(--red)}
+
+/* Graph */
+.graph{background:var(--surface);border-radius:10px;padding:16px;margin:12px 0}
+.graph-label{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+
+/* Interactive stats */
+.stats{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:12px 0}
+.st{background:var(--bg);padding:12px 16px;flex:1;text-align:center;transition:background 0.2s}
+.st:hover{background:var(--surface)}
+.st-v{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700}
+.st-l{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* Big number */
+.big{text-align:center;margin:20px 0}
+.big-n{font-family:'IBM Plex Mono',monospace;font-size:52px;font-weight:700;line-height:1}
+.big-l{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text3);margin-top:4px}
+
+/* Interactive table */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0}
+.nt{width:100%;border-collapse:collapse;font-size:13px}
+.nt th{text-align:left;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:500;cursor:pointer;user-select:none}
+.nt th:hover{color:var(--text)}
+.nt td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;transition:background 0.15s}
+.nt tr:hover td{background:var(--surface)}
+.nt tr.highlight td{background:var(--red-bg)}
+
+/* Token tooltip */
+.token-row{position:relative;cursor:pointer}
+.tooltip{display:none;position:absolute;left:100%;top:0;margin-left:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.6;box-shadow:0 4px 20px rgba(0,0,0,0.08);z-index:50;min-width:200px;color:var(--text2)}
+.tooltip strong{color:var(--text);display:block;margin-bottom:2px;font-size:11px}
+.token-row:hover .tooltip{display:block}
+
+/* Callout */
+.co{display:flex;gap:10px;padding:12px 14px;border-radius:4px;margin:10px 0;font-size:13px;line-height:1.6}
+.co-i{font-size:16px;flex-shrink:0;margin-top:2px}
+
+/* Quote */
+.qb{border-left:3px solid var(--text);padding:4px 16px;margin:20px 0;font-size:17px;font-style:italic}
+
+/* PIF divider */
+.pif-div{text-align:center;margin:28px 0;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pif-div span{font-family:'Source Serif 4',serif;font-size:18px;font-weight:700;color:rgba(235,87,87,0.12);letter-spacing:8px}
+
+/* Drain animation */
+.drain-bar{position:relative;height:48px;border-radius:8px;overflow:hidden;margin:8px 0}
+.drain-fill{height:100%;border-radius:8px;transition:width 2s ease-out}
+.drain-label{position:absolute;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;padding:0 12px}
+
+/* Volume bar interactive */
+.vol-bar{cursor:pointer;transition:opacity 0.15s}
+.vol-bar:hover{opacity:0.8}
+.vol-info{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);text-align:center;min-height:20px;margin:6px 0}
+
+/* Filter buttons */
+.filters{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
+.filter-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text2);cursor:pointer;transition:all 0.15s}
+.filter-btn:hover,.filter-btn.active{background:var(--red-bg);color:var(--red-text);border-color:var(--red)}
+
+.ft{margin-top:28px;padding-top:12px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);display:flex;justify-content:space-between}.ft span{color:var(--red);font-weight:600}
+
+@media(max-width:900px){body{padding:32px 32px 60px}h1{font-size:28px}.big-n{font-size:40px}.wm-1{font-size:110px}.wm-2{font-size:16px}.tooltip{left:0;top:100%;margin-left:0;margin-top:8px}}
+@media(max-width:680px){body{padding:20px 16px 48px;font-size:14px}h1{font-size:22px}h2{font-size:18px}.sub{font-size:12px}.nr{padding:10px 14px;font-size:12px}.co{font-size:11px;padding:10px 12px}.stats{flex-wrap:wrap}.st{min-width:30%;padding:8px 10px}.st-v{font-size:14px}.big-n{font-size:32px}.qb{font-size:14px}.nt{min-width:600px}.ft{flex-direction:column;gap:4px;text-align:center}.wm-1{font-size:70px}.wm-2{font-size:12px}}
+@media(max-width:400px){body{padding:14px 12px 40px}h1{font-size:18px}.big-n{font-size:26px}.st{min-width:45%}.st-v{font-size:12px}}
+</style>
+</head>
+<body>
+
+<div class="wm"><span class="wm-1">PIF</span><span class="wm-2">The Damage</span></div>
+
+<div class="bc"><em>PIF Research Labs</em> / Drift Protocol / Victim-Side Analysis</div>
+
+<div style="font-size:48px;margin-bottom:4px">📉</div>
+<h1>The Damage</h1>
+<p class="sub">19 tokens drained. DRIFT crashed 51%. 13,280 panic swaps in one hour. This is what $285M leaving a protocol looks like from the inside.</p>
+
+<div style="margin-bottom:16px">
+<span class="tag" style="background:var(--red-bg);color:var(--red-text)">Victim-Side Analysis</span>
+<span class="tag" style="background:var(--orange-bg);color:var(--orange-text)">Price Impact</span>
+<span class="tag" style="background:var(--blue-bg);color:var(--blue-text)">Vault Breakdown</span>
+</div>
+
+<!-- Hero stats with animated counters -->
+<div class="stats reveal">
+<div class="st"><div class="st-v" style="color:var(--red)"><span class="counter" data-target="285" data-prefix="$" data-suffix="M">$0</span></div><div class="st-l">Stolen</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)"><span class="counter" data-target="51" data-suffix="%">0</span></div><div class="st-l">DRIFT down</div></div>
+<div class="st"><div class="st-v" style="color:var(--orange)"><span class="counter" data-target="13280">0</span></div><div class="st-l">Panic swaps</div></div>
+<div class="st"><div class="st-v"><span class="counter" data-target="19">0</span></div><div class="st-l">Tokens drained</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)"><span class="counter" data-target="99" data-suffix=".9997%">0</span></div><div class="st-l">JLP gone</div></div>
+</div>
+
+<div class="div"></div>
+
+<!-- ========== DRIFT PRICE CRASH ========== -->
+
+<h2 class="reveal">The DRIFT Token Crash</h2>
+
+<div class="nr nrr reveal">
+<div class="nr-t">What happened to the token</div>
+Before the exploit, DRIFT traded at $0.069 on Solana DEXes. Normal day. A couple of swaps per hour. Then at 16:06 UTC the vaults drained. Within one hour, the token crashed to $0.026 — a 64% drop at the bottom. It partially recovered to $0.050 by evening, then continued sliding. As of April 3, DRIFT trades at $0.034. It has lost 51% of its pre-exploit value and hasn't recovered.
+</div>
+
+<!-- Animated SVG Price Chart -->
+<div class="graph reveal">
+<div class="graph-label">DRIFT / USDC price — April 1-3, 2026 (from DEX swaps) · hover for details</div>
+<svg id="price-chart" viewBox="0 0 860 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+
+<!-- Grid -->
+<line x1="60" y1="20" x2="840" y2="20" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="55" x2="840" y2="55" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="90" x2="840" y2="90" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="125" x2="840" y2="125" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="160" x2="840" y2="160" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="195" x2="840" y2="195" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- Y labels -->
+<text x="50" y="24" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.070</text>
+<text x="50" y="59" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.060</text>
+<text x="50" y="94" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.050</text>
+<text x="50" y="129" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.040</text>
+<text x="50" y="164" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.030</text>
+<text x="50" y="199" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">$0.020</text>
+
+<!-- Animated price area -->
+<path id="price-area" d="M 80 23 L 130 23 L 170 23 L 200 23 L 230 76 L 290 68 L 340 90 L 380 96 L 420 93 L 460 100 L 500 112 L 540 120 L 580 118 L 620 122 L 660 125 L 700 122 L 740 130 L 780 146 L 820 148 L 820 195 L 80 195 Z" fill="rgba(235,87,87,0.06)" opacity="0"/>
+
+<!-- Animated price line -->
+<path id="price-line" d="M 80 23 L 130 23 L 170 23 L 200 23 L 230 76 L 290 68 L 340 90 L 380 96 L 420 93 L 460 100 L 500 112 L 540 120 L 580 118 L 620 122 L 660 125 L 700 122 L 740 130 L 780 146 L 820 148" fill="none" stroke="#EB5757" stroke-width="2.5" stroke-linejoin="round" stroke-dasharray="2000" stroke-dashoffset="2000"/>
+
+<!-- Crash spike -->
+<line x1="220" y1="23" x2="230" y2="174" stroke="#EB5757" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+
+<!-- Interactive hover points -->
+<g id="hover-points">
+<circle cx="80" cy="23" r="5" fill="transparent" stroke="transparent" data-price="$0.069" data-label="Pre-exploit" data-time="Apr 1 12PM"/>
+<circle cx="220" cy="23" r="5" fill="transparent" stroke="transparent" data-price="$0.072" data-label="Exploit starts" data-time="16:06 UTC"/>
+<circle cx="230" cy="174" r="5" fill="transparent" stroke="transparent" data-price="$0.026" data-label="Crash floor -64%" data-time="17:00 UTC"/>
+<circle cx="290" cy="68" r="5" fill="transparent" stroke="transparent" data-price="$0.058" data-label="Partial recovery" data-time="18:00 UTC"/>
+<circle cx="340" cy="90" r="5" fill="transparent" stroke="transparent" data-price="$0.050" data-label="Stabilized" data-time="20:00 UTC"/>
+<circle cx="500" cy="112" r="5" fill="transparent" stroke="transparent" data-price="$0.042" data-label="Continued slide" data-time="Apr 2 4AM"/>
+<circle cx="700" cy="122" r="5" fill="transparent" stroke="transparent" data-price="$0.040" data-label="Still falling" data-time="Apr 2 noon"/>
+<circle cx="820" cy="148" r="5" fill="transparent" stroke="transparent" data-price="$0.034" data-label="Current -51%" data-time="Apr 3"/>
+</g>
+
+<!-- Hover tooltip -->
+<g id="chart-tooltip" opacity="0">
+<rect x="0" y="0" width="120" height="42" rx="4" fill="white" stroke="#E9E8E4" stroke-width="1"/>
+<text id="tt-price" x="8" y="16" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#EB5757" font-weight="700"></text>
+<text id="tt-label" x="8" y="28" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774"></text>
+<text id="tt-time" x="8" y="38" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0"></text>
+</g>
+
+<!-- Markers -->
+<circle cx="220" cy="23" r="4" fill="#EB5757"/>
+<rect x="160" y="2" width="90" height="16" rx="3" fill="#FBE4E4" stroke="#EB5757" stroke-width="1"/>
+<text x="205" y="13" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="700">EXPLOIT 16:06 UTC</text>
+<circle cx="230" cy="174" r="3" fill="#EB5757"/>
+<text x="270" y="178" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">$0.026 floor (-64%)</text>
+<circle cx="820" cy="148" r="4" fill="#EB5757"/>
+<text x="810" y="142" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">$0.034 now (-51%)</text>
+<text x="90" y="18" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#448361" font-weight="600">$0.069</text>
+
+<!-- X labels -->
+<text x="80" y="220" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">Apr 1 12PM</text>
+<text x="220" y="220" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">EXPLOIT</text>
+<text x="400" y="220" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">Apr 1 midnight</text>
+<text x="580" y="220" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">Apr 2 noon</text>
+<text x="760" y="220" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">Apr 3</text>
+</svg>
+</div>
+
+<div class="stats reveal">
+<div class="st"><div class="st-v" style="color:var(--green)">$0.069</div><div class="st-l">Pre-exploit</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)">$0.026</div><div class="st-l">Crash floor</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)">-64%</div><div class="st-l">Max drop</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)">$0.034</div><div class="st-l">Current</div></div>
+<div class="st"><div class="st-v" style="color:var(--red)">-51%</div><div class="st-l">Still down</div></div>
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ========== VOLUME EXPLOSION ========== -->
+
+<h2 class="reveal">The Panic</h2>
+
+<div class="nr reveal">
+<div class="nr-t" style="color:var(--orange)">13,280 swaps in one hour</div>
+Before the exploit, DRIFT saw 19-33 DEX swaps per hour. Normal trading. At 17:00 UTC — one hour after the drain — the volume exploded to 13,280 swaps. That's a 400x increase. 5.5 million DRIFT tokens changed hands in sixty minutes. Click any bar below for details.
+</div>
+
+<!-- Interactive Volume Chart -->
+<div class="graph reveal">
+<div class="graph-label">DRIFT swap volume per hour — click any bar for details</div>
+<div class="vol-info" id="vol-info">Hover or click a bar to see details</div>
+<svg id="vol-chart" viewBox="0 0 860 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+
+<text x="50" y="24" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">13K</text>
+<text x="50" y="62" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">10K</text>
+<text x="50" y="100" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">5K</text>
+<text x="50" y="145" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">1K</text>
+<text x="50" y="160" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">0</text>
+
+<line x1="60" y1="20" x2="840" y2="20" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="58" x2="840" y2="58" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="100" x2="840" y2="100" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="140" x2="840" y2="140" stroke="#E9E8E4" stroke-width="0.5"/>
+<line x1="60" y1="160" x2="840" y2="160" stroke="#E9E8E4" stroke-width="0.5"/>
+
+<!-- Animated bars -->
+<rect class="vol-bar" x="70" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="33" data-time="12:00 PM" data-net="Net selling" data-h="0.3"/>
+<rect class="vol-bar" x="110" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="31" data-time="1:00 PM" data-net="Balanced" data-h="0.3"/>
+<rect class="vol-bar" x="150" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="19" data-time="2:00 PM" data-net="Net selling" data-h="0.2"/>
+<rect class="vol-bar" x="190" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="26" data-time="3:00 PM" data-net="Net buying" data-h="0.3"/>
+<rect class="vol-bar" x="230" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="139" data-time="4:00 PM (exploit)" data-net="Net selling" data-h="1.5"/>
+<rect class="vol-bar" x="270" y="160" width="30" height="0" rx="2" fill="#EB5757" data-swaps="13,280" data-time="5:00 PM (panic)" data-net="5.5M DRIFT traded" data-h="140"/>
+<rect class="vol-bar" x="310" y="160" width="30" height="0" rx="2" fill="#EB5757" data-swaps="8,352" data-time="6:00 PM" data-net="649K net selling" data-h="88" style="opacity:0.7"/>
+<rect class="vol-bar" x="350" y="160" width="30" height="0" rx="2" fill="#D9730D" data-swaps="4,804" data-time="7:00 PM" data-net="1.25M net buying (bottom fishers)" data-h="51" style="opacity:0.6"/>
+<rect class="vol-bar" x="390" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="1,648" data-time="8:00 PM" data-net="407K net buying" data-h="17.4" style="opacity:0.5"/>
+<rect class="vol-bar" x="430" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="1,649" data-time="9:00 PM" data-net="102K net buying" data-h="17.4" style="opacity:0.4"/>
+<rect class="vol-bar" x="470" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="2,399" data-time="10:00 PM" data-net="126K net buying" data-h="25.3" style="opacity:0.4"/>
+<rect class="vol-bar" x="510" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="1,491" data-time="11:00 PM" data-net="268K net buying" data-h="15.7" style="opacity:0.3"/>
+<rect class="vol-bar" x="550" y="160" width="30" height="0" rx="1" fill="#D9730D" data-swaps="2,535" data-time="12:00 AM (Apr 2)" data-net="195K net selling" data-h="26.7" style="opacity:0.3"/>
+<rect class="vol-bar" x="590" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="1,157" data-time="1:00 AM" data-net="96K net buying" data-h="12.2" style="opacity:0.5"/>
+<rect class="vol-bar" x="630" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="1,217" data-time="2:00 AM" data-net="32K net buying" data-h="12.8" style="opacity:0.5"/>
+<rect class="vol-bar" x="670" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="1,452" data-time="3:00 AM" data-net="17K net selling" data-h="15.3" style="opacity:0.4"/>
+<rect class="vol-bar" x="710" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="1,526" data-time="4:00 AM" data-net="75K net buying" data-h="16.1" style="opacity:0.4"/>
+<rect class="vol-bar" x="750" y="160" width="30" height="0" rx="1" fill="#B4B4B0" data-swaps="908" data-time="5:00 AM" data-net="54K net buying" data-h="9.6" style="opacity:0.3"/>
+
+<!-- X labels -->
+<text x="85" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">12PM</text>
+<text x="245" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">4PM</text>
+<text x="285" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">5PM</text>
+<text x="405" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">8PM</text>
+<text x="555" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">12AM</text>
+<text x="715" y="175" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#B4B4B0">4AM</text>
+
+<rect x="310" y="30" width="70" height="20" rx="4" fill="#FBE4E4" stroke="#EB5757" stroke-width="1"/>
+<text x="345" y="43" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#C4554D" font-weight="700">400x NORMAL</text>
+</svg>
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ========== PER-TOKEN VAULT DRAIN ========== -->
+
+<h2 class="reveal">What Was Stolen — Token by Token</h2>
+
+<div class="nr reveal">
+<div class="nr-t" style="color:var(--blue)">19 tokens. 12 minutes. Every vault hit.</div>
+The attacker pre-built token accounts for all 19 token types during the $1 rehearsal on March 24. That's why the drain was so fast — every mailbox was already there. Click any row for details. Use the filters to sort by category.
+</div>
+
+<div class="filters reveal">
+<button class="filter-btn active" onclick="filterTokens('all')">All (19)</button>
+<button class="filter-btn" onclick="filterTokens('stable')">Stablecoins</button>
+<button class="filter-btn" onclick="filterTokens('lp')">LP / DeFi</button>
+<button class="filter-btn" onclick="filterTokens('sol')">SOL Variants</button>
+<button class="filter-btn" onclick="filterTokens('btc')">BTC Variants</button>
+<button class="filter-btn" onclick="filterTokens('other')">Other</button>
+</div>
+
+<div class="tw reveal">
+<table class="nt" id="token-table">
+<thead><tr><th onclick="sortTable(0)">Token</th><th onclick="sortTable(1)">Amount</th><th onclick="sortTable(2)">Txns</th><th onclick="sortTable(3)">Time (UTC)</th></tr></thead>
+<tbody>
+<tr class="token-row highlight" data-cat="lp"><td style="font-weight:700;color:var(--red)">JLP</td><td style="color:var(--red);font-weight:700">41,721,062</td><td>1</td><td>16:06:09</td><div class="tooltip"><strong>Jupiter Perpetuals LP Token</strong>~$155M at time of drain. First token withdrawn. Single transaction. The vault went from 41.7M to 133 tokens — 99.9997% emptied.</div></tr>
+<tr class="token-row highlight" data-cat="stable"><td style="font-weight:700;color:var(--red)">USDC</td><td style="color:var(--red);font-weight:700">100,496,137</td><td>3</td><td>16:06 - 16:17</td><div class="tooltip"><strong>USD Coin (Circle)</strong>$100.5M across 3 withdrawals. Largest dollar amount stolen. Immediately bridged via CCTP to Ethereum.</div></tr>
+<tr class="token-row" data-cat="other"><td style="font-weight:700">Fartcoin</td><td>23,365,803</td><td>1</td><td>16:11:29</td><div class="tooltip"><strong>Fartcoin (pump token)</strong>23.3M tokens in a single transaction. Yes, really. This was in Drift's vaults.</div></tr>
+<tr class="token-row" data-cat="stable"><td>USDS</td><td>4,260,548</td><td>1</td><td>16:06:15</td><div class="tooltip"><strong>USDS Stablecoin</strong>$4.26M. Withdrawn in the first wave, 6 seconds after JLP.</div></tr>
+<tr class="token-row" data-cat="lp"><td>JUP</td><td>2,622,068</td><td>1</td><td>16:18:32</td><div class="tooltip"><strong>Jupiter Token</strong>2.6M JUP. One of the last tokens swept in the 12-minute window.</div></tr>
+<tr class="token-row" data-cat="stable"><td>USDT</td><td>2,198,801</td><td>1</td><td>16:10:11</td><div class="tooltip"><strong>Tether</strong>$2.2M. Single transaction.</div></tr>
+<tr class="token-row" data-cat="stable"><td>EURC</td><td>583,981</td><td>1</td><td>16:16:35</td><div class="tooltip"><strong>Euro Coin (Circle)</strong>583K EURC. Another Circle product drained.</div></tr>
+<tr class="token-row" data-cat="stable"><td>USDY</td><td>477,375</td><td>1</td><td>16:17:53</td><div class="tooltip"><strong>Ondo US Dollar Yield</strong>$477K. Yield-bearing stablecoin.</div></tr>
+<tr class="token-row" data-cat="sol"><td>dSOL</td><td>45,292</td><td>1</td><td>16:06:17</td><div class="tooltip"><strong>Drift Staked SOL</strong>45K dSOL. Drift's own staked SOL product, drained from Drift's own protocol.</div></tr>
+<tr class="token-row" data-cat="sol"><td>SOL</td><td>35,989</td><td>10</td><td>16:08 - 16:24</td><div class="tooltip"><strong>Native SOL</strong>35.9K SOL across 10 transactions. Most transactions of any token.</div></tr>
+<tr class="token-row" data-cat="sol"><td>JitoSOL</td><td>33,977</td><td>1</td><td>16:09:28</td><div class="tooltip"><strong>Jito Staked SOL</strong>33.9K JitoSOL. Liquid staking derivative.</div></tr>
+<tr class="token-row" data-cat="sol"><td>INF</td><td>21,242</td><td>1</td><td>16:15:20</td><div class="tooltip"><strong>Sanctum Infinity</strong>21.2K INF. Sanctum's liquid staking token.</div></tr>
+<tr class="token-row" data-cat="sol"><td>mSOL</td><td>17,419</td><td>1</td><td>16:13:06</td><div class="tooltip"><strong>Marinade Staked SOL</strong>17.4K mSOL. Marinade liquid staking.</div></tr>
+<tr class="token-row" data-cat="sol"><td>bSOL</td><td>9,474</td><td>1</td><td>16:15:57</td><div class="tooltip"><strong>BlazeStake Staked SOL</strong>9.5K bSOL.</div></tr>
+<tr class="token-row" data-cat="other"><td style="font-weight:700">wETH</td><td>5,558</td><td>3</td><td>16:06 - 16:15</td><div class="tooltip"><strong>Wormhole Wrapped ETH</strong>5,558 wETH across 3 transactions. ~$11.8M at time of drain.</div></tr>
+<tr class="token-row" data-cat="btc"><td>wBTC</td><td>383</td><td>2</td><td>16:10 - 16:13</td><div class="tooltip"><strong>Wormhole Wrapped BTC</strong>383 wBTC across 2 transactions.</div></tr>
+<tr class="token-row" data-cat="btc"><td style="font-weight:700">cbBTC</td><td>164</td><td>1</td><td>16:06:12</td><div class="tooltip"><strong>Coinbase Wrapped BTC</strong>164 cbBTC. ~$11.5M at time of drain. Third withdrawal in the 10-second burst.</div></tr>
+<tr class="token-row" data-cat="btc"><td>zBTC</td><td>8.6</td><td>1</td><td>16:17:14</td><div class="tooltip"><strong>zBTC</strong>8.6 zBTC. Small amount.</div></tr>
+<tr class="token-row" data-cat="other"><td style="color:var(--text3)">Unknown</td><td>2,865,381</td><td>1</td><td>16:12:18</td><div class="tooltip"><strong>Unknown Token (AvZZ...)</strong>2.8M tokens. Unidentified token type in Drift vaults.</div></tr>
+</tbody>
+</table>
+</div>
+
+<div class="co reveal" style="background:var(--red-bg)"><div class="co-i">📊</div><div><strong>18 of 19 tokens drained in a single transaction each.</strong> The attacker built mailboxes for every token type during the $1 rehearsal. Without those pre-built token accounts, the withdrawals would have failed.</div></div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ========== JLP VAULT DRAIN ANIMATION ========== -->
+
+<h2 class="reveal">The JLP Vault</h2>
+
+<div class="reveal" id="drain-section">
+<p style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Before — 41,721,062 JLP</p>
+<div class="drain-bar" style="background:var(--green-bg);border:1px solid var(--green)">
+<div class="drain-fill" id="drain-before" style="width:100%;background:var(--green)"></div>
+<div class="drain-label" style="right:12px;color:white">41,721,062 JLP</div>
+</div>
+
+<div style="text-align:center;margin:12px 0">
+<div style="font-size:24px">⬇</div>
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red-text);font-weight:600">ONE TRANSACTION · 16:06:09 UTC</div>
+</div>
+
+<p style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">After — 133 JLP</p>
+<div class="drain-bar" style="background:var(--red-bg);border:1px solid var(--red)">
+<div class="drain-fill" id="drain-after" style="width:0%;background:var(--red)"></div>
+<div class="drain-label" style="left:12px;color:var(--red-text)">133 JLP</div>
+</div>
+
+<div class="big" style="margin-top:24px"><div class="big-n" style="color:var(--red)"><span class="counter" data-target="99" data-suffix=".9997%" data-triggered="false">0</span></div><div class="big-l">drained in one transaction</div></div>
+</div>
+
+<div class="div"></div>
+
+<div class="big reveal"><div class="big-n" style="color:var(--red)">-51%</div><div class="big-l">DRIFT token decline · $0.069 → $0.034 · still falling</div></div>
+
+<div class="qb reveal">The exploit drained 19 tokens in 12 minutes. The JLP vault lost 99.9997% in one transaction. The DRIFT token crashed 64% in one hour and is still down 51% two days later. 13,280 panic swaps in sixty minutes. This is what it looks like from the inside.</div>
+
+<div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain · April 3, 2026</div></div>
+
+<script>
+// ====== SCROLL REVEAL ======
+var reveals = document.querySelectorAll('.reveal');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Trigger counters
+      var counters = entry.target.querySelectorAll('.counter');
+      counters.forEach(function(c) { animateCounter(c); });
+    }
+  });
+}, { threshold: 0.15 });
+reveals.forEach(function(el) { observer.observe(el); });
+
+// ====== ANIMATED COUNTERS ======
+function animateCounter(el) {
+  if (el.dataset.animated) return;
+  el.dataset.animated = 'true';
+  var target = parseInt(el.dataset.target);
+  var prefix = el.dataset.prefix || '';
+  var suffix = el.dataset.suffix || '';
+  var duration = 1500;
+  var start = performance.now();
+  function update(now) {
+    var progress = Math.min((now - start) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    var current = Math.round(target * eased);
+    el.textContent = prefix + current.toLocaleString() + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ====== PRICE CHART ANIMATION ======
+var priceChartObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var line = document.getElementById('price-line');
+      var area = document.getElementById('price-area');
+      line.style.transition = 'stroke-dashoffset 2s ease-out';
+      line.style.strokeDashoffset = '0';
+      area.style.transition = 'opacity 1s ease-out 1s';
+      area.style.opacity = '1';
+      priceChartObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+priceChartObserver.observe(document.getElementById('price-chart'));
+
+// ====== PRICE CHART HOVER ======
+var hoverPoints = document.querySelectorAll('#hover-points circle');
+var tooltip = document.getElementById('chart-tooltip');
+hoverPoints.forEach(function(pt) {
+  pt.addEventListener('mouseenter', function() {
+    var x = parseFloat(pt.getAttribute('cx'));
+    var y = parseFloat(pt.getAttribute('cy'));
+    tooltip.setAttribute('transform', 'translate(' + (x - 60) + ',' + (y - 50) + ')');
+    tooltip.style.opacity = '1';
+    document.getElementById('tt-price').textContent = pt.dataset.price;
+    document.getElementById('tt-label').textContent = pt.dataset.label;
+    document.getElementById('tt-time').textContent = pt.dataset.time;
+    pt.setAttribute('r', '8');
+    pt.setAttribute('fill', 'rgba(235,87,87,0.15)');
+    pt.setAttribute('stroke', '#EB5757');
+    pt.setAttribute('stroke-width', '2');
+  });
+  pt.addEventListener('mouseleave', function() {
+    tooltip.style.opacity = '0';
+    pt.setAttribute('r', '5');
+    pt.setAttribute('fill', 'transparent');
+    pt.setAttribute('stroke', 'transparent');
+  });
+});
+
+// ====== VOLUME BARS ANIMATION ======
+var volBars = document.querySelectorAll('.vol-bar');
+var volObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      volBars.forEach(function(bar, i) {
+        setTimeout(function() {
+          var h = parseFloat(bar.dataset.h);
+          bar.setAttribute('y', 160 - h);
+          bar.setAttribute('height', h);
+          bar.style.transition = 'y 0.5s ease-out, height 0.5s ease-out';
+        }, i * 50);
+      });
+      volObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+volObserver.observe(document.getElementById('vol-chart'));
+
+// Volume bar click/hover
+var volInfo = document.getElementById('vol-info');
+volBars.forEach(function(bar) {
+  bar.addEventListener('click', function() {
+    volInfo.innerHTML = '<strong>' + bar.dataset.time + '</strong> — ' + bar.dataset.swaps + ' swaps — ' + bar.dataset.net;
+  });
+  bar.addEventListener('mouseenter', function() {
+    volInfo.innerHTML = '<strong>' + bar.dataset.time + '</strong> — ' + bar.dataset.swaps + ' swaps — ' + bar.dataset.net;
+  });
+});
+
+// ====== TOKEN TABLE FILTER ======
+function filterTokens(cat) {
+  var rows = document.querySelectorAll('#token-table tbody tr');
+  var btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  rows.forEach(function(row) {
+    if (cat === 'all' || row.dataset.cat === cat) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// ====== TOKEN TABLE SORT ======
+var sortDir = [1, 1, 1, 1];
+function sortTable(col) {
+  var table = document.getElementById('token-table');
+  var rows = Array.from(table.querySelectorAll('tbody tr'));
+  sortDir[col] *= -1;
+  rows.sort(function(a, b) {
+    var aVal = a.cells[col].textContent.replace(/[,$%]/g, '');
+    var bVal = b.cells[col].textContent.replace(/[,$%]/g, '');
+    var aNum = parseFloat(aVal);
+    var bNum = parseFloat(bVal);
+    if (!isNaN(aNum) && !isNaN(bNum)) return (aNum - bNum) * sortDir[col];
+    return aVal.localeCompare(bVal) * sortDir[col];
+  });
+  var tbody = table.querySelector('tbody');
+  rows.forEach(function(r) { tbody.appendChild(r); });
+}
+
+// ====== JLP DRAIN ANIMATION ======
+var drainObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      setTimeout(function() {
+        document.getElementById('drain-before').style.width = '0.0003%';
+        document.getElementById('drain-after').style.width = '0.0003%';
+      }, 500);
+      drainObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+drainObserver.observe(document.getElementById('drain-section'));
+</script>
+
+</body>
+</html>
