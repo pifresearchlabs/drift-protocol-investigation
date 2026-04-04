@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Who's Selling DRIFT? — PIF Research Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+html { background: #FFFFFF; }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background-color: #FFFFFF;
+  color: #37352F;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+  line-height: 1.7;
+  font-size: 16px;
+  overflow-wrap: break-word;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.wm { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-25deg); pointer-events: none; z-index: 0; text-align: center; }
+.wm-1 { font-family: 'Source Serif 4', serif; font-size: 160px; font-weight: 700; color: rgba(235,87,87,0.035); letter-spacing: 14px; display: block; }
+.wm-2 { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; color: rgba(235,87,87,0.035); letter-spacing: 8px; text-transform: uppercase; display: block; margin-top: -8px; }
+
+.bc { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; margin-bottom: 6px; }
+.bc em { font-style: normal; color: #787774; }
+h1 { font-size: 34px; font-weight: 700; letter-spacing: -.5px; margin-bottom: 4px; line-height: 1.2; color: #37352F; }
+.sub { font-size: 15px; color: #787774; font-style: italic; margin-bottom: 16px; }
+h2 { font-size: 22px; font-weight: 700; margin: 32px 0 10px; color: #37352F; }
+p { margin-bottom: 14px; font-size: 15px; color: #37352F; }
+.div { border-top: 1px solid #E9E8E4; margin: 24px 0; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; margin-right: 3px; }
+.mn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #337EA9; font-weight: 500; }
+
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.nr { background: #F7F6F3; border-left: 3px solid #D9730D; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 14px 0; font-size: 14px; line-height: 1.7; color: #37352F; }
+.nr-t { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.nrr { border-left-color: #EB5757; }
+.nrr .nr-t { color: #C4554D; }
+.nrb { border-left-color: #529CCA; }
+.nrb .nr-t { color: #337EA9; }
+
+/* Explainer boxes */
+.explain { background: #D3E5EF; border-radius: 6px; padding: 12px 16px; margin: 14px 0; font-size: 13px; line-height: 1.7; color: #337EA9; }
+.explain strong { color: #1a5276; }
+
+.graph { background: #F7F6F3; border-radius: 10px; padding: 16px; margin: 14px 0; }
+.graph-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #B4B4B0; margin-bottom: 8px; }
+
+.stats { display: flex; gap: 1px; background: #E9E8E4; border: 1px solid #E9E8E4; border-radius: 6px; overflow: hidden; margin: 14px 0; }
+.st { background: #FFFFFF; padding: 12px 16px; flex: 1; text-align: center; transition: background 0.2s; }
+.st:hover { background: #F7F6F3; }
+.st-v { font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 700; }
+.st-l { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #B4B4B0; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.big { text-align: center; margin: 24px 0; }
+.big-n { font-family: 'IBM Plex Mono', monospace; font-size: 48px; font-weight: 700; line-height: 1; }
+.big-l { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #B4B4B0; margin-top: 4px; }
+
+.tw { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 10px 0; }
+.nt { width: 100%; border-collapse: collapse; font-size: 13px; }
+.nt th { text-align: left; padding: 6px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #E9E8E4; font-weight: 500; }
+.nt td { padding: 7px 10px; border-bottom: 1px solid #E9E8E4; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #37352F; }
+.nt tr:hover td { background: #F7F6F3; }
+.nt tr.hl td { background: #FBE4E4; }
+
+.co { display: flex; gap: 10px; padding: 12px 14px; border-radius: 6px; margin: 14px 0; font-size: 13px; line-height: 1.7; color: #37352F; }
+.co-i { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+.qb { border-left: 3px solid #37352F; padding: 4px 16px; margin: 24px 0; font-size: 17px; font-style: italic; color: #37352F; }
+
+.pif-div { text-align: center; margin: 28px 0; padding: 12px 0; border-top: 1px solid #E9E8E4; border-bottom: 1px solid #E9E8E4; }
+.pif-div span { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 700; color: rgba(235,87,87,0.12); letter-spacing: 8px; }
+
+/* Summary box */
+.summary { background: #F7F6F3; border: 1px solid #E9E8E4; border-radius: 10px; padding: 24px; margin: 24px 0; }
+.summary h3 { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #C4554D; margin-bottom: 12px; }
+.summary p { font-size: 14px; margin-bottom: 10px; }
+.summary ul { padding-left: 20px; margin: 10px 0; }
+.summary li { font-size: 13px; margin-bottom: 6px; line-height: 1.6; }
+
+.ft { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E9E8E4; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B4B4B0; display: flex; justify-content: space-between; }
+.ft span { color: #EB5757; font-weight: 600; }
+
+@media (max-width: 900px) { body { padding: 32px 32px 60px; } h1 { font-size: 28px; } .big-n { font-size: 36px; } .wm-1 { font-size: 110px; } .wm-2 { font-size: 16px; } }
+@media (max-width: 680px) { body { padding: 20px 16px 48px; font-size: 14px; } h1 { font-size: 22px; } h2 { font-size: 18px; } .sub { font-size: 12px; } .nr { padding: 10px 14px; font-size: 12px; } .explain { font-size: 12px; } .co { font-size: 11px; padding: 10px 12px; } .stats { flex-wrap: wrap; } .st { min-width: 30%; padding: 8px 10px; } .st-v { font-size: 14px; } .big-n { font-size: 28px; } .qb { font-size: 14px; } .nt { min-width: 650px; } .ft { flex-direction: column; gap: 4px; text-align: center; } .wm-1 { font-size: 70px; } .wm-2 { font-size: 12px; } }
+@media (max-width: 400px) { body { padding: 14px 12px 40px; } h1 { font-size: 18px; } .big-n { font-size: 22px; } .st { min-width: 45%; } .st-v { font-size: 12px; } }
+</style>
+</head>
+<body>
+
+<div class="wm"><span class="wm-1">PIF</span><span class="wm-2">Selling Pipeline</span></div>
+
+<div class="bc"><em>PIF Research Labs</em> / Drift Protocol / DRIFT Token Selling Analysis · Updated April 4, 2026</div>
+
+<div style="font-size:48px;margin-bottom:4px">🔻</div>
+<h1>Who's Selling DRIFT?</h1>
+<p class="sub">56 million DRIFT tokens moved to exchanges since the exploit. The attacker's bot is dumping on DEXes. An unknown wallet is dumping on Bybit and Gate. Nobody knows who owns it — including Drift.</p>
+
+<div style="margin-bottom:16px">
+<span class="tag" style="background:#FBE4E4;color:#C4554D">Updated Investigation</span>
+<span class="tag" style="background:#FADEC9;color:#C77D48">Independently Verified</span>
+<span class="tag" style="background:#E8DEEE;color:#9065B0">On-Chain Traced</span>
+</div>
+
+<!-- Hero stats -->
+<div class="stats reveal">
+<div class="st"><div class="st-v" style="color:#EB5757">56.25M</div><div class="st-l">DRIFT to CEXes</div></div>
+<div class="st"><div class="st-v" style="color:#D9730D">~$2.4M</div><div class="st-l">Dumped on Bybit/Gate</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">2.9M</div><div class="st-l">Attacker bot sold</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">$0.035</div><div class="st-l">DRIFT Price Now</div></div>
+<div class="st"><div class="st-v" style="color:#EB5757">-51%</div><div class="st-l">Since Exploit</div></div>
+</div>
+
+<div class="div"></div>
+
+<!-- ====== CONTEXT: WHAT IS HAPPENING ====== -->
+<h2 class="reveal">What's Happening Here</h2>
+
+<p class="reveal">On April 1, 2026, the Drift Protocol was exploited for $285 million. The attacker drained the protocol's vaults and moved the stolen funds across multiple blockchains. That story is well-documented.</p>
+
+<p class="reveal">But there's a second story playing out at the same time: <strong>someone is aggressively selling the DRIFT token itself.</strong> DRIFT is the governance token of the protocol — it's what holders use to vote on changes and what traders buy when they believe in the project's future. When millions of tokens get dumped on exchanges right after an exploit, it accelerates the price crash and compounds the damage to everyone still holding.</p>
+
+<p class="reveal">We traced two parallel selling pipelines. One belongs to the attacker. The other belongs to someone nobody can identify — and the Drift team says it's not them.</p>
+
+<div class="explain reveal">
+<strong>What is a governance token?</strong> A governance token like DRIFT gives holders voting power over a protocol's decisions — things like fee structures, new features, or treasury spending. It also trades on exchanges like any other cryptocurrency. When its price crashes, it signals lost confidence in the project and reduces the protocol's ability to raise funds or attract users.
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== THE CORRECTION ====== -->
+<h2 class="reveal">The Correction: It's Not the Team</h2>
+
+<div class="nr nrr reveal">
+<div class="nr-t">Important update — April 4, 2026</div>
+On April 3, wallet <span class="mn">G1kTzz...S1FaX</span> was flagged by OnchainLens and labeled by Arkham Intelligence as the "Drift Protocol Team" wallet. This label was picked up across crypto Twitter and appeared in our initial report. On April 4, an independent security firm verified the on-chain flow and the Drift team was contacted directly. <strong>Drift confirmed this wallet does not belong to them.</strong> The Arkham label is incorrect.
+</div>
+
+<div class="explain reveal">
+<strong>What is Arkham Intelligence?</strong> Arkham is a blockchain analytics platform that labels wallet addresses — identifying which wallets belong to which companies, traders, or entities. These labels are partly algorithmic and partly community-submitted. They are <em>not</em> verified ownership records. When Arkham labels a wallet "Drift Protocol Team," it's an educated guess based on patterns, not a confirmation from Drift. In this case, that guess was wrong.
+</div>
+
+<p class="reveal">This means the wallet dumping 56 million DRIFT tokens across Bybit and Gate is <strong>unidentified</strong>. The DRIFT token account dates to October 2024. The transactions use durable nonces. The holder remains unknown.</p>
+
+<div class="explain reveal">
+<strong>What are durable nonces?</strong> Normally on Solana, a transaction must be submitted within about 90 seconds or it expires. Durable nonces bypass this — they let you pre-sign a transaction and submit it hours, days, or weeks later. The Drift attacker used this technique to prepare the exploit in advance. The fact that the DRIFT token seller is also using durable nonces is a red flag — it's the same uncommon technique, being used by a different unknown wallet, during the same time window.
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== THE PIPELINE VISUAL ====== -->
+<h2 class="reveal">The Selling Pipeline — Traced On-Chain</h2>
+
+<p class="reveal">We traced the full path of the DRIFT tokens, from their original source to the exchange deposit addresses where they were sold. Here's the chain:</p>
+
+<div class="graph reveal">
+<div class="graph-label">Pipeline 1: The CEX dump chain — Bybit and Gate deposits · independently verified</div>
+<svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+<defs>
+<marker id="a1" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#B4B4B0"/></marker>
+<marker id="ar" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#EB5757"/></marker>
+<marker id="ao" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#D9730D"/></marker>
+<marker id="ap" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#9065B0"/></marker>
+</defs>
+
+<!-- LAYER 1: ORIGIN -->
+<text x="440" y="16" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#B4B4B0" font-weight="600" letter-spacing="2">ORIGIN — MAY 2024 (DRIFT TOKEN LAUNCH)</text>
+
+<rect x="260" y="26" width="360" height="50" rx="8" fill="#DBEDDB" stroke="#4DAB9A" stroke-width="1.5"/>
+<text x="440" y="46" text-anchor="middle" font-size="14">🏦</text>
+<text x="440" y="60" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#448361" font-weight="700">2xN6e9Z...UVfK</text>
+<text x="440" y="70" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#448361">Treasury / Vesting Wallet · Distributed 95.67M DRIFT at launch</text>
+
+<line x1="440" y1="76" x2="440" y2="105" stroke="#4DAB9A" stroke-width="2" marker-end="url(#a1)"/>
+<text x="455" y="94" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">95.67M · May 2024</text>
+
+<!-- LAYER 2: DV3ZJK -->
+<rect x="300" y="110" width="280" height="48" rx="8" fill="#E8DEEE" stroke="#9065B0" stroke-width="1.5"/>
+<text x="440" y="130" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#9065B0" font-weight="700">DV3ZJK...mS4y</text>
+<text x="440" y="144" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#9065B0">Received 95.67M · Sent 66.67M onward · Also sent 29M to 2 other wallets</text>
+
+<line x1="440" y1="158" x2="440" y2="185" stroke="#9065B0" stroke-width="2" marker-end="url(#ap)"/>
+<text x="455" y="175" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#787774">66.67M · Oct 2024</text>
+
+<!-- LAYER 3: Gu6nuuGLP -->
+<rect x="280" y="190" width="320" height="52" rx="8" fill="#FADEC9" stroke="#D9730D" stroke-width="2"/>
+<text x="440" y="210" text-anchor="middle" font-size="14">🔀</text>
+<text x="440" y="224" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#C77D48" font-weight="700">Gu6nuuGLP...aiJq</text>
+<text x="440" y="236" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C77D48">Held 66.67M DRIFT for 18 months · Activated 5 hours after exploit</text>
+
+<!-- Additional 3.5M from EUSPoBQ -->
+<rect x="40" y="195" width="180" height="40" rx="6" fill="#F7F6F3" stroke="#E9E8E4" stroke-width="1"/>
+<text x="130" y="212" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#787774" font-weight="600">4AK83 → EUSPoB → Gu6nuu</text>
+<text x="130" y="224" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#B4B4B0">+3.54M DRIFT top-up · Mar 31</text>
+<line x1="220" y1="215" x2="276" y2="215" stroke="#B4B4B0" stroke-width="1" marker-end="url(#a1)"/>
+
+<line x1="440" y1="242" x2="440" y2="268" stroke="#D9730D" stroke-width="2" marker-end="url(#ao)"/>
+<text x="455" y="258" font-family="'IBM Plex Mono',monospace" font-size="6" fill="#C77D48" font-weight="600">58.18M · Apr 1 21:20 UTC</text>
+
+<!-- LAYER 4: Intermediary -->
+<rect x="280" y="272" width="320" height="52" rx="8" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="440" y="292" text-anchor="middle" font-size="14">📦</text>
+<text x="440" y="306" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#C4554D" font-weight="700">UuuV9Jzxc...xvL</text>
+<text x="440" y="318" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">Intermediary · All txns use durable nonces</text>
+
+<!-- Arrows to CEXes -->
+<line x1="360" y1="324" x2="200" y2="365" stroke="#EB5757" stroke-width="2" marker-end="url(#ar)"/>
+<line x1="520" y1="324" x2="660" y2="365" stroke="#EB5757" stroke-width="2" marker-end="url(#ar)"/>
+
+<!-- Gate -->
+<rect x="80" y="370" width="240" height="40" rx="8" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="200" y="387" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#C4554D" font-weight="700">Gate.io (B9X8f)</text>
+<text x="200" y="401" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">6.25M DRIFT · $318K · Apr 1</text>
+
+<!-- Bybit -->
+<rect x="560" y="370" width="260" height="40" rx="8" fill="#FBE4E4" stroke="#EB5757" stroke-width="2"/>
+<text x="690" y="387" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="#C4554D" font-weight="700">Bybit (AtTqb)</text>
+<text x="690" y="401" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">50M DRIFT · $2.12M · Apr 3 (two deposits)</text>
+</svg>
+</div>
+
+<div class="explain reveal">
+<strong>What is a CEX?</strong> A centralized exchange (CEX) like Bybit, Gate, or Binance is a platform where you can trade cryptocurrency for cash or other tokens. When someone deposits tokens to a CEX, they're typically converting them to cash. Depositing 56 million DRIFT tokens to Bybit and Gate means someone is selling — converting DRIFT into money they can withdraw.
+</div>
+
+<div class="explain reveal">
+<strong>Why does the origin matter?</strong> These DRIFT tokens trace back to a wallet that distributed 95.67 million tokens in May 2024 — the month DRIFT launched. That's a vesting or treasury wallet. This means the tokens being sold now were allocated at launch, sat dormant for 18 months, and were activated 5 hours after the protocol got exploited for $285 million. The timing raises the question: does the seller know something, or are they just panicking?
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== PIPELINE 2: THE ATTACKER BOT ====== -->
+<h2 class="reveal">Pipeline 2: The Attacker's Bot Is Also Selling DRIFT</h2>
+
+<p class="reveal">Separate from the CEX pipeline above, the attacker's own dispersion bot — <span class="mn">MfDuWe...GVWa</span> — is independently selling DRIFT tokens on Solana DEXes.</p>
+
+<div class="explain reveal">
+<strong>What is a DEX?</strong> A decentralized exchange (DEX) like Jupiter or Raydium lets you swap tokens directly on the blockchain without an account, ID, or intermediary. Unlike a CEX, there's no company in the middle. The attacker is using DEXes because they require no identity verification — you just connect a wallet and swap.
+</div>
+
+<div class="graph reveal">
+<div class="graph-label">Pipeline 2: The attacker bot — selling stolen DRIFT on Solana DEXes</div>
+<svg viewBox="0 0 880 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+<defs>
+<marker id="ar2" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,6 2.5,0 5" fill="#EB5757"/></marker>
+</defs>
+
+<rect x="40" y="20" width="220" height="60" rx="10" fill="#FBE4E4" stroke="#EB5757" stroke-width="2.5"/>
+<text x="150" y="42" text-anchor="middle" font-size="16">🤖</text>
+<text x="150" y="58" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#C4554D" font-weight="700">MfDuWe...GVWa</text>
+<text x="150" y="70" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D">Attacker's dispersion bot · Still active</text>
+
+<line x1="264" y1="50" x2="370" y2="50" stroke="#EB5757" stroke-width="2.5" marker-end="url(#ar2)"/>
+<text x="317" y="42" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C4554D" font-weight="600">2.9M DRIFT</text>
+
+<rect x="376" y="20" width="220" height="60" rx="10" fill="#FADEC9" stroke="#D9730D" stroke-width="2"/>
+<text x="486" y="42" text-anchor="middle" font-size="16">🔄</text>
+<text x="486" y="58" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#C77D48" font-weight="700">Solana DEXes</text>
+<text x="486" y="70" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#C77D48">531 swap transactions</text>
+
+<line x1="600" y1="50" x2="640" y2="50" stroke="#D9730D" stroke-width="2" marker-end="url(#ar2)"/>
+
+<rect x="646" y="26" width="190" height="48" rx="8" fill="#DBEDDB" stroke="#4DAB9A" stroke-width="1.5"/>
+<text x="741" y="48" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="#448361" font-weight="700">$102,489 USDC</text>
+<text x="741" y="62" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="7" fill="#448361">Avg price: $0.035/DRIFT</text>
+
+<text x="440" y="108" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774">This is the same bot that dispersed $342M in stolen USDC across 2,688 wallets.</text>
+<text x="440" y="122" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8" fill="#787774">It's also dumping DRIFT tokens — meaning the attacker acquired DRIFT during the exploit.</text>
+</svg>
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== PIPELINE 3: THE DEX SELLERS ====== -->
+<h2 class="reveal">Pipeline 3: The Distribution Hub</h2>
+
+<p class="reveal">Beyond the two pipelines above, a third network of wallets has been selling DRIFT through Solana DEXes. These wallets are all fed by a single distribution hub: <span class="mn">BCJtr7...MypH</span>.</p>
+
+<div class="explain reveal">
+<strong>What is a distribution hub?</strong> In on-chain forensics, a "hub" is a wallet that receives tokens from a few sources and sends them to many destinations. Think of it like a warehouse — tokens come in through one door and go out through fifteen. This pattern is used to spread selling across many wallets so it doesn't look like one entity dumping. Each downstream wallet sells a smaller amount, making the selling pressure harder to detect.
+</div>
+
+<div class="tw reveal">
+<table class="nt">
+<thead><tr><th>Rank</th><th>Wallet</th><th>DRIFT Sold</th><th>USDC Received</th><th>Swaps</th><th>Started</th><th>Connection</th></tr></thead>
+<tbody>
+<tr class="hl"><td style="color:#C4554D;font-weight:700">1</td><td><span class="mn">BMnT51...3iLJ</span></td><td style="font-weight:700;color:#C4554D">2,912,202</td><td style="font-weight:700;color:#448361">$140,827</td><td>255</td><td>Apr 1 17:32</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td style="font-weight:700">2</td><td><span class="mn">4xDsme...du71</span></td><td>665,102</td><td>$32,449</td><td>26</td><td>Apr 1 17:41</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td>3</td><td><span class="mn">3CgvbiM...sRoD</span></td><td>625,422</td><td>$28,768</td><td>59</td><td>Apr 1 17:43</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td>4</td><td><span class="mn">ARu4n5...5SZn</span></td><td>598,952</td><td>$16,204</td><td>13</td><td>Apr 1 17:17</td><td>Feeder + seller</td></tr>
+<tr><td>5</td><td><span class="mn">HFqp6E...PSiY</span></td><td>568,850</td><td>$27,068</td><td>44</td><td>Apr 1 17:47</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td>6</td><td><span class="mn">69yhto...aVT5</span></td><td>517,585</td><td>$24,392</td><td>55</td><td>Apr 1 18:09</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td>7</td><td><span class="mn">3LoAYH...zd76</span></td><td>513,696</td><td>$23,975</td><td>51</td><td>Apr 1 17:59</td><td>Fed by BCJtr7 hub</td></tr>
+<tr><td>8</td><td><span class="mn">7iWnBR...YBxE</span></td><td>420,984</td><td>$18,902</td><td>51</td><td>Apr 1 18:10</td><td>Fed by BCJtr7 hub</td></tr>
+</tbody>
+</table>
+</div>
+
+<p class="reveal">The #1 DEX seller, <span class="mn">BMnT51</span>, started selling 86 minutes after the exploit — when DRIFT was still trading near $0.050. It averaged $0.048 per token. The attacker bot started 11 hours later and averaged only $0.035. Whoever controls BMnT51 captured 53% of all USDC extracted from DEX selling despite moving fewer tokens — because they got a better price by acting first.</p>
+
+<div class="explain reveal">
+<strong>Why does selling speed matter?</strong> Tokens are like seats on a lifeboat. The first seller gets the best price because there are still buyers willing to pay near market value. As more sellers pile in, the price drops. By the time the attacker's bot started dumping DRIFT, the price had already fallen 30%. The early sellers got out near the top. The late sellers — including the attacker — sold into a crashed market.
+</div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== KEY QUESTIONS ====== -->
+<h2 class="reveal">The Open Questions</h2>
+
+<div class="co reveal" style="background:#FFF3D4"><div class="co-i">1️⃣</div><div><strong>Who controls the Gu6nuuGLP wallet?</strong> The DRIFT token account dates to October 2024. The tokens trace back to a launch-era vesting distribution. This wallet held 66.67 million tokens for 18 months and activated 5 hours after the exploit. Drift says it's not theirs. The owner is unknown.</div></div>
+
+<div class="co reveal" style="background:#FBE4E4"><div class="co-i">2️⃣</div><div><strong>Why durable nonces?</strong> The intermediary wallet uses the same uncommon transaction technique that the attacker used to execute the $285M exploit. This doesn't prove they're the same person — but it's a coincidence worth investigating. Most normal users never touch durable nonces.</div></div>
+
+<div class="co reveal" style="background:#D3E5EF"><div class="co-i">3️⃣</div><div><strong>Was this insider selling or panic selling?</strong> The timing — 5 hours after the exploit, 18 months of dormancy, immediate routing to CEXes — could be interpreted two ways. Either someone with inside knowledge of the exploit moved to cash out before the price crashed further. Or a long-term holder panicked after seeing the exploit and decided to exit immediately. The durable nonce usage tilts toward the former.</div></div>
+
+<div class="co reveal" style="background:#F7F6F3"><div class="co-i">4️⃣</div><div><strong>Who controls the BCJtr7 distribution hub?</strong> This wallet has been feeding DRIFT to 15+ selling wallets since January 2026. It accelerated after the exploit. It operates independently from the CEX dumping pipeline. Its owner is also unidentified.</div></div>
+
+<div class="pif-div"><span>P I F</span></div>
+
+<!-- ====== SUMMARY ====== -->
+<div class="summary reveal">
+<h3>Summary — What Happened and Why It Matters</h3>
+
+<p><strong>The Drift Protocol was exploited for $285 million on April 1, 2026.</strong> While the immediate theft has been widely covered, a parallel story went largely unnoticed: someone started aggressively selling the DRIFT governance token within hours of the exploit.</p>
+
+<p><strong>Three separate selling pipelines are operating simultaneously:</strong></p>
+
+<ul>
+<li><strong>Pipeline 1 — The CEX Dumps:</strong> An unidentified wallet moved 58.18 million DRIFT to an intermediary, which deposited 56.25 million tokens to Bybit and Gate exchanges. The total value: approximately $2.4 million. These tokens trace back to a launch-era vesting wallet from May 2024. The intermediary used durable nonces — the same technique used in the exploit itself. Arkham Intelligence initially labeled the source as a "Drift Protocol Team" wallet, but Drift has confirmed this is incorrect. The owner remains unknown.</li>
+<li><strong>Pipeline 2 — The Attacker Bot:</strong> The same bot that dispersed $342 million in stolen USDC is also dumping 2.9 million DRIFT tokens through Solana DEXes. This means the attacker acquired DRIFT during the vault drain and is selling it through the same infrastructure used to launder the other stolen funds. Total USDC extracted: $102,489.</li>
+<li><strong>Pipeline 3 — The Distribution Hub:</strong> A wallet called BCJtr7 has been feeding DRIFT to 15+ downstream wallets that sell on DEXes. The top seller in this network, BMnT51, dumped 2.9 million DRIFT for $140,827 — starting just 86 minutes after the exploit when the price was still relatively high. This hub has been operating since January 2026, well before the exploit.</li>
+</ul>
+
+<p><strong>Why this matters:</strong></p>
+
+<ul>
+<li>The DRIFT token has lost 51% of its value since the exploit ($0.069 → $0.035) and is still falling. Every token dumped on the market pushes the price lower.</li>
+<li>Token holders — the people who believed in Drift and deposited their money — are watching their investment evaporate while unknown wallets cash out millions.</li>
+<li>The durable nonce connection between the CEX dumping pipeline and the exploit technique is unexplained. It could be coincidence. It could be coordination.</li>
+<li>The Arkham labeling error is a reminder that on-chain labels are guesses, not facts. A wrong label can misdirect an entire investigation — in this case, initially pointing the finger at the Drift team for selling their own token during a crisis.</li>
+</ul>
+
+<p><strong>The bottom line:</strong> $285 million was stolen from the protocol. $2.4 million more is being extracted through token selling. The attacker is profiting from both the vault drain and the token crash. An unknown entity with launch-era tokens activated 5 hours after the exploit and dumped them using the same technique as the attacker. Nobody has explained who they are.</p>
+</div>
+
+<div class="big reveal"><div class="big-n" style="color:#EB5757">56.25M DRIFT</div><div class="big-l">moved to CEXes · $2.4M sold · owner unknown · durable nonces · token down 51%</div></div>
+
+<div class="qb reveal">The exploit took $285 million from the vaults. The token dump is taking the rest from the holders. The stolen money moved to Binance. The DRIFT tokens moved to Bybit and Gate. Nobody knows who's behind the second pipeline — and the label that pointed at the team was wrong.</div>
+
+<div class="ft"><div><span>PIF Research Labs</span></div><div>All data verified on-chain · April 4, 2026</div></div>
+
+<script>
+var reveals = document.querySelectorAll('.reveal');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+reveals.forEach(function(el) { observer.observe(el); });
+</script>
+
+</body>
+</html>
